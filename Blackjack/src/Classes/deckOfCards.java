@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 public class deckOfCards {
     
-    public ArrayList<String> initDeck() {
+    private ArrayList<Card> deck = new ArrayList<>();
+
+    public ArrayList<Card> initDeck() {
 
         String[] suit = {"Hearts", "Diamonds", "Spades", "Clubs"};
         int suitNum = suit.length;
@@ -13,8 +15,6 @@ public class deckOfCards {
         int rankNum = rank.length;
 
         int[] value = {2, 3, 4, 5, 6, 7 , 8, 9, 10, 10, 10, 10, 11};
-
-        ArrayList<String> deck = new ArrayList<>();
         
         //Populates deck with all 52 cards in a deck.  
         for (int i = 0; i < suitNum; i++) {
@@ -22,18 +22,17 @@ public class deckOfCards {
             for (int j = 0; j < rankNum; j++) {
                                
                 Card card = new Card(rank[j], suit[i], value[j]);
+                deck.add(card);
 
-                String RankAndSuitAndValue = card.getRank() + " of " + card.getSuit() + " (value: " + card.getValue() + ")";
-
-                deck.add(RankAndSuitAndValue);
             }
-        }   
+        }
+        
         return deck;
         
     }
 
 
-    public ArrayList<String> shuffleDeck(ArrayList<String> deck) {
+    public ArrayList<Card> shuffleDeck(ArrayList<Card> initDeck) {
 
         //Randomizes order of cards in the deck.  
         int max = 51;
@@ -42,24 +41,33 @@ public class deckOfCards {
 
 
         for (int init = 0; init < 51; init++) {
-
-            int rand = (int)(Math.random() * range) + min; // Random number b/w 1 and 52.
-            String temp;
-            String left = deck.get(init);
-            String right = deck.get(rand);
-
-            temp = left;
-            left = right;
-            right = temp;
-
-            deck.set(init, left);
-            deck.set(rand, right);
+            
+            int rand = (int)(Math.random() * range) + min; // Random number b/w 1 and 52. 
+  
+            Card tempCard = initDeck.get(init); // Temporarily stores whatever the card is at the initial position.  
+            initDeck.set(init, initDeck.get(rand));
+            initDeck.set(rand, tempCard);
 
         }
 
-        return deck;
+        return initDeck;
+    }
+
+    // To-do: Add a method that prints the deck and/or the shuffled deck, purely for visualization/internal testing.  
+
+    public ArrayList<String> printDeck (ArrayList<Card> deck) {
+
+        ArrayList<String> printedDeck = new ArrayList<>();
+        
+        for(int i = 0; i < 51; i++) {
+           
+            Card deck1 = deck.get(i);
+            String RankSuitValue = deck1.getRank() + deck1.getSuit() + deck1.getValue();
+
+            printedDeck.add(RankSuitValue);
+
+        }
+
+        return printedDeck;
     }
 }
-
-
-
