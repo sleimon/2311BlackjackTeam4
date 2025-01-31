@@ -2,27 +2,30 @@ package Classes;
 
 import java.util.ArrayList;
 
+import java.util.ArrayList;
+
 public class Hand {
     
-    private ArrayList<String> hand = new ArrayList<>();
+    private ArrayList<Card> hand = new ArrayList<>();
+    private ArrayList<Card> discardedDeck = new ArrayList<>();
 
-    public ArrayList<String> drawCard(ArrayList<String> shuffledDeck) {
+    public ArrayList<Card> drawCard(ArrayList<Card> shuffledDeck) {
 
-        hand.add(shuffledDeck.get(0));
+        this.hand.add(shuffledDeck.get(0));
         shuffledDeck.remove(shuffledDeck.get(0));
 
-        return hand;
+        return this.hand;
 
     }
 
-    public ArrayList<String> discardHand(ArrayList<String> hand, ArrayList<String> discardedDeck) {
+    public ArrayList<Card> discardHand() {
 
         int handSize = hand.size();
 
         for (int i = 0; i < handSize; i++){
 
-            discardedDeck.add(hand.get(i));
-            hand.remove(i);
+            this.discardedDeck.add(hand.get(i));
+            this.hand.remove(i);
 
         }
         
@@ -30,77 +33,27 @@ public class Hand {
         
     }
 
-    public int handValue(ArrayList<String> hand) {
+    public int handValue() {
 
-        int handSize = hand.size();
+        int handSize = this.hand.size();
         int value = 0;
         int sum = 0;
 
         for (int i = 0; i < handSize; i++) {
-
-           if(hand.get(i).contains("value: 2")) {
-
-                value = 2;
-
-            }
-
-           else if(hand.get(i).contains("value: 3")) {
-                
-                value = 3;
-
-            }
-
-           else if(hand.get(i).contains("value: 4")) {
-                
-                value = 4;
-
-            }
-
-           else if(hand.get(i).contains("value: 5")) {
             
-                value = 5;
+            Card tempCard = this.hand.get(i);
+            value = tempCard.getValue();
 
-            }
-
-           else if(hand.get(i).contains("value: 6")) {
-                
-                value = 6;
-
-            }
-
-           else if(hand.get(i).contains("value: 7")) {
-    
-                value = 7;
-
-            }
-
-           else if(hand.get(i).contains("value: 8")) {
-   
-                value = 8;
-
-            }
-
-           else if(hand.get(i).contains("value: 9")) {
-    
-                value = 3;
-
-            }
-
-           else if(hand.get(i).contains("value: 10")) {
-    
-                value = 10;
-            }
-
-           else {
-    
-                value = 11;
-            }
-
+            sum += value;
         }
-        sum = sum + value;
 
         return sum;
     }
 
-}
+    /*public ArrayList<Card> getHand() {
 
+        return this.hand;
+
+    }*/
+
+}
