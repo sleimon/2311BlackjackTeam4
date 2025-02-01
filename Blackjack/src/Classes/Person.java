@@ -25,12 +25,17 @@ public class Person {
 		this.hand = hand;
 	}
 	
+	public void printHand(){
+        System.out.println(this.name + "'s hand looks like this:");
+        System.out.println(this.hand + " | Valued at: " + this.hand.calculatedValue());
+    }
+	
 	public void hit(deckOfCards deck, deckOfCards discard){
 	    if (!deck.hasCards()) {
 	        deck.reloadDeckFromDiscard(discard);
 	    }
 	    this.hand.takeCardFromDeck(deck);
-	    System.out.println(this.name + " gets a new card");
+	    System.out.println(this.name + " gets a new card | " + this.hand.getLatestCard());
 	    this.getHand();
 	}
 	
