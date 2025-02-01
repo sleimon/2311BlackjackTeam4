@@ -6,9 +6,11 @@ import java.util.Random;
 
 public class deckOfCards {
     
-    private ArrayList<Card> deck = new ArrayList<>();
+    private ArrayList<Card> deck;
 
-    public ArrayList<Card> initDeck() {
+    public deckOfCards() {
+    	
+    	this.deck = new ArrayList<Card>();
 
         String[] suit = {"Hearts", "Diamonds", "Spades", "Clubs"};
         int suitNum = suit.length;
@@ -28,50 +30,47 @@ public class deckOfCards {
 
             }
         }
-        
-        return deck;
-        
     }
 
 
-    public ArrayList<Card> shuffleDeck(ArrayList<Card> initDeck) {
-
-        //Randomizes order of cards in the deck.  
-        int max = 51;
-        int min = 1;
-        int range = max - min + 1;
-
-
-        for (int init = 0; init < 51; init++) {
-            
-            int rand = (int)(Math.random() * range) + min; // Random number b/w 1 and 52. 
-  
-            Card tempCard = initDeck.get(init); // Temporarily stores whatever the card is at the initial position.  
-            initDeck.set(init, initDeck.get(rand));
-            initDeck.set(rand, tempCard);
-
-        }
-
-        return initDeck;
-    }
-
-    // To-do: Add a method that prints the deck and/or the shuffled deck, purely for visualization/internal testing.  
-
-    public ArrayList<String> printDeck (ArrayList<Card> deck) {
-
-        ArrayList<String> printedDeck = new ArrayList<>();
-        
-        for(int i = 0; i < 51; i++) {
-           
-            Card deck1 = deck.get(i);
-            String RankSuitValue = deck1.getRank() + deck1.getSuit() + deck1.getValue();
-
-            printedDeck.add(RankSuitValue);
-
-        }
-
-        return printedDeck;
-    }
+//    public ArrayList<Card> shuffleDeck(ArrayList<Card> initDeck) {
+//
+//        //Randomizes order of cards in the deck.  
+//        int max = 51;
+//        int min = 1;
+//        int range = max - min + 1;
+//
+//
+//        for (int init = 0; init < 51; init++) {
+//            
+//            int rand = (int)(Math.random() * range) + min; // Random number b/w 1 and 52. 
+//  
+//            Card tempCard = initDeck.get(init); // Temporarily stores whatever the card is at the initial position.  
+//            initDeck.set(init, initDeck.get(rand));
+//            initDeck.set(rand, tempCard);
+//
+//        }
+//
+//        return initDeck;
+//    }
+//
+//    // To-do: Add a method that prints the deck and/or the shuffled deck, purely for visualization/internal testing.  
+//
+//    public ArrayList<String> printDeck (ArrayList<Card> deck) {
+//
+//        ArrayList<String> printedDeck = new ArrayList<>();
+//        
+//        for(int i = 0; i < 51; i++) {
+//           
+//            Card deck1 = deck.get(i);
+//            String RankSuitValue = deck1.getRank() + deck1.getSuit() + deck1.getValue();
+//
+//            printedDeck.add(RankSuitValue);
+//
+//        }
+//
+//        return printedDeck;
+//    }
 
 
 	public boolean hasCards() {
@@ -112,6 +111,11 @@ public class deckOfCards {
 		Card card = new Card(deck.get(0));
 		this.deck.remove(0);
 		return card;
+	}
+
+
+	public int cardsLeft() {
+		return this.deck.size();
 	}
 	
 }

@@ -38,9 +38,8 @@ public class Card {
       
     }
 
-    @Override
     public String toString() {
-      return cardRank + cardSuit;
+      return cardRank + " of " + cardSuit + "(" + this.cardValue + ")";
     }
 
     
