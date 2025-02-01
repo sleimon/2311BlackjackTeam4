@@ -2,8 +2,6 @@ package Classes;
 
 import java.util.ArrayList;
 
-import java.util.ArrayList;
-
 public class Hand {
     
     private ArrayList<Card> hand = new ArrayList<>();
@@ -50,10 +48,62 @@ public class Hand {
         return sum;
     }
 
-    /*public ArrayList<Card> getHand() {
+    public ArrayList<Card> getHand() {
 
         return this.hand;
 
-    }*/
+    }
 
+	public Card getCard(int index) {
+		return this.hand.get(index);
+	}
+
+	public void takeCardFromDeck(deckOfCards deck) {
+		this.hand.add(deck.takeCard());
+		
+	}
+
+	public int calculatedValue() {
+		
+		int value = 0;
+		int aces = 0;
+		
+		for(Card card: hand) {
+			value += card.getValue();
+			if(card.getValue() == 11) {
+				aces++;
+			}
+		}
+		
+		if(value > 21 && aces >= 1) {
+			while(aces >= 1 && value > 21) {
+				aces--;
+				value -= 10;
+			}
+		}
+		
+		return value;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

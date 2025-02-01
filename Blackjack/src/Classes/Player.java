@@ -1,4 +1,4 @@
-package Blackjack;
+package Classes;
 
 import java.util.Scanner;
 
@@ -10,7 +10,7 @@ public class Player extends Person{
 	
 	Scanner input = new Scanner(System.in);
 	
-	public void makeDecision(Deck deck, Deck discard) {
+	public void makeDecision(deckOfCards deck, deckOfCards discard) {
 		boolean getNum = true;
 		int decision = 0;
 		
