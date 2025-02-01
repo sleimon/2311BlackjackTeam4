@@ -1,46 +1,36 @@
 package Classes;
 
 public class Card {
-     
-    private String cardRank;
-    private String cardSuit;
-    private int cardValue;
 
-    public Card(String rank, String suit, int value) {
+	private String cardRank;
+	private String cardSuit;
+	private int cardValue;
 
-        cardRank = rank;
-        cardSuit = suit;
-        cardValue = value;
-        
-    }
-    
-    public Card(Card card) {
-    	this.cardRank = card.cardRank;
-    	this.cardSuit = card.cardSuit;
-    	this.cardValue = card.cardValue;
-    }
+	public Card(String rank, String suit, int value) {
+		cardRank = rank;
+		cardSuit = suit;
+		cardValue = value;
+	}
 
-    public String getRank() {
+	public Card(Card card) {
+		this.cardRank = card.cardRank;
+		this.cardSuit = card.cardSuit;
+		this.cardValue = card.cardValue;
+	}
 
-      return cardRank;
+	public String getRank() {
+		return cardRank;
+	}
 
-    }
+	public String getSuit() {
+		return cardSuit;
+	}
 
-    public String getSuit() {
+	public int getValue() {
+		return cardValue;
+	}
 
-      return cardSuit;
-
-    }
-
-    public int getValue() {
-
-      return cardValue;
-      
-    }
-
-    public String toString() {
-      return cardRank + " of " + cardSuit + "(" + this.cardValue + ")";
-    }
-
-    
+	public String toString() {
+		return cardRank + " of " + cardSuit + "(" + this.cardValue + ")";
+	}
 }
