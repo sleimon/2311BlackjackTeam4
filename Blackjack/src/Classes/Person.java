@@ -1,4 +1,4 @@
-package Blackjack;
+package Classes;
 
 public class Person {
 	private String name;
@@ -6,7 +6,7 @@ public class Person {
 	
 	public Person() {
 		this.name = "";
-		this.hand = new hand();
+		this.hand = new Hand();
 	}
 
 	public String getName() {
@@ -25,7 +25,7 @@ public class Person {
 		this.hand = hand;
 	}
 	
-	public void hit(Deck deck, Deck discard){
+	public void hit(deckOfCards deck, deckOfCards discard){
 	    if (!deck.hasCards()) {
 	        deck.reloadDeckFromDiscard(discard);
 	    }

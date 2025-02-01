@@ -13,6 +13,12 @@ public class Card {
         cardValue = value;
         
     }
+    
+    public Card(Card card) {
+    	this.cardRank = card.cardRank;
+    	this.cardSuit = card.cardSuit;
+    	this.cardValue = card.cardValue;
+    }
 
     public String getRank() {
 

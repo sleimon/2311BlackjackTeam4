@@ -1,6 +1,8 @@
 package Classes;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class deckOfCards {
     
@@ -70,4 +72,46 @@ public class deckOfCards {
 
         return printedDeck;
     }
+
+
+	public boolean hasCards() {
+		if(this.deck.size() > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void addCard(Card card) {
+		deck.add(card);
+	}
+	
+	public void addCards(ArrayList<Card> cards) {
+		deck.addAll(cards);
+	}
+	
+	public void emptyDeck() {
+		deck.clear();
+	}
+	
+	public ArrayList<Card> getCards(){
+		return this.deck;
+	}
+	
+	public void shuffle() {
+		Collections.shuffle(deck, new Random());
+	}
+
+	public void reloadDeckFromDiscard(deckOfCards discard) {
+		this.addCards(discard.getCards());
+		this.shuffle();
+		discard.emptyDeck();
+	}
+
+
+	public Card takeCard() {
+		Card card = new Card(deck.get(0));
+		this.deck.remove(0);
+		return card;
+	}
+	
 }
