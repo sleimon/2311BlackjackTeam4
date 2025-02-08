@@ -1,5 +1,100 @@
 package Classes;
 
-public class Player {
+import java.util.Scanner;
 
+public class Player extends Person{
+
+	private int chips;
+	private int bet;
+
+	public Player(int startingChips) {
+		super.setName("PLAYER");
+		this.chips = startingChips;
+		this.bet = 0;
+	}
+
+	Scanner input = new Scanner(System.in);
+
+	public void makeDecision(deckOfCards deck, deckOfCards discard) {
+		boolean getNum = true;
+		int decision = 0;
+
+		while(getNum){
+			try{
+				System.out.println("Would you like to (1)hit or (2)stand or (3)double down");
+				decision = input.nextInt();
+				getNum = false;
+			}
+			catch(Exception e){
+				System.out.println("Invalid");
+				input.next();
+			}
+			if (decision == 1) {
+				this.hit(deck, discard);
+
+				if(this.getHand().calculatedValue() > 21){
+					System.out.println("BUST!");
+					this.loseBet();
+					return;
+				}
+				else {
+					this.makeDecision(deck, discard);
+				}
+			} else if (decision == 3) {
+				doubleDown(deck, discard);
+			} else {
+				System.out.println("You stand.");
+			}
+		}
+	}
+
+	private void doubleDown(deckOfCards deck, deckOfCards discard) {
+		this.chips -= this.bet;
+		this.bet *= 2;
+		this.hit(deck, discard);
+		if(this.getHand().calculatedValue() > 21){
+			System.out.println("BUST!");
+			this.loseBet();
+			return;
+		}
+	}
+
+	public int getChips() {
+		return this.chips;
+	}
+
+	public void placeBet(int bet) {
+		this.chips -= bet;
+		this.bet = bet;
+	}
+
+	public void resetBet() {
+		this.bet = 0;
+	}
+
+	public void winBet() {
+		this.chips += (this.bet * 2);
+		this.resetBet();
+	}
+
+	public void instant21() {
+		this.chips += (this.bet * 2.5);
+		this.resetBet();
+	}
+
+	public void loseBet() {
+		this.resetBet();
+	}
+
+	public void pushBet() {
+		this.chips += this.bet;
+		this.resetBet();
+	}
+
+	public void surrenderBet() {
+		this.chips += (this.bet / 2);
+		this.resetBet();
+	}
 }
+
+
