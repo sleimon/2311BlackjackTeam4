@@ -13,12 +13,27 @@
     </properties>
 
     <dependencies>
-        <!-- PostgreSQL JDBC Driver -->
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.2</version> <!-- Use the latest version -->
         </dependency>
+
+        <!-- JavaFX Controls -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>21.0.2</version> <!-- Use the latest version -->
+        </dependency>
+
+        <!-- JavaFX FXML (If you use FXML) -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>21.0.2</version>
+        </dependency>
+
     </dependencies>
 
 </project>
