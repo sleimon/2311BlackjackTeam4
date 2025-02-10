@@ -3,10 +3,12 @@ package Classes;
 public class Person {
 	private String name;
 	private Hand hand;
+	private Hand splitHand;
 
 	public Person() {
 		this.name = "";
 		this.hand = new Hand();
+		this.splitHand = new Hand();
 	}
 
 	public String getName() {
@@ -21,8 +23,16 @@ public class Person {
 		return hand;
 	}
 
+	public Hand getSplitHand() {
+		return splitHand;
+	}
+
 	public void setHand(Hand hand) {
 		this.hand = hand;
+	}
+
+	public void setSplitHand(Hand splitHand) {
+		this.splitHand = splitHand;
 	}
 
 	public void printHand(){

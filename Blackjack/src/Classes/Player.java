@@ -24,6 +24,13 @@ public class Player extends Person{
 				System.out.println("Would you like to (1)hit or (2)stand or (3)double down");
 				decision = input.nextInt();
 				getNum = false;
+
+				if(this.getHand().getCard(0).getValue() == this.getHand().getCard(1).getValue()){
+
+					System.out.println("Would you like to (1)hit or (2)stand or (3)double down or would you like to (4)split your hand.  ");
+					decision = input.nextInt();
+					getNum = false;
+				}
 			}
 			catch(Exception e){
 				System.out.println("Invalid");
@@ -42,7 +49,9 @@ public class Player extends Person{
 				}
 			} else if (decision == 3) {
 				doubleDown(deck, discard);
-			} else {
+			} else if(decision == 4) {
+				splitHand(this.getHand());
+			 } else {
 				System.out.println("You stand.");
 			}
 		}
@@ -57,6 +66,16 @@ public class Player extends Person{
 			this.loseBet();
 			return;
 		}
+	}
+
+	private void splitHand(Hand hand){
+
+		Card copyCard = this.getHand().getCard(1);
+		Hand newHand = new Hand(); 
+		newHand.getHand().add(copyCard); // Stores 1 half of the split hand.
+		setSplitHand(newHand); // Sets the split hand to have the copied card as it's only card.    
+		hand.getHand().remove(1); // Removes the card from the original hand.  
+		// The original hand should now store 1 card, and the new hand should store the other card from the orignal hand.  
 	}
 
 	public int getChips() {
