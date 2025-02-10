@@ -60,5 +60,3 @@ class HandDeckInteractionTest {
         assertEquals(initialDeckSize - 1, deck.cardsLeft(), "Deck size should decrease by one after drawing a card.");
         assertEquals(1, hand.getHand().size(), "Hand should have one card after drawing.");
     }
-}}
-}
