@@ -18,19 +18,23 @@ public class Player extends Person{
 	public void makeDecision(deckOfCards deck, deckOfCards discard) {
 		boolean getNum = true;
 		int decision = 0;
-
+		int x = 0;
 		while(getNum){
 			try{
-				System.out.println("Would you like to (1)hit or (2)stand or (3)double down");
-				decision = input.nextInt();
-				getNum = false;
 
-				if(this.getHand().getCard(0).getValue() == this.getHand().getCard(1).getValue()){
+				if(this.getHand().getCard(0).getRank() == this.getHand().getCard(1).getRank() && x == 0){
 
 					System.out.println("Would you like to (1)hit or (2)stand or (3)double down or would you like to (4)split your hand.  ");
 					decision = input.nextInt();
 					getNum = false;
+					x++;
 				}
+				else{
+					System.out.println("Would you like to (1)hit or (2)stand or (3)double down");
+					decision = input.nextInt();
+					getNum = false;
+				}
+
 			}
 			catch(Exception e){
 				System.out.println("Invalid");
@@ -50,7 +54,7 @@ public class Player extends Person{
 			} else if (decision == 3) {
 				doubleDown(deck, discard);
 			} else if(decision == 4) {
-				splitHand(this.getHand());
+				splitHand(this.getHand(), deck, discard);
 			 } else {
 				System.out.println("You stand.");
 			}
@@ -68,14 +72,21 @@ public class Player extends Person{
 		}
 	}
 
-	private void splitHand(Hand hand){
+	private void splitHand(Hand hand, deckOfCards deck, deckOfCards discard){
 
 		Card copyCard = this.getHand().getCard(1);
 		Hand newHand = new Hand(); 
 		newHand.getHand().add(copyCard); // Stores 1 half of the split hand.
 		setSplitHand(newHand); // Sets the split hand to have the copied card as it's only card.    
 		hand.getHand().remove(1); // Removes the card from the original hand.  
-		// The original hand should now store 1 card, and the new hand should store the other card from the orignal hand.  
+		// The original hand should now store 1 card, and the new hand should store the other card from the orignal hand.
+		this.hit(deck, discard); // Adds a new card to the original hand.  
+		this.hitSplit(deck, discard); // Adds a new card to the split hand.  
+		printHand();
+		printSplitHand();
+		makeDecision(deck, discard);
+		
+		
 	}
 
 	public int getChips() {
