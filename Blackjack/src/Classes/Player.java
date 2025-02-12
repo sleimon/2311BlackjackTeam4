@@ -76,7 +76,6 @@ public class Player extends Person{
 		}
 	}
 	
-
 	private void doubleDown(deckOfCards deck, deckOfCards discard) {
 		this.chips -= this.bet;
 		this.bet *= 2;

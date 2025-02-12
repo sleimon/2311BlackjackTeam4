@@ -132,16 +132,19 @@ public class Game {
 	}
 
 	public void insuranceOrSurrender() {
-		//leave the insurance part for Mark
-		Scanner input = new Scanner(System.in);
-		int decision;
-		System.out.println("Would you like to Surrender? Yes(1) or No(2)");
-		decision = input.nextInt();
-		if(decision == 1) {
-			player.surrenderBet();
-			startRound();
-		}
-	}
+        Scanner input = new Scanner(System.in);
+        int decision;
+        System.out.println("Would you like to Surrender? Yes(1) or No(2)");
+        decision = input.nextInt();
+        if(decision == 1) {
+            System.out.println("Insurance taken!");
+            player.surrenderBet();
+            startRound();
+        }
+        else{
+            System.out.println("No insurance taken.");
+        }
+    }
 
 	private void dealerInitialBlackjack() {
 		//Check if dealer has blackjack to start
