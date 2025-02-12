@@ -108,11 +108,21 @@ public class Player extends Person{
 		// The original hand should now store 1 card, and the new hand should store the other card from the orignal hand.
 		this.hit(deck, discard); // Adds a new card to the original hand.  
 		this.hitSplit(deck, discard); // Adds a new card to the split hand.
-		  
+
 		printHand();
 		printSplitHand();
-		this.chips -= this.bet;
-		this.bet *= 2;
+		
+
+		if(this.getHand().getCard(0).getRank().equals("Ace")){
+
+			System.out.println("Splitting Aces: 1 card drawn for each hand.  ");
+
+		}
+
+		System.out.println("Playing the first hand");
+		makeDecision(deck, discard);
+
+		System.out.println("Playing the seond hand");
 		makeDecision(deck, discard);
 		
 		
