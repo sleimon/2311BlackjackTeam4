@@ -89,14 +89,26 @@ public class Player extends Person{
 
 	private void splitHand(Hand hand, deckOfCards deck, deckOfCards discard){
 
+		if(this.chips < this.bet) {
+
+			System.out.println("You don't have enough chips to split!");
+			return;
+
+		}
+
 		Card copyCard = this.getHand().getCard(1);
 		Hand newHand = new Hand(); 
 		newHand.getHand().add(copyCard); // Stores 1 half of the split hand.
-		setSplitHand(newHand); // Sets the split hand to have the copied card as it's only card.    
+		setSplitHand(newHand); // Sets the split hand to have the copied card as it's only card. 
+
 		hand.getHand().remove(1); // Removes the card from the original hand.  
+
+		this.chips -= this.bet; 
+
 		// The original hand should now store 1 card, and the new hand should store the other card from the orignal hand.
 		this.hit(deck, discard); // Adds a new card to the original hand.  
-		this.hitSplit(deck, discard); // Adds a new card to the split hand.  
+		this.hitSplit(deck, discard); // Adds a new card to the split hand.
+		  
 		printHand();
 		printSplitHand();
 		this.chips -= this.bet;
