@@ -132,6 +132,7 @@ public class Game {
 		}
 	}
 
+	
 	public void insuranceOrSurrender() {
         @SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
@@ -145,6 +146,7 @@ public class Game {
         }
         else{
             System.out.println("No insurance taken.");
+			
         }
     }
 
