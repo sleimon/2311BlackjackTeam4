@@ -78,6 +78,7 @@ public class Game {
 	}
 
 	private void placeBet() {
+		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("You have " + player.getChips() + " chips.");
 		System.out.print("Place your bet: ");
@@ -132,7 +133,8 @@ public class Game {
 	}
 
 	public void insuranceOrSurrender() {
-        Scanner input = new Scanner(System.in);
+        @SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in);
         int decision;
         System.out.println("Would you like to Surrender? Yes(1) or No(2)");
         decision = input.nextInt();
