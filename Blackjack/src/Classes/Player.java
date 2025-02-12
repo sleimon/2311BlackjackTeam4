@@ -33,6 +33,14 @@ public class Player extends Person{
 					System.out.println("Would you like to (1)hit or (2)stand or (3)double down");
 					decision = input.nextInt();
 					getNum = false;
+
+					if(getSplitHand().getCard(0).getValue() > 0) {
+
+						System.out.println("Would you like to (1)hit or (2)stand or (3)double down on your split hand? ");
+						decision = input.nextInt();
+
+
+					}
 				}
 
 			}
@@ -42,24 +50,32 @@ public class Player extends Person{
 			}
 			if (decision == 1) {
 				this.hit(deck, discard);
-
+				printHand();
+				
 				if(this.getHand().calculatedValue() > 21){
 					System.out.println("BUST!");
 					this.loseBet();
 					return;
 				}
+				
 				else {
 					this.makeDecision(deck, discard);
 				}
-			} else if (decision == 3) {
+			}	
+
+			  else if (decision == 3) {
 				doubleDown(deck, discard);
-			} else if(decision == 4) {
+			 } 
+			else if(decision == 4) {
 				splitHand(this.getHand(), deck, discard);
 			 } else {
 				System.out.println("You stand.");
 			}
+
+			
 		}
 	}
+	
 
 	private void doubleDown(deckOfCards deck, deckOfCards discard) {
 		this.chips -= this.bet;
@@ -84,6 +100,8 @@ public class Player extends Person{
 		this.hitSplit(deck, discard); // Adds a new card to the split hand.  
 		printHand();
 		printSplitHand();
+		this.chips -= this.bet;
+		this.bet *= 2;
 		makeDecision(deck, discard);
 		
 		
