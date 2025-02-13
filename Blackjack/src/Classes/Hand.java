@@ -6,38 +6,16 @@ public class Hand {
 
 	private ArrayList<Card> hand;
 
-	//    private ArrayList<Card> discardedDeck = new ArrayList<>();
-
 	public Hand() {
 		this.hand = new ArrayList<Card>();
 	}
 
-	//    public ArrayList<Card> drawCard(ArrayList<Card> shuffledDeck) {
-	//
-	//        this.hand.add(shuffledDeck.get(0));
-	//        shuffledDeck.remove(shuffledDeck.get(0));
-	//
-	//        return this.hand;
-	//
-	//    }
-	//
-	//    public ArrayList<Card> discardHand() {
-	//
-	//        int handSize = hand.size();
-	//
-	//        for (int i = 0; i < handSize; i++){
-	//
-	//            this.discardedDeck.add(hand.get(i));
-	//            this.hand.remove(i);
-	//
-	//        }
-	//        
-	//        return discardedDeck;
-
-	//    }
-
 	public ArrayList<Card> getHand() {
 		return this.hand;
+	}
+
+	public int getHandSize() {
+		return hand.size();
 	}
 
 	public Card getCard(int index) {
@@ -49,7 +27,6 @@ public class Hand {
 	}
 
 	public int calculatedValue() {
-
 		int handSize = this.hand.size();
 		int value = 0;
 		int aces = 0;
@@ -62,12 +39,11 @@ public class Hand {
 			}
 		}
 
-		if(value > 21 && aces > 1) {
-			while(aces > 1 && value > 21) {
-				aces--;
-				value -= 10;
-			}
+		while(value > 21 && aces > 0) {
+			aces--;
+			value -= 10;
 		}
+
 		return value;
 	}
 
@@ -90,27 +66,5 @@ public class Hand {
 			}
 		}
 		return result;
-	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 }
