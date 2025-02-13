@@ -1,1 +1,2 @@
-Meeting held on Jan 28 at 4pm to discuss iteration 0
+Meeting held on Jan 20 at 4pm to discuss iteration 0.
+Meeting held on Jan 24 at 2pm to discuss how we will be implementing the user stories.
