@@ -1,7 +1,5 @@
 package Classes;
 
-import java.util.Scanner;
-
 public class Player extends Person{
 
 	private int chips;
@@ -11,52 +9,6 @@ public class Player extends Person{
 		super.setName("PLAYER");
 		this.chips = startingChips;
 		this.bet = 0;
-	}
-
-	Scanner input = new Scanner(System.in);
-
-	public void makeDecision(deckOfCards deck, deckOfCards discard) {
-		boolean getNum = true;
-		int decision = 0;
-
-		while(getNum){
-			try{
-				System.out.println("Would you like to (1)hit or (2)stand or (3)double down");
-				decision = input.nextInt();
-				getNum = false;
-			}
-			catch(Exception e){
-				System.out.println("Invalid");
-				input.next();
-			}
-			if (decision == 1) {
-				this.hit(deck, discard);
-
-				if(this.getHand().calculatedValue() > 21){
-					System.out.println("BUST!");
-					this.loseBet();
-					return;
-				}
-				else {
-					this.makeDecision(deck, discard);
-				}
-			} else if (decision == 3) {
-				doubleDown(deck, discard);
-			} else {
-				System.out.println("You stand.");
-			}
-		}
-	}
-
-	private void doubleDown(deckOfCards deck, deckOfCards discard) {
-		this.chips -= this.bet;
-		this.bet *= 2;
-		this.hit(deck, discard);
-		if(this.getHand().calculatedValue() > 21){
-			System.out.println("BUST!");
-			this.loseBet();
-			return;
-		}
 	}
 
 	public int getChips() {
@@ -95,6 +47,26 @@ public class Player extends Person{
 		this.chips += (this.bet / 2);
 		this.resetBet();
 	}
+	
+	public int getBet() {
+		return this.bet;
+	}
+	
+	public void insuranceBet() {
+		this.chips -= this.bet;
+		this.bet = this.bet * 2;
+	}
+	
+	public void loseInsurance() {
+		this.bet = this.bet / 2;	
+	}
+	
+	public void winInsurance() {
+		this.chips += (this.bet * 3);
+	}
+	
+	public void doubleDown() {
+		this.chips -= this.bet;
+		this.bet = this.bet * 2;
+	}
 }
-
-
