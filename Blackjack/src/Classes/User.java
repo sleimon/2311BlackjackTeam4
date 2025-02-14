@@ -1,5 +1,6 @@
 package Classes;
 
+// this class is to store the user information
 public class User {
     private String username;
     private String password;
