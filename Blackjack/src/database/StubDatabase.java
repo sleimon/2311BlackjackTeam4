@@ -5,6 +5,9 @@ import java.util.List;
 
 import Classes.User;
 
+// We are using this class to store user data i.e., username, 
+// password, wins and chips
+
 public class StubDatabase {
     private static final List<User> users = new ArrayList<>();
 
@@ -22,11 +25,13 @@ public class StubDatabase {
         }
         return null;
     }
-
+// add new user
     public static void addUser(User user) {
-        users.add(user);
+        if (getUser(user.getUsername()) == null) { // Prevent duplicates
+            users.add(user);
     }
-
+    }
+    // update details
     public static void updateUser(User user) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername().equals(user.getUsername())) {
