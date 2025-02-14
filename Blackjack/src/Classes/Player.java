@@ -1,7 +1,5 @@
 package Classes;
 
-import java.util.Scanner;
-
 public class Player extends Person{
 
 	private int chips;
@@ -11,121 +9,6 @@ public class Player extends Person{
 		super.setName("PLAYER");
 		this.chips = startingChips;
 		this.bet = 0;
-	}
-
-	Scanner input = new Scanner(System.in);
-
-	public void makeDecision(deckOfCards deck, deckOfCards discard) {
-		boolean getNum = true;
-		int decision = 0;
-		int x = 0;
-		while(getNum){
-			try{
-
-				if(this.getHand().getCard(0).getRank() == this.getHand().getCard(1).getRank() && x == 0){
-
-					System.out.println("Would you like to (1)hit or (2)stand or (3)double down or would you like to (4)split your hand.  ");
-					decision = input.nextInt();
-					getNum = false;
-					x++;
-				}
-				else{
-					System.out.println("Would you like to (1)hit or (2)stand or (3)double down");
-					decision = input.nextInt();
-					getNum = false;
-
-					if(getSplitHand().getCard(0).getValue() > 0) {
-
-						System.out.println("Would you like to (1)hit or (2)stand or (3)double down on your split hand? ");
-						decision = input.nextInt();
-
-
-					}
-				}
-
-			}
-			catch(Exception e){
-				System.out.println("Invalid");
-				input.next();
-			}
-			if (decision == 1) {
-				this.hit(deck, discard);
-				printHand();
-				
-				if(this.getHand().calculatedValue() > 21){
-					System.out.println("BUST!");
-					this.loseBet();
-					return;
-				}
-				
-				else {
-					this.makeDecision(deck, discard);
-				}
-			}	
-
-			  else if (decision == 3) {
-				doubleDown(deck, discard);
-			 } 
-			else if(decision == 4) {
-				splitHand(this.getHand(), deck, discard);
-			 } else {
-				System.out.println("You stand.");
-			}
-
-			
-		}
-	}
-	
-	private void doubleDown(deckOfCards deck, deckOfCards discard) {
-		this.chips -= this.bet;
-		this.bet *= 2;
-		this.hit(deck, discard);
-		if(this.getHand().calculatedValue() > 21){
-			System.out.println("BUST!");
-			this.loseBet();
-			return;
-		}
-	}
-
-	private void splitHand(Hand hand, deckOfCards deck, deckOfCards discard){
-
-		if(this.chips < this.bet) {
-
-			System.out.println("You don't have enough chips to split!");
-			return;
-
-		}
-
-		Card copyCard = this.getHand().getCard(1);
-		Hand newHand = new Hand(); 
-		newHand.getHand().add(copyCard); // Stores 1 half of the split hand.
-		setSplitHand(newHand); // Sets the split hand to have the copied card as it's only card. 
-
-		hand.getHand().remove(1); // Removes the card from the original hand.  
-
-		this.chips -= this.bet; 
-
-		// The original hand should now store 1 card, and the new hand should store the other card from the orignal hand.
-		this.hit(deck, discard); // Adds a new card to the original hand.  
-		this.hitSplit(deck, discard); // Adds a new card to the split hand.
-
-		printHand();
-		printSplitHand();
-		
-
-		if(this.getHand().getCard(0).getRank().equals("Ace")){
-
-			System.out.println("Splitting Aces: 1 card drawn for each hand.  ");
-
-		}
-
-		System.out.println("Playing the first hand");
-		makeDecision(deck, discard);
-
-		System.out.println("Playing the seond hand");
-		makeDecision(deck, discard);
-		
-		
 	}
 
 	public int getChips() {
@@ -164,6 +47,26 @@ public class Player extends Person{
 		this.chips += (this.bet / 2);
 		this.resetBet();
 	}
+	
+	public int getBet() {
+		return this.bet;
+	}
+	
+	public void insuranceBet() {
+		this.chips -= this.bet;
+		this.bet = this.bet * 2;
+	}
+	
+	public void loseInsurance() {
+		this.bet = this.bet / 2;	
+	}
+	
+	public void winInsurance() {
+		this.chips += (this.bet * 3);
+	}
+	
+	public void doubleDown() {
+		this.chips -= this.bet;
+		this.bet = this.bet * 2;
+	}
 }
-
-

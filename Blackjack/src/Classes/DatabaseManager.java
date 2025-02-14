@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseManager {
-    private static final String URL = "jdbc:sqlite:blackjack.db";
+	private static final String URL = "jdbc:sqlite:C:/Users/Roopkiran Dhillon/Downloads/blackjackdb.sqlite";
 
     public static void initializeDatabase() {// creating the table
         try (Connection conn = DriverManager.getConnection(URL);
@@ -20,7 +20,7 @@ public class DatabaseManager {
                     "chip_count INTEGER DEFAULT 1000);";
 
             stmt.execute(createTableSQL);
-            System.out.println("Database initialized successfully. Table users created");
+            System.out.println("Database initialized successfully. Table accounts created");
 
         } catch (SQLException e) {
             e.printStackTrace();
