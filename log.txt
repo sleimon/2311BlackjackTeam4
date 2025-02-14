@@ -158,6 +158,7 @@ February 14th
 	- Sleimon creates the wiki (2 hours)
 	- Sleimon refines the architecture sketch (4 hours)
 	- Roop finishes the stub database (6 hours)
+	- George writes unit tests (5 hours of work)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
