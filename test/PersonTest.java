@@ -29,7 +29,18 @@ class PersonTest {
         string expected = "";
         string actual = person.getName();
 
-        assertEquals(expected, actual, "Name should be the default value of a string which is nothing.  ")
+        assertEquals(expected, actual, "Name should be the default value of a string which is nothing.  ");
+
+    }
+
+    @Test 
+    void setNameTest() {
+
+        string expected = "Jeff";
+        person.setName("Jeff");
+        String actual = person.getName();
+        
+        assertEquals(expected, actual, "This name should set to Jeff.  ");
 
     }
 
