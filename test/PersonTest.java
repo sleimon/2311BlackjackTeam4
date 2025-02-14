@@ -1,6 +1,8 @@
 package Classes;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.beans.Transient;
 import java.io.ByteArrayInputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,18 @@ class PersonTest {
         discard = new deckOfCards();
 
     }
+
+    @Test 
+    void getNameTest() {
+
+        string expected = "";
+        string actual = person.getName();
+
+        assertEquals(expected, actual, "Name should be the default value of a string which is nothing.  ")
+
+    }
+
+
 
    
 }
