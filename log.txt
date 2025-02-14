@@ -116,7 +116,7 @@ February 5th
 	- Arya and Roop work the database (5 hours of work time)
 
 February 6th
-	- Arya and Roop work on and finish the stub database (6 hours of work time)
+	- Arya and Roop work on the stub database (6 hours of work time)
 
 Meeting on February 7th (1 hour)
 	- Just a meeting to see where everyone is
@@ -136,10 +136,12 @@ February 10th
 	- Sleimon works on GUI in Java Swing instead of JavaFX
 	- Sleimon finishes the GUI for the table, cards and basic hit and stand features (12 hours of work time)
 	- George and Mark meet to discuss their code and work together (3 hours of work time)
+	- Roop works on the stub database (2 hours)
 
 February 11th
 	- Sleimon finishes the GUI for the Betting features (6 hours of work time)
 	- Sleimon bug fixes the current code (6 hours of work time)
+	- Roop works on the stub database (2 hours)
 
 February 12th
 	- Sleimon finishes the GUI for the Surrender, Double Down and Insurance features (8 hours of work time)
@@ -149,32 +151,36 @@ February 13th
 	- Sleimon updates log (3 hours)
 	- Sleimon updates ITR0 document (2 hours)
 	- Sleimon creates some of unit tests (3 hours)
+	- Roop works on the stub database (1 hour)
 
 February 14th
-	- Whole team writes unit tests (12 hours of work)
+	- Sleimon writes unit tests (9 hours of work)
 	- Sleimon creates the wiki (2 hours)
 	- Sleimon refines the architecture sketch (4 hours)
+	- Roop finishes the stub database (6 hours)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Total Meeting Time: 36 hours
 
 Sleimon's Development Tasks:
-	- Assigning weekly tasks to the team                                      Time allocated: 3 hours a week          Time spent: 3 hours a week
-	- Designed the program architecture                                       Time allocated: A week                  Time spent: 4 days
-	- Set up the repository and help everyone else set up their GitHub        Time allocated: 5-6 hours               Time spent: 4 hours
-	- Implementing the Game class                                             Time allocated: a day                   Time spent: a day
-	- Implementing the Main class                                             Time allocated: 30 min                  Time spent: 10 min
-	- Implementing the full GUI so far                                        Time allocated: a week                  Time spent: 5 days
-	- Refactoring everyone's code                                             Time allocated: a day                   Time spent: a day
-	- Bug fixing the project                                                  Time allocated: a day                   Time spent: a day
-	- Filling out the log                                                     Time allocated: 4 hours                 Time spent: 5 hours
-	- Updating ITR0                                                           Time allocated: 2 hours                 Time spent: 2 hours
-	- Writing unit tests                                                      Time allocated: a day                   Time spent: a day
+	- Assigning weekly tasks to the team                                      Time allocated: 3 hours a week           Time spent: 3 hours a week
+	- Designed the program architecture                                       Time allocated: A week                   Time spent: 4 days
+	- Set up the repository and help everyone else set up their GitHub        Time allocated: 5-6 hours                Time spent: 4 hours
+	- Implementing the Game class                                             Time allocated: a day                    Time spent: a day
+	- Implementing the Main class                                             Time allocated: 30 min                   Time spent: 10 min
+	- Implementing the full GUI so far                                        Time allocated: a week                   Time spent: 5 days
+	- Refactoring everyone's code                                             Time allocated: a day                    Time spent: a day
+	- Bug fixing the project                                                  Time allocated: a day                    Time spent: a day
+	- Filling out the log                                                     Time allocated: 4 hours                  Time spent: 5 hours
+	- Updating ITR0                                                           Time allocated: 2 hours                  Time spent: 2 hours
+	- Creating the architecture sketch					  Time allocated: 4 hours                  Time spent: 5 hours
+	- Creating the wiki							  Time allocated: 2 hours	       	   Time spent: 2 hours
+	- Writing unit tests                                                      Time allocated: a day                    Time spent: a day
 	
 Arya's Development Tasks:
 	- Researching the database implementation                                 Time allocated: a week                   Time spent: week
-	- implementing the database                                               Time allocated: a week                   Time spent: a week
+	- implementing the database                                               Time allocated: two weeks                Time spent: still ongoing
 	- Helping with the GUI                                                    Time allocated: 3 hours                  Time spent: 3 hours
 	- Implementing the account system and user authentication                 Time allocated: a week                   Time spent: still ongoing
 
@@ -197,34 +203,6 @@ Roop's Development Tasks
 	- Writing and updating ITR0                                               Time allocated: a day                    Time spent: a day
 	- Meeting with the client                                                 Time allocated: 2 hours                  Time spent: 2 hours
 	- Researching the database implementation                                 Time allocated: a week                   Time spent: a week
-	- implementing the database                                               Time allocated: a week                   Time spent: a week
 	- Implementing the account system and user authentication                 Time allocated: a week                   Time spent: still ongoing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	- implementing the database                                               Time allocated: two weeks                Time spent: still ongoing
+	- implementing the stub database					  Time allocated: a week		   Time spent: a week
