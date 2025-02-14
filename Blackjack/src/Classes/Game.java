@@ -1,4 +1,5 @@
 package Classes;
+import database.StubDatabase;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,6 +8,29 @@ import java.awt.event.ActionListener;
 
 
 public class Game extends JPanel {
+// adding this part for the stub database
+	private User currentUser;  
+
+    //  Constructor to load user data from StubDatabase
+    public Game(String username) {
+        this.currentUser = StubDatabase.getUser(username);
+
+        if (currentUser == null) {
+            // If the user is not found, create a new one
+            this.currentUser = new User(username, "defaultPass", 1000, 0);
+            StubDatabase.addUser(currentUser);
+        }
+
+        System.out.println("Loaded User: " + currentUser);
+    }
+
+    // Update user's chips after playing a round
+    public void updateChips(int amount) {
+        currentUser.setChips(currentUser.getChips() + amount);
+        StubDatabase.updateUser(currentUser);
+        System.out.println("Updated User: " + currentUser);
+    }
+// finished 
 
 	private int wins;
 	private int losses;
