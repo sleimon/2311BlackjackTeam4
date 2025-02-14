@@ -6,11 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
+@SuppressWarnings("serial")
 public class Game extends JPanel {
 
 	private int wins;
 	private int losses;
 	private int pushes;
+	@SuppressWarnings("unused")
 	private int roundsPlayed;
 	private int startingChips;
 
@@ -26,13 +28,13 @@ public class Game extends JPanel {
 	private JButton insurance;
 	private JButton doubleDown;
 	private JButton nextRound;
-	private JButton menu;
 	private JButton neither;
 	private JButton betAll;
 	private JButton bet50;
 	private JButton bet100;
 	private JButton restart;
 	private JButton exit;
+	//private JButton menu;
 
 	private JLabel score;
 	private JLabel playerHandValue;
@@ -45,7 +47,7 @@ public class Game extends JPanel {
 	
 	public static final int CARD_WIDTH = 100;
 	public static final int CARD_HEIGHT = 145;
-	public static final String IMAGE_DIR="src/cards/";
+	public static final String IMAGE_DIR = "src/cards/";
 	
 
 	public Game(int startingChips) {
@@ -71,7 +73,7 @@ public class Game extends JPanel {
 	
 	public void paintComponent(Graphics g) {
 	    super.paintComponent(g);
-	    g.setColor(Color.decode("#18320e"));
+	    g.setColor(Color.decode("#427643"));
 	    g.fillRect(0,0,1000,1000);
 	}
 
@@ -139,8 +141,8 @@ public class Game extends JPanel {
 	    //card images
 	    for (int i = 0; i < dealerCards.length; i++) {
 
-	        dealerCards[i] = new JLabel(new ImageIcon(new ImageIcon(IMAGE_DIR+"CardDown.png").getImage().getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_SMOOTH)));
-	        playerCards[i] = new JLabel(new ImageIcon(new ImageIcon(IMAGE_DIR+"CardDown.png").getImage().getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_SMOOTH)));
+	        dealerCards[i] = new JLabel(new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage().getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_SMOOTH)));
+	        playerCards[i] = new JLabel(new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage().getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_SMOOTH)));
 
 	        dealerCards[i].setBounds(cardX, cardY, CARD_WIDTH, CARD_HEIGHT);
 	        playerCards[i].setBounds(cardX, cardY+250, CARD_WIDTH, CARD_HEIGHT);
@@ -510,9 +512,9 @@ public class Game extends JPanel {
 	//puts the dealt cards face down during the betting phase
 	public void faceDown() {
 		for(int i = 0; i < 2; i++) {
-			dealerCards[i].setIcon(new ImageIcon(new ImageIcon(IMAGE_DIR+"CardDown.png").getImage()
+			dealerCards[i].setIcon(new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage()
 					.getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_DEFAULT)));
-			playerCards[i].setIcon(new ImageIcon(new ImageIcon(IMAGE_DIR+"CardDown.png").getImage()
+			playerCards[i].setIcon(new ImageIcon(new ImageIcon(IMAGE_DIR +"CardDown.png").getImage()
 					.getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_DEFAULT)));
 		}
 		dealerHandValue.setText("Dealer's Hand Value: ?");
@@ -534,7 +536,7 @@ public class Game extends JPanel {
         //reveal cards
         dealer.printHand(dealerCards);
         player.printHand(playerCards);
-        dealerCards[1].setIcon(new ImageIcon(new ImageIcon(IMAGE_DIR+"CardDown.png").getImage()
+        dealerCards[1].setIcon(new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage()
 				.getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_DEFAULT)));
         
         //reveal hand values
