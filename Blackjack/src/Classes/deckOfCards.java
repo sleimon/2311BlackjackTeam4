@@ -39,10 +39,6 @@ public class deckOfCards {
 		return false;
 	}
 
-	public void addCard(Card card) {
-		deck.add(card);
-	}
-
 	public void addCards(ArrayList<Card> cards) {
 		deck.addAll(cards);
 	}
@@ -65,16 +61,13 @@ public class deckOfCards {
 		discard.emptyDeck();
 	}
 
-
 	public Card takeCard() {
 		Card card = new Card(deck.get(0));
 		this.deck.remove(0);
 		return card;
 	}
 
-
 	public int cardsLeft() {
 		return this.deck.size();
 	}
-
 }
