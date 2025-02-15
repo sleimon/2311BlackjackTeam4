@@ -64,4 +64,14 @@ class PlayerTest {
 		assertEquals(expected, actual, "The player should have 600 chips after winning this bet.  ");
 	}
 
+	@Test
+	void instant21Test(){
+
+		player.placeBet(100);
+		player.instant21();
+		int expected = 750;
+		int actual = player.getChips();
+
+		assertEquals(expected, actual, "The player should have 750 chips after an instant 21, due to the 2.5 times multiplier.   ");
+	}
 }
