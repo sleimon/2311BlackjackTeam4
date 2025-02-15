@@ -4,85 +4,66 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.beans.Transient;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import Classes.Card;
+import Classes.Hand;
 import Classes.Person;
+import Classes.deckOfCards;
 
 class PersonTest {
-
-	private Person person;
-    private deckOfCards deck;
-    private deckOfCards discard;
-
+	
+	//Initialize a Person object for testing
+	Person person;
+	
+	//Create a Person object before each test
     @BeforeEach
-    void init() {
-
-        person = new person();
-        deck = new deckOfCards();
-        discard = new deckOfCards();
-
+    void beforeEach() {
+        person = new Person();
     }
-
+    
+    //Test the getName method
     @Test 
-    void getNameTest() {
-
-        string expected = "";
-        string actual = person.getName();
-
-        assertEquals(expected, actual, "Name should be the default value of a string which is nothing.  ");
-
+    void testGetName() {
+        String expected = "";
+        String actual = person.getName();
+        assertEquals(expected, actual, "Name should be the default value of a String which is the empty String");
     }
-
+    
+    //Tests the setName method
     @Test 
-    void setNameTest() {
-
-        string expected = "Jeff";
+    void testSetName() {
+        String expected = "Jeff";
         person.setName("Jeff");
         String actual = person.getName();
-        
-        assertEquals(expected, actual, "This name should set to Jeff.  ");
+        assertEquals(expected, actual);
 
     }
-
-	@Test
-	void getHandTest() {
-
-		assertNotNull(person.getHand(), "If the hand is null, then there are no cards in the hand.  ");
+    
+    //Tests the setHand and getHand methods
+    @Test
+	void testSetHandAndGetHand() {
+    	Hand hand = new Hand();
+    	Card card1 = new Card("King", "Spades", 10);
+    	Card card2 = new Card("Ace", "Hearts", 11);
+    	hand.addCard(card1);
+    	hand.addCard(card2);
+    	person.setHand(hand);
+    	boolean result = true;
+		for(int i = 0; i < person.getHand().getHandSize(); i++) {
+			 if(!(person.getHand().getCard(i).equals(hand.getCard(i)))) {
+				 result = false;
+			 }
+		 }
+		assertTrue(result);
     }
-
-	@Test
-	void setHandTest() {
-
-		Hand hand  = new Hand();
-		newHand.takeCardFromDeck();
-		person.setHand(newHand);
-		int expected = 1;
-		int actual = person.getHand().size();
-
-		assertEquals(expected, actual, "The hand should contain 1 card.  ");
-
-    }
-
-	@Test
-	void hitTest() {
-		int ogDeckSize = deck.size;
-		person.hit(deck, discard);
-		int newDeckSize = deck.size();
-
-
-		int expected = ogDeckSize - 1;
-		int actual = newDeckSize;
-		assertEquals(expected, actual, "Size of the deck should've decreased by 1.   ");
-
-    }
-
+	
+	//Tests the has21 method
 	@Test 
-	void has21Test() {
-
-		person.getHand().add(new Card("King", "Spades", 10));
-		person.getHand().add(new Card("Ace", "Hearts", 11));
-
-		assertTrue(person.has21(), "The payer should have 21.  ");
+	void testHas21() {
+		person.getHand().addCard(new Card("King", "Spades", 10));
+		person.getHand().addCard(new Card("Ace", "Hearts", 11));
+		assertTrue(person.has21(), "The player should have 21");
     }
-
 }

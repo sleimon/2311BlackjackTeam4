@@ -142,8 +142,8 @@ class HandTest {
 		hand1.addCard(card1);
 		hand1.addCard(card2);
 		boolean result = true;
-		for(int i = 0; i < discard.getCards().size(); i++) {
-			 if(!(discard.getCards().get(i).equals(hand1.getCard(i)))) {
+		for(int i = 0; i < discard.getDeck().size(); i++) {
+			 if(!(discard.getDeck().get(i).equals(hand1.getCard(i)))) {
 				 result = false;
 			 }
 		 }

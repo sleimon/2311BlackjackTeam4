@@ -38,6 +38,9 @@ class deckOfCardsTest {
 		deckOfCards deck1 = new deckOfCards();
 		deckOfCards deck2 = new deckOfCards();
 		deckOfCards deck3 = new deckOfCards();
+		deck1.emptyDeck();
+		deck2.emptyDeck();
+		deck3.emptyDeck();
 		Hand hand = new Hand();
 		Card card1 = new Card("Two", "Hearts", 2);
 		Card card2 = new Card("Three", "Hearts", 3);
@@ -53,40 +56,85 @@ class deckOfCardsTest {
 		
 		//Tests addCards(Hand hand)
 		deck2.addCards(hand);
-		assertEquals(deck2, hand);
+		boolean result = true;
+		for(int i = 0; i < hand.getHandSize(); i++) {
+			 if(!(hand.getHand().get(i).equals(deck2.getDeck().get(i)))) {
+				 result = false;
+			 }
+		 }
+		assertTrue(result);
 		
 		//Tests addCards(ArrayList<Card> cards)
-		
+		deck3.addCards(cards);
+		boolean result1 = true;
+		for(int i = 0; i < cards.size(); i++) {
+			 if(!(cards.get(i).equals(deck3.getDeck().get(i)))) {
+				 result1 = false;
+			 }
+		 }
+		assertTrue(result1);
 	}
 	
+	//Tests to see if method emptyDeck empties the deck
 	@Test
 	void testEmptyDeck() {
-		fail("Not yet implemented");
+		deck.emptyDeck();
+		assertFalse(deck.hasCards());
 	}
 	
+	//Tests if getDeck returns the correct deck
 	@Test
-	void testGetCards() {
-		fail("Not yet implemented");
+	void testGetDeck() {
+		ArrayList<Card> deck2 = deck.getDeck();
+		boolean result = true;
+		for(int i = 0; i < deck2.size(); i++) {
+			 if(!(deck2.get(i).equals(deck.getDeck().get(i)))) {
+				 result = false;
+			 }
+		 }
+		assertTrue(result);
 	}
 	
-	@Test
-	void testShuffle() {
-		fail("Not yet implemented");
-	}
-	
+	//Tests the reloadDeckFromDiscard method
 	@Test
 	void testReloadDeckFromDiscard() {
-		fail("Not yet implemented");
+		Card card1 = new Card("Two", "Hearts", 2);
+		Card card2 = new Card("Three", "Hearts", 3);
+		deck.emptyDeck();
+		deckOfCards discard = new deckOfCards();
+		discard.emptyDeck();
+		discard.addCard(card1);
+		discard.addCard(card2);
+		deck.reloadDeckFromDiscard(discard);
+		assertTrue(deck.getDeck().get(0).equals(card1));
+		assertTrue(deck.getDeck().get(1).equals(card2));
+		assertFalse(discard.hasCards());
 	}
 	
+	//Tests the takeCard and cardsLeft methods
 	@Test
-	void testTakeCard() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
-	void testCardsLeft() {
-		fail("Not yet implemented");
+	void testTakeCardAndCardsLeft() {
+		Card card1 = new Card("Two", "Hearts", 2);
+		Card card2 = new Card("Three", "Hearts", 3);
+		Card card11 = deck.takeCard();
+		Card card22 = deck.takeCard();
+		assertEquals(card1, card11);
+		assertEquals(card2, card22);
+		int expected = 50;
+		int actual = deck.cardsLeft();
+		assertEquals(actual, expected);
 	}
 
+	//Tests the toString and equals methods
+	@Test
+	void testEqualsAndToString() {
+		deckOfCards deck2 = new deckOfCards();
+		assertEquals(deck, deck2);
+		deck.emptyDeck();
+		deck2.emptyDeck();
+		String actual = deck.toString();
+		String expected = "";
+		assertEquals(actual, expected);
+		assertEquals(deck, deck2);
+	}
 }

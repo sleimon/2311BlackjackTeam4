@@ -56,7 +56,7 @@ public class deckOfCards {
 	}
 	
 	//Returns the deck
-	public ArrayList<Card> getCards(){
+	public ArrayList<Card> getDeck(){
 		return this.deck;
 	}
 	
@@ -67,7 +67,7 @@ public class deckOfCards {
 	
 	//Refills this deck with the contents from another deck, shuffles it and empties the given deck
 	public void reloadDeckFromDiscard(deckOfCards discard) {
-		this.addCards(discard.getCards());
+		this.addCards(discard.getDeck());
 		this.shuffle();
 		discard.emptyDeck();
 	}
@@ -81,6 +81,16 @@ public class deckOfCards {
 	
 	//Returns how many cards are left in the deck
 	public int cardsLeft() {
+		return this.deck.size();
+	}
+
+	//Adds a card to the deck. Written for testing purposes only
+	public void addCard(Card card) {
+		this.deck.add(card);
+	}
+
+	//Returns the size of the Deck. Written for testing purposes only
+	public int getDeckSize() {
 		return this.deck.size();
 	}
 

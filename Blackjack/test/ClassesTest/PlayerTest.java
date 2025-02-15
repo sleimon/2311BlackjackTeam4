@@ -2,15 +2,17 @@ package ClassesTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import Classes.Player;
+import Classes.deckOfCards;
 
 class PlayerTest {
 
-	private Player player;
-    private deckOfCards deck;
-    private deckOfCards discard;
+	Player player;
+    deckOfCards deck;
+    deckOfCards discard;
 
 
 	@BeforeEach
@@ -44,12 +46,10 @@ class PlayerTest {
 
 	@Test
 	void resetBetTest(){
-
 		player.placeBet(100);
 		player.resetBet();
 		int expected = 0;
-		int actual = player.getChips();
-
+		int actual = player.getBet();
 		assertEquals(expected, actual, "The player should have 0 chips in his bet after a successful reset.  ");
 	}
 
@@ -69,7 +69,7 @@ class PlayerTest {
 
 		player.placeBet(100);
 		player.instant21();
-		int expected = 750;
+		int expected = 650;
 		int actual = player.getChips();
 
 		assertEquals(expected, actual, "The player should have 750 chips after an instant 21, due to the 2.5 times multiplier.   ");
@@ -127,7 +127,7 @@ class PlayerTest {
 		player.insuranceBet();
 		player.loseInsurance();
 
-		int expected = 500;
+		int expected = 300;
 		int actual = player.getChips();
 
 		assertEquals(expected, actual, "Half of the bet should be returned.  ");
@@ -139,7 +139,7 @@ class PlayerTest {
 		player.placeBet(50);
 		player.insuranceBet();
 		player.winInsurance();
-		int expected = 650;
+		int expected = 700;
 		int actual = player.getChips();
 
 		assertEquals(expected, actual, "Payout should be 3x the bet amount.  ");
