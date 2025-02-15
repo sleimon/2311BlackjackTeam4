@@ -6,6 +6,8 @@ import java.beans.Transient;
 
 import org.junit.jupiter.api.Test;
 
+import Classes.Person;
+
 class PersonTest {
 
 	private Person person;
@@ -47,6 +49,20 @@ class PersonTest {
 	void getHandTest() {
 
 		assertNotNull(person.getHand(), "If the hand is null, then there are no cards in the hand.  ");
+    }
+
+	@Test 
+
+	void setHandTest() {
+
+		Hand hand  = new Hand();
+		newHand.takeCardFromDeck();
+		person.setHand(newHand);
+		int expected = 1;
+		int actual = person.getHand().size();
+
+		assertEquals(expected, actual, "The hand should contain 1 card.  ");
+
     }
 
 }
