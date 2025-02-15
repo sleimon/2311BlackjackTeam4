@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 
 @SuppressWarnings("serial")
@@ -51,7 +52,7 @@ public class Game extends JPanel {
 	
 	public static final int CARD_WIDTH = 100;
 	public static final int CARD_HEIGHT = 145;
-	public static final String IMAGE_DIR = "src/cards/";
+	public static final String IMAGE_DIR = "bin/cards/";
 	
 
 	//  Constructor to load user data from StubDatabase
@@ -168,6 +169,7 @@ public class Game extends JPanel {
 
 	        dealerCards[i] = new JLabel(new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage().getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_SMOOTH)));
 	        playerCards[i] = new JLabel(new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage().getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_SMOOTH)));
+
 
 	        dealerCards[i].setBounds(cardX, cardY, CARD_WIDTH, CARD_HEIGHT);
 	        playerCards[i].setBounds(cardX, cardY+250, CARD_WIDTH, CARD_HEIGHT);

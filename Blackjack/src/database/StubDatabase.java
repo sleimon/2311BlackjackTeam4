@@ -5,9 +5,6 @@ import java.util.List;
 
 import Classes.User;
 
-// We are using this class to store user data i.e., username, 
-// password, wins and chips
-
 public class StubDatabase {
     private static final List<User> users = new ArrayList<>();
     private static final String FILE_PATH = "user_data.txt"; // File to store user data
@@ -28,7 +25,7 @@ public class StubDatabase {
 
     // Adding a new user to the stub database (if not already existing)
     public static void addUser(User user) {
-        if (getUser(user.getUsername()) == null) { // thsi is to Prevent duplicates
+        if (getUser(user.getUsername()) == null) { // Prevent duplicates
             users.add(user);
             saveUsersToFile(); // Save changes
         }
@@ -56,22 +53,23 @@ public class StubDatabase {
     private static void saveUsersToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (User user : users) {
-                writer.write(user.getUsername() + "," +                            user.getPassword() + "," +
-                             user.getChips() + "," +
-                             user.getWins() + "," +
-                             user.getLosses() + "," +
-                             user.getPushes());
+                writer.write(user.getUsername() + "," +
+                        user.getPassword() + "," +  // Save the password securely (plain text for now)
+                        user.getChips() + "," +
+                        user.getWins() + "," +
+                        user.getLosses() + "," +
+                        user.getPushes());
                 writer.newLine();
             }
         } catch (IOException e) {
-            System.out.println("There is an error in  saving user data: " + e.getMessage());
+            System.out.println("There is an error in saving user data: " + e.getMessage());
         }
     }
 
     // Loading user data from a file
     private static void loadUsersFromFile() {
         File file = new File(FILE_PATH);
-        if (!file.exists()) return; // if there is No file that means no saved data
+        if (!file.exists()) return; // If there's no file, return early
 
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
@@ -89,13 +87,20 @@ public class StubDatabase {
                 }
             }
         } catch (IOException e) {
-            System.out.println("There is an error in  saving user data:" + e.getMessage());
+            System.out.println("There is an error in loading user data: " + e.getMessage());
         }
+    }
+
+    // Validate password for the given username
+    public static boolean validatePassword(String username, String password) {
+        User user = getUser(username);
+        return user != null && user.getPassword().equals(password);
     }
 }
 
+
     /*static {
-        
+
     }
 // retrieving a user by username
     public static User getUser(String username) {

@@ -1,1 +1,2 @@
-roop,defaultPass,1100,1,0,0
+arya,test,1150,2,0,0
+roop,test,1000,0,0,0
