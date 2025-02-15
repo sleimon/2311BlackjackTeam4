@@ -1,4 +1,5 @@
 package Classes;
+import database.StubDatabase;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,6 +9,9 @@ import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
 public class Game extends JPanel {
+ 
+
+    private User currentUser; //  user data from stub database
 
 	private int wins;
 	private int losses;
@@ -50,26 +54,47 @@ public class Game extends JPanel {
 	public static final String IMAGE_DIR = "src/cards/";
 	
 
-	public Game(int startingChips) {
+	//  Constructor to load user data from StubDatabase
+    public Game(String username) {
+        this.currentUser = StubDatabase.getUser(username);
+
+        if (currentUser == null) {
+            // If the user is not found, create a new one
+            this.currentUser = new User(username, "defaultPass", 1000, 0,0,0);
+            StubDatabase.addUser(currentUser);
+        }
+		// this is to initialize the player with current user's chips
+		this.player= new Player(currentUser.getChips());
+        System.out.println("Loaded User: " + currentUser);
+    
+		//Initializing rest of the game 
+		this.dealer = new Dealer();	
+		this.deck = new deckOfCards();
+		this.discarded = new deckOfCards();
+
+		this.discarded.emptyDeck();
+		this.deck.shuffle();
+		
+		setupGUI();
+		startRound();
+	}
+
+    // Update user's chips after playing a round
+    public void updateChips(int amount) {
+        currentUser.setChips(currentUser.getChips() + amount);
+        StubDatabase.updateUser(currentUser);
+        System.out.println("Updated User: " + currentUser);
+    }
+
+	/*public Game(int startingChips) {
 		
 		this.wins = 0;
 		this.losses = 0;
 		this.pushes = 0;
 		this.roundsPlayed = 0;
 		this.startingChips = startingChips;
-
-		this.dealer = new Dealer();
-		this.player = new Player(startingChips);
-
-		this.deck = new deckOfCards();
-		this.discarded = new deckOfCards();
-		this.discarded.emptyDeck();
-
-		this.deck.shuffle();
+ 		this.player = new Player(startingChips);*/
 		
-		setupGUI();
-		startRound();
-	}
 	
 	public void paintComponent(Graphics g) {
 	    super.paintComponent(g);
@@ -156,11 +181,15 @@ public class Game extends JPanel {
 	    }
 	    
 	    //JLabel setup
-	    score = new JLabel("Wins: 0   Losses: 0   Pushes: 0");
+	    score = new JLabel("Wins: " + currentUser.getWins() +
+		 "  Losses: " + currentUser.getLosses() + 
+		 "  Pushes: " + currentUser.getPushes());
+		//score = new JLabel("Wins: 0   Losses: 0   Pushes: 0");
 	    score.setBounds(450, 10, 300, 50);
 	    this.add(score);
 	    
-	    chips = new JLabel("Chips: " + player.getChips());
+		chips = new JLabel("Chips: " + currentUser.getChips());
+	    //chips = new JLabel("Chips: " + player.getChips());
 	    chips.setBounds(700, 10, 300, 50);
 	    this.add(chips);
 
@@ -415,19 +444,23 @@ public class Game extends JPanel {
 		bet100.setVisible(false);
 
 		if(dealer.has21()){
-			pushes++;
-			gameMessage.setText("Both Have 21! Push!");
+			currentUser.setPushes(currentUser.getPushes() + 1);
+			currentUser.setChips(currentUser.getChips() ); // No change in chips			gameMessage.setText("Both Have 21! Push!");
 			nextRound();
-			player.pushBet();
+			//pushes++;
+			//player.pushBet();
 		}
 		else{
 			dealer.printHand(dealerCards);
-			this.wins++;
-			player.instant21();
+			currentUser.setWins(currentUser.getWins() + 1);
 			gameMessage.setText("Instant Blackjack Win!");
-			nextRound();
-			player.instant21();
+			currentUser.setChips(currentUser.getChips() + player.getBet());
+			//this.wins++;
+			//player.instant21();
+			
 		}
+		StubDatabase.updateUser((currentUser));// stub database
+		nextRound();
 	}
 	
 	//checks if the dealer has a blackjack after the insurance or surrender phase
@@ -435,22 +468,31 @@ public class Game extends JPanel {
 		betAll.setVisible(false);
 		bet50.setVisible(false);
 		bet100.setVisible(false);
-		losses++;
+		
+		//losses++;
 		gameMessage.setText("Dealer Has 21! You Lose!");
 		revealAll();
+		currentUser.setLosses(currentUser.getLosses() + 1);
+		currentUser.setChips(currentUser.getChips() - player.getBet());
+		StubDatabase.updateUser((currentUser));// stub database
+		
 		nextRound();
-		player.loseBet();
+		//player.loseBet();
+
 	}
 	
 	//checks if the player busts during his turn
 	public void playerTurn(){
 	    if (player.getHand().calculatedValue() > 21) {
 	        gameMessage.setText("You BUST - Over 21");
-	        revealAll();
-	        losses++;
-	        nextRound();
-	        player.loseBet();
-	    }
+			currentUser.setLosses(currentUser.getLosses() + 1);
+	        currentUser.setChips(currentUser.getChips() - player.getBet()); // Deduct the bet for a bust
+			//losses++;
+			revealAll();
+			StubDatabase.updateUser((currentUser));// stub database
+	    	nextRound();
+	        //player.loseBet();
+		}
 	}
 	
 	//checks if the player hit a blackjack
@@ -458,10 +500,15 @@ public class Game extends JPanel {
 		if(player.getHand().calculatedValue() == 21){
             gameMessage.setText("You have 21!");
             revealAll();
-            wins++;
-            nextRound();
-            player.winBet();
-        }
+			currentUser.setWins(currentUser.getWins() + 1);
+			currentUser.setChips(currentUser.getChips() + player.getBet());
+            //wins++;
+           
+            //player.winBet();
+
+			StubDatabase.updateUser((currentUser));// stub database
+			nextRound();
+		}
 	}
 	
 	//dealer hits until he's above 18
@@ -477,27 +524,43 @@ public class Game extends JPanel {
 		dealerHandValue.setText("Dealer's Hand Value: " + dealer.getHand().calculatedValue());
 		if(dealer.getHand().calculatedValue()>21){
 			gameMessage.setText("Dealer busts! You Win!");
-			player.winBet();
-			wins++;
+			currentUser.setWins(currentUser.getWins() + 1);
+            currentUser.setChips(currentUser.getChips() + player.getBet() );// doubling the win
+			//player.winBet();
+			//wins++;
 		}else if(dealer.getHand().calculatedValue() > player.getHand().calculatedValue()){
 			gameMessage.setText("Dealer Higher Hand! You Lose!");
-			player.loseBet();
-			losses++;
+			currentUser.setLosses(currentUser.getLosses() + 1);
+			currentUser.setChips(currentUser.getChips() - player.getBet());
+			//player.loseBet();
+			//losses++;
 		}else if(player.getHand().calculatedValue() > dealer.getHand().calculatedValue()){
 			gameMessage.setText("Player Higher Hand! You Win!");
-			player.winBet();
-			wins++;
+			currentUser.setWins(currentUser.getWins() + 1);
+            currentUser.setChips(currentUser.getChips() + player.getBet() );
+			
+			//player.winBet();
+			//wins++;
 		}else {
 			gameMessage.setText("Equal Value Hands! Push!");
-			player.pushBet();
-			pushes++;
+			currentUser.setPushes(currentUser.getPushes() + 1);
+            currentUser.setChips(currentUser.getChips() );//returning the bet
+			//player.pushBet();
+			//pushes++;
 		}
+		//added these 2 lines to update the user data in the database
+		StubDatabase.updateUser(currentUser);
+        updateStatsDisplay();
 	}
 	
 	//updates the win loss push stats and the chip count on the gui
 	public void updateStatsDisplay() {
-	    chips.setText("Chips: " + player.getChips());
-		score.setText("Wins: " + wins + "   Losses: " + losses + "   Pushes: " + pushes);
+		chips.setText("Chips: " + currentUser.getChips());
+        score.setText("Wins: " + currentUser.getWins() + 
+		" Losses: " + currentUser.getLosses() + 
+		" Pushes: " + currentUser.getPushes());
+	    //chips.setText("Chips: " + player.getChips());
+		//score.setText("Wins: " + wins + "   Losses: " + losses + "   Pushes: " + pushes);
 	}
 	
 	//called to surrender the round
@@ -506,7 +569,11 @@ public class Game extends JPanel {
 	    gameMessage.setText("You surrendered!");
 	    dealer.printHand(dealerCards);
         dealerHandValue.setText("Dealer's Hand Value: " + dealer.getHand().calculatedValue());
-	    nextRound();
+	    //added 2 lines for the updating the losses below
+		currentUser.setLosses(currentUser.getLosses() + 1);
+		currentUser.setChips(currentUser.getChips() - player.getBet());
+        StubDatabase.updateUser(currentUser);
+		nextRound();
 	}
 
 	//puts the dealt cards face down during the betting phase
@@ -581,20 +648,37 @@ public class Game extends JPanel {
 	
 	//a restart method to restart the game anew
 	public void restart() {
-		this.wins = 0;
+		 
+		/*this.wins = 0;
 		this.losses = 0;
 		this.pushes = 0;
 		this.roundsPlayed = 0;
 
+		// Reset the GUI
+		startRound();
+		restart.setVisible(false);
+		exit.setVisible(false);
+		betAll.setVisible(true);
+		bet100.setVisible(true);
+		bet50.setVisible(true);
+	}
+
+		currentUser.setChips(1000);
+        currentUser.setWins(0);
+        currentUser.setLosses(0);
+        currentUser.setPushes(0);
+        StubDatabase.updateUser(currentUser);*/
+
 		this.dealer = new Dealer();
-		this.player = new Player(this.startingChips);
+		this.player = new Player(currentUser.getChips());
+		//this.player = new Player(this.startingChips);
 
 		this.deck = new deckOfCards();
 		this.discarded = new deckOfCards();
 		this.discarded.emptyDeck();
-
 		this.deck.shuffle();
 		
+		//reset the gui
 		startRound();
 		restart.setVisible(false);
 		exit.setVisible(false);
