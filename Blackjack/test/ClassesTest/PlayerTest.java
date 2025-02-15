@@ -96,4 +96,54 @@ class PlayerTest {
 		int actual = player.getChips();
 
 		assertEquals(expected, actual, "The player should have 500 chips after a push. ");
+	}
+
+	@Test
+	void surrenderBetTest(){
+
+		player.placeBet(100);
+		player.surrenderBet();
+		int expected = 450;
+		int actual = player.getChips();
+
+		assertEquals(expected, actual, "The player should have gotten half the chips they bet back after a surrender.  ");
+	}
+
+	@Test
+	void insuranceBetTest(){
+
+		player.placeBet(100);
+		player.insuranceBet();
+		int actual = player.getBet();
+		int expected = 200;
+
+		assertEquals(expected, actual, "With insurance, original bet should be doubled.  ");
+	}
+
+	@Test
+	void loseInsuranceTest(){
+
+		player.placeBet(100);
+		player.insuranceBet();
+		player.loseInsurance();
+
+		int expected = 500;
+		int actual = player.getChips();
+
+		assertEquals(expected, actual, "Half of the bet should be returned.  ");
+	}
+
+	@Test
+	void winInsuranceTest(){
+
+		player.placeBet(50);
+		player.insuranceBet();
+		player.winInsurance();
+		int expected = 650;
+		int actual = player.getChips();
+
+		assertEquals(expected, actual, "Payout should be 3x the bet amount.  ");
+	}
+
+
 }
