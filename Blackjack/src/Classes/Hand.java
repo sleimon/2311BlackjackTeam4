@@ -21,7 +21,7 @@ public class Hand {
 	
 	//Returns the size of the Hand
 	public int getHandSize() {
-		return hand.size();
+		return this.hand.size();
 	}
 	
 	//Returns the card in the hand at the specified index
@@ -81,11 +81,6 @@ public class Hand {
 		 return equals;	
 	}
 	
-	//Adds a card to the hand. Written for testing purposes only
-	public void addCard(Card card) {
-		this.hand.add(card);
-	}
-	
 	//Returns a String representation of the Hand object
 	public String toString() {
 		String result = "";
@@ -97,5 +92,18 @@ public class Hand {
 			}
 		}
 		return result;
+	}	
+
+	//Adds a card to the hand. Written for testing purposes only
+	public void addCard(Card card) {
+		this.hand.add(card);
+	}
+	
+	//checks if the hand has cards
+	public boolean hasCards() {
+		if(this.hand.size() > 0) {
+			return true;
+		}
+		return false;
 	}	
 }

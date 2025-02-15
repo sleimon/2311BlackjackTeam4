@@ -25,22 +25,22 @@ public class Card {
 	
 	//Get the rank of the card
 	public String getRank() {
-		return cardRank;
+		return this.cardRank;
 	}
 	
 	//Get the suit of the card
 	public String getSuit() {
-		return cardSuit;
+		return this.cardSuit;
 	}
 	
 	//Get the value the card is worth in blackjack
 	public int getValue() {
-		return cardValue;
+		return this.cardValue;
 	}
 	
 	//toString method for the card
 	public String toString() {
-		return cardRank + " of " + cardSuit + "(" + this.cardValue + ")";
+		return this.cardRank + " of " + this.cardSuit + "(" + this.cardValue + ")";
 	}
 	
 	//Overridden equals method to compare cards
@@ -53,5 +53,4 @@ public class Card {
 				 this.cardSuit == other.cardSuit &&
 				 this.cardValue == other.cardValue;
 	}
-
 }
