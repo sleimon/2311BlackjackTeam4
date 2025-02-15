@@ -42,6 +42,15 @@ class PlayerTest {
 		assertEquals(expected, actual, "The player should have 100 less chips after placing a 100 chip bet.  ");
 	}
 
+	@Test
+	void resetBetTest(){
 
+		player.placeBet(100);
+		player.resetBet();
+		int expected = 0;
+		int actual = player.getChips();
+
+		assertEquals(expected, actual, "The player should have 0 chips in his bet after a successful reset.  ");
+	}
 
 }
