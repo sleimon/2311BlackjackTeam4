@@ -84,6 +84,16 @@ public class deckOfCards {
 		return this.deck.size();
 	}
 
+	//Adds a card to the deck. Written for testing purposes only
+	public void addCard(Card card) {
+		this.deck.add(card);
+	}
+
+	//Returns the size of the Deck. Written for testing purposes only
+	public int getDeckSize() {
+		return this.deck.size();
+	}
+
 	//Overridden equals method for the deckOfCards class
 	public boolean equals(Object obj) {
 		if(this == obj) { return true; }

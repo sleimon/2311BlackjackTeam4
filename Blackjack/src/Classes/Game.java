@@ -7,17 +7,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
+
 @SuppressWarnings("serial")
 public class Game extends JPanel {
  
 
     private User currentUser; //  user data from stub database
 
+	@SuppressWarnings("unused")
 	private int wins;
+	@SuppressWarnings("unused")
 	private int losses;
+	@SuppressWarnings("unused")
 	private int pushes;
 	@SuppressWarnings("unused")
 	private int roundsPlayed;
+	@SuppressWarnings("unused")
 	private int startingChips;
 
 	private deckOfCards deck;

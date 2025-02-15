@@ -157,7 +157,7 @@ February 14th
 	- Sleimon writes unit tests (9 hours of work)
 	- Sleimon creates the wiki (2 hours)
 	- Sleimon refines the architecture sketch (4 hours)
-	- Roop and Arya finish the stub database (6 hours)
+	- Roop finishes the stub database (6 hours)
 	- George writes unit tests (5 hours of work)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -184,7 +184,6 @@ Arya's Development Tasks:
 	- implementing the database                                               Time allocated: two weeks                Time spent: still ongoing
 	- Helping with the GUI                                                    Time allocated: 3 hours                  Time spent: 3 hours
 	- Implementing the account system and user authentication                 Time allocated: a week                   Time spent: still ongoing
-	- implementing the stub database					  Time allocated: a week		   Time spent: a week
 
 George's Development Tasks:
 	- Implementing the Card class                                             Time allocated: a day                    Time spent: a day

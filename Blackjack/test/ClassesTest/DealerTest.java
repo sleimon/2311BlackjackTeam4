@@ -10,7 +10,7 @@ import Classes.Dealer;
 class DealerTest {
 	
 	//Initializes a Dealer
-	private Dealer dealer;
+	Dealer dealer;
 	
 	//Before each test, create a new Dealer
 	@BeforeEach
@@ -20,7 +20,7 @@ class DealerTest {
 	
 	//Tests the constructor to see if it sets the correct name
 	@Test
-	void dealerTest() {
+	void testDealer() {
 		String expected = "DEALER";
 		String actual = dealer.getName();
 
