@@ -95,9 +95,7 @@ public class StubDatabase {
 }
 
     /*static {
-        // Preload some dummy users
-        users.add(new User("player1", "password123", 1000, 5,3,2));
-        users.add(new User("player2", "password234", 500, 2, 4,1));
+        
     }
 // retrieving a user by username
     public static User getUser(String username) {
