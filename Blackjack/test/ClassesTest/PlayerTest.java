@@ -145,5 +145,15 @@ class PlayerTest {
 		assertEquals(expected, actual, "Payout should be 3x the bet amount.  ");
 	}
 
+	@Test
+	void doubleDownTest(){
 
+		player.placeBet(100);
+		player.doubleDown();
+		player.winInsurance();
+		int expected = 200;
+		int actual = player.getBet();
+
+		assertEquals(expected, actual, "After doubling down, 100 chips should be doubled to 200 chips");
+	}
 }
