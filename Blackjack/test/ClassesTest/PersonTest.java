@@ -65,4 +65,18 @@ class PersonTest {
 
     }
 
+	@Test 
+
+	void hitTest() {
+		int ogDeckSize = deck.size;
+		person.hit(deck, discard);
+		int newDeckSize = deck.size();
+
+
+		int expected = ogDeckSize - 1;
+		int actual = newDeckSize;
+		assertEquals(expected, actual, "Size of the deck should've decreased by 1.   ");
+
+    }
+
 }
