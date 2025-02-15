@@ -9,7 +9,7 @@ import Classes.Card;
 
 class CardTest {
 	
-	//Initialize a Card object
+	//Initialize a Card object for testing
 	Card card;
 	
 	//before each test, create the same card, the ace of spades

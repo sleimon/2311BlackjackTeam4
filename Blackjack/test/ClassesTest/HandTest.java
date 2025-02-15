@@ -13,7 +13,7 @@ import Classes.Card;
 
 class HandTest {
 	
-	//initializes a Hand object and a deckOfCards object
+	//initializes a Hand object and a deckOfCards object for testing
 	Hand hand;
 	deckOfCards deck;
 	
