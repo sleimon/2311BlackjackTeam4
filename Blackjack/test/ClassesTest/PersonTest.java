@@ -2,6 +2,8 @@ package ClassesTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.beans.Transient;
+
 import org.junit.jupiter.api.Test;
 
 class PersonTest {
@@ -40,5 +42,11 @@ class PersonTest {
 
     }
 
+	@Test 
+
+	void getHandTest() {
+
+		assertNotNull(person.getHand(), "If the hand is null, then there are no cards in the hand.  ");
+    }
 
 }
