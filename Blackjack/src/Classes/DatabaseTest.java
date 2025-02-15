@@ -12,7 +12,7 @@ package Classes;
             System.out.println("Found user: " + (existingUser != null ? existingUser : "Not found"));
     
             // Test: Register a new user
-            User newUser = new User("newPlayer", "newPass", 1200, 0);
+            User newUser = new User("newPlayer", "newPass", 1200, 0,0,0);
             StubDatabase.addUser(newUser);
             System.out.println("After adding newPlayer:");
             StubDatabase.printUsers();
