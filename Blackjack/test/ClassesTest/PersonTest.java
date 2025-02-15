@@ -44,15 +44,13 @@ class PersonTest {
 
     }
 
-	@Test 
-
+	@Test
 	void getHandTest() {
 
 		assertNotNull(person.getHand(), "If the hand is null, then there are no cards in the hand.  ");
     }
 
-	@Test 
-
+	@Test
 	void setHandTest() {
 
 		Hand hand  = new Hand();
@@ -65,8 +63,7 @@ class PersonTest {
 
     }
 
-	@Test 
-
+	@Test
 	void hitTest() {
 		int ogDeckSize = deck.size;
 		person.hit(deck, discard);
@@ -77,6 +74,15 @@ class PersonTest {
 		int actual = newDeckSize;
 		assertEquals(expected, actual, "Size of the deck should've decreased by 1.   ");
 
+    }
+
+	@Test 
+	void has21Test() {
+
+		person.getHand().add(new Card("King", "Spades", 10));
+		person.getHand().add(new Card("Ace", "Hearts", 11));
+
+		assertTrue(person.has21(), "The payer should have 21.  ");
     }
 
 }
