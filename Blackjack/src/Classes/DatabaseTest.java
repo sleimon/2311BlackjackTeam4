@@ -3,7 +3,7 @@ package Classes;
 
     public class DatabaseTest {
         public static void main(String[] args) {
-            // Test: Print all users
+            // Print all users in initial state
             System.out.println("Initial users:");
             StubDatabase.printUsers();
     
