@@ -1,2 +1,3 @@
 sleimon,defaultPass,1200,1,0,0
 roop,defaultPass,1000,0,0,0
+slei,test,950,0,1,0
