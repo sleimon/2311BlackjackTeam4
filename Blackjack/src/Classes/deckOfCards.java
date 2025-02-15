@@ -56,7 +56,7 @@ public class deckOfCards {
 	}
 	
 	//Returns the deck
-	public ArrayList<Card> getCards(){
+	public ArrayList<Card> getDeck(){
 		return this.deck;
 	}
 	
@@ -67,7 +67,7 @@ public class deckOfCards {
 	
 	//Refills this deck with the contents from another deck, shuffles it and empties the given deck
 	public void reloadDeckFromDiscard(deckOfCards discard) {
-		this.addCards(discard.getCards());
+		this.addCards(discard.getDeck());
 		this.shuffle();
 		discard.emptyDeck();
 	}

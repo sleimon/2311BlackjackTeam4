@@ -38,6 +38,9 @@ class deckOfCardsTest {
 		deckOfCards deck1 = new deckOfCards();
 		deckOfCards deck2 = new deckOfCards();
 		deckOfCards deck3 = new deckOfCards();
+		deck1.emptyDeck();
+		deck2.emptyDeck();
+		deck3.emptyDeck();
 		Hand hand = new Hand();
 		Card card1 = new Card("Two", "Hearts", 2);
 		Card card2 = new Card("Three", "Hearts", 3);
@@ -53,9 +56,17 @@ class deckOfCardsTest {
 		
 		//Tests addCards(Hand hand)
 		deck2.addCards(hand);
-		assertEquals(deck2, hand);
+		boolean result = true;
+		for(int i = 0; i < hand.getHandSize(); i++) {
+			 if(!(hand.getHand().get(i).equals(deck2.getDeck().get(i)))) {
+				 result = false;
+			 }
+		 }
+		assertTrue(result);
 		
 		//Tests addCards(ArrayList<Card> cards)
+		deck3.addCards(cards);
+		assertEquals(deck3, cards);
 		
 	}
 	
