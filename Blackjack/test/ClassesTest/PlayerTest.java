@@ -32,6 +32,16 @@ class PlayerTest {
 
 	}
 
+	@Test
+	void placeBetTest(){
+
+		player.placeBet(100);
+		int expected = 400;
+		int actual = player.getChips();
+
+		assertEquals(expected, actual, "The player should have 100 less chips after placing a 100 chip bet.  ");
+	}
+
 
 
 }
