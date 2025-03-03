@@ -201,7 +201,10 @@ Roop's Development Tasks
 	- Implementing the account system and user authentication                 Time allocated: a week                   Time spent: still ongoing
 
 
-
+February 20
+	- Arya and Roop meet to discuss the real database.
+	- Roop worked on Firebase for the user authentication (4 hours of work time)
+	- 
 
 
 
