@@ -1,11 +1,13 @@
 package com.blackjack;
 import com.blackjack.Models.Game;
 import com.blackjack.Models.User;
+import com.blackjack.Services.UserService;
 import com.blackjack.stubdatabase.StubDatabase;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 
 public class Main {
 
@@ -50,7 +52,7 @@ public class Main {
                 }
 
                 // Check if user exists and if the password matches
-                if (StubDatabase.validatePassword(username, password)) {
+                if (UserService.validatePassword(username, password)) {
                     // If user exists and password matches, proceed to the game
                     System.out.println("User logged in: " + username);
                     startGame(username);
@@ -74,13 +76,13 @@ public class Main {
                 }
 
                 // Check if user already exists
-                User existingUser = StubDatabase.getUser(username);
+                User existingUser = UserService.getUser(username);
                 if (existingUser != null) {
                     JOptionPane.showMessageDialog(frame, "Username already exists. Please choose a different username.");
                 } else {
                     // Create new user and add to the database
                     User newUser = new User(username, password, 1000, 0, 0, 0); // 1000 chips by default
-                    StubDatabase.addUser(newUser);
+                    UserService.addUser(newUser);
                     JOptionPane.showMessageDialog(frame, "User created successfully.");
                     startGame(username);
                     frame.dispose(); // Close the sign-up window

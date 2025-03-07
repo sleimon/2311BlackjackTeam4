@@ -1,9 +1,8 @@
 package com.blackjack.Services;
 
-
 import java.sql.*;
 
-//Connecting to the Database and Initializing the tables needed.
+// Connecting to the Database and Initializing the tables needed.
 public class DbConnectService {
     // Supabase connection details
     private static final String URL = "jdbc:postgresql://aws-0-us-west-1.pooler.supabase.com:6543/postgres";
@@ -12,7 +11,7 @@ public class DbConnectService {
 
     public static void main(String[] args) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            System.out.println(" Connected to Supabase PostgreSQL database!");
+            System.out.println("Connected to Supabase PostgreSQL database!");
             // Step 1: Create Tables
             createTables(connection);
         } catch (SQLException e) {
@@ -25,7 +24,12 @@ public class DbConnectService {
         String query = "CREATE TABLE IF NOT EXISTS Users (" +
                 "id SERIAL PRIMARY KEY, " +
                 "username VARCHAR(50) UNIQUE NOT NULL, " +
-                "password VARCHAR(255) NOT NULL)";
+                "password VARCHAR(255) NOT NULL, " +
+                "chips BIGINT DEFAULT 0, " +  // Chip balance
+                "wins INT DEFAULT 0, " +      // Number of wins
+                "losses INT DEFAULT 0, " +    // Number of losses
+                "pushes INT DEFAULT 0)";      // Number of pushes (ties)
+
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(query);
             System.out.println("Users table created successfully.");
@@ -34,4 +38,8 @@ public class DbConnectService {
         }
     }
 
+    // Method to get a database connection
+    public static Connection connect() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
 }
