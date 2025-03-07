@@ -32,7 +32,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.5.4</version>  <!-- Replace with your DB version -->
+            <version>42.7.5</version>  <!-- Replace with your DB version -->
         </dependency>
 
         <!-- Java Desktop (Swing) is included in Java SE, so no dependency is needed -->
