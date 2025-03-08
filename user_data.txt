@@ -1,2 +1,4 @@
 arya1,pw1,700,0,2,0
 admin,defaultPass,1050,5,6,0
+Arya,arya,1000,0,0,0
+arya,arya,900,0,1,0

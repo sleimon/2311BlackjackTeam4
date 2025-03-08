@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import com.blackjack.Main;
 
 
 @SuppressWarnings("serial")
@@ -61,12 +62,17 @@ public class Game extends JPanel {
 
 	//  Constructor to load user data from StubDatabase
     public Game(String username) {
-        this.currentUser = UserService.getUser(username);
+        this.currentUser = Main.useStubDatabase ? StubDatabase.getUser(username) : UserService.getUser(username);
 
         if (currentUser == null) {
             // If the user is not found, create a new one
             this.currentUser = new User(username, "defaultPass", 1000, 0,0,0);
-            UserService.addUser(currentUser);
+			if(Main.useStubDatabase){
+				StubDatabase.addUser(currentUser);
+			}
+			else {
+				UserService.addUser(currentUser);
+			}
         }
 		// this is to initialize the player with current user's chips
 		this.player= new Player(currentUser.getChips());
@@ -87,7 +93,11 @@ public class Game extends JPanel {
     // Update user's chips after playing a round
     public void updateChips(int amount) {
         currentUser.setChips(currentUser.getChips() + amount);
+		if(Main.useStubDatabase){
+			StubDatabase.updateUser(currentUser);
+		}else{
         UserService.updateUser(currentUser);
+		}
         System.out.println("Updated User: " + currentUser);
     }
 
@@ -465,7 +475,11 @@ public class Game extends JPanel {
 			//player.instant21();
 			
 		}
-		UserService.updateUser((currentUser));// updating user Chip count.
+		if(Main.useStubDatabase){
+			StubDatabase.updateUser(currentUser);
+		}else {
+			UserService.updateUser((currentUser));
+		}// updating user Chip count.
 		nextRound();
 	}
 	
@@ -480,8 +494,11 @@ public class Game extends JPanel {
 		revealAll();
 		currentUser.setLosses(currentUser.getLosses() + 1);
 		currentUser.setChips(currentUser.getChips() - player.getBet());
-		UserService.updateUser((currentUser));// stub database
-		
+		if(Main.useStubDatabase){
+			StubDatabase.updateUser(currentUser);
+		}else {
+			UserService.updateUser((currentUser));// stub database
+		}
 		nextRound();
 		//player.loseBet();
 
@@ -495,7 +512,11 @@ public class Game extends JPanel {
 	        currentUser.setChips(currentUser.getChips() - player.getBet()); // Deduct the bet for a bust
 			//losses++;
 			revealAll();
-			UserService.updateUser((currentUser));// stub database
+			if(Main.useStubDatabase){
+				StubDatabase.updateUser(currentUser);
+			}else{
+			UserService.updateUser((currentUser));
+			}// stub database
 	    	nextRound();
 	        //player.loseBet();
 		}
@@ -511,8 +532,13 @@ public class Game extends JPanel {
             //wins++;
            
             //player.winBet();
-
-			UserService.updateUser((currentUser));// stub database
+			if(Main.useStubDatabase){
+				StubDatabase.updateUser(currentUser);
+			}
+			else {
+			UserService.updateUser((currentUser));
+			}
+			// stub database
 			nextRound();
 		}
 	}
@@ -555,7 +581,11 @@ public class Game extends JPanel {
 			//pushes++;
 		}
 		//added these 2 lines to update the user data in the database
+		if(Main.useStubDatabase){
+			StubDatabase.updateUser(currentUser);
+		}else{
 		UserService.updateUser(currentUser);
+		}
         updateStatsDisplay();
 	}
 	
@@ -578,7 +608,11 @@ public class Game extends JPanel {
 	    //added 2 lines for the updating the losses below
 		currentUser.setLosses(currentUser.getLosses() + 1);
 		currentUser.setChips(currentUser.getChips() - player.getBet());
-        UserService.updateUser(currentUser);
+		if(Main.useStubDatabase){
+			StubDatabase.updateUser(currentUser);
+		}else {
+			UserService.updateUser(currentUser);
+		}
 		nextRound();
 	}
 
