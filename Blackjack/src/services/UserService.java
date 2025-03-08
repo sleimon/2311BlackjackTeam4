@@ -1,15 +1,15 @@
 package services;
 import Classes.User;
-
+import Classes.Main;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserService {
+public class UserService implements DatabaseService {
 
     // Retrieve a user by username
-    public static User getUser(String username) {
+    public  User getUser(String username) {
         String query = "SELECT * FROM Users WHERE username = ?";
         try (Connection conn = DbConnectService.connect(); // Use DbConnectService's connect method
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -34,7 +34,7 @@ public class UserService {
     }
 
     // Add a new user to the database (if not already existing)
-    public static void addUser(User user) {
+    public void addUser(User user) {
         if (getUser(user.getUsername()) == null) { // Prevent duplicates
             String query = "INSERT INTO Users (username, password, chips, wins, losses, pushes) VALUES (?, ?, ?, ?, ?, ?)";
             try (Connection conn = DbConnectService.connect(); // Use DbConnectService's connect method
@@ -55,7 +55,7 @@ public class UserService {
     }
 
     // Update an existing user's data
-    public static void updateUser(User user) {
+    public void updateUser(User user) {
         String query = "UPDATE Users SET password = ?, chips = ?, wins = ?, losses = ?, pushes = ? WHERE username = ?";
         try (Connection conn = DbConnectService.connect(); // Use DbConnectService's connect method
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -74,13 +74,13 @@ public class UserService {
     }
 
     // Validate password for the given username
-    public static boolean validatePassword(String username, String password) {
+    public boolean validatePassword(String username, String password) {
         User user = getUser(username);
         return user != null && user.getPassword().equals(password);
     }
 
     // Retrieve all users (for debugging purposes)
-    public static List<User> getAllUsers() {
+    public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM Users";
         try (Connection conn = DbConnectService.connect(); // Use DbConnectService's connect method
@@ -104,7 +104,7 @@ public class UserService {
     }
 
     // Delete a user from the database
-    public static void deleteUser(String username) {
+    public void deleteUser(String username) {
         String query = "DELETE FROM Users WHERE username = ?";
         try (Connection conn = DbConnectService.connect(); // Use DbConnectService's connect method
              PreparedStatement stmt = conn.prepareStatement(query)) {
