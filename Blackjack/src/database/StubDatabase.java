@@ -2,10 +2,10 @@ package database;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import services.DatabaseService;
 import Classes.User;
 
-public class StubDatabase {
+public class StubDatabase implements DatabaseService{
     private static final List<User> users = new ArrayList<>();
     private static final String FILE_PATH = "user_data.txt"; // File to store user data
 
@@ -14,7 +14,7 @@ public class StubDatabase {
     }
 
     // Retrieving a user by username
-    public static User getUser(String username) {
+    public  User getUser(String username) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
                 return user;
@@ -24,7 +24,7 @@ public class StubDatabase {
     }
 
     // Adding a new user to the stub database (if not already existing)
-    public static void addUser(User user) {
+    public  void addUser(User user) {
         if (getUser(user.getUsername()) == null) { // Prevent duplicates
             users.add(user);
             saveUsersToFile(); // Save changes
@@ -32,7 +32,7 @@ public class StubDatabase {
     }
 
     // This is to update an existing user's data
-    public static void updateUser(User user) {
+    public void updateUser(User user) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername().equals(user.getUsername())) {
                 users.set(i, user);
@@ -42,13 +42,19 @@ public class StubDatabase {
         }
     }
 
-    // Print all users (it's just for debugging purposes)
-    public static void printUsers() {
-        for (User user : users) {
-            System.out.println(user);
-        }
+    public boolean validatePassword(String username, String password) {
+        User user = getUser(username);
+        return user != null && user.getPassword().equals(password);
+    }
+    
+    public List<User> getAllUsers() {
+        return new ArrayList<>(users);
     }
 
+    public void deleteUser(String username) {
+        users.removeIf(user -> user.getUsername().equals(username));
+        saveUsersToFile(); // Save changes
+    }
     // Saving user data to a file to get it in the next game
     private static void saveUsersToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
@@ -91,11 +97,6 @@ public class StubDatabase {
         }
     }
 
-    // Validate password for the given username
-    public static boolean validatePassword(String username, String password) {
-        User user = getUser(username);
-        return user != null && user.getPassword().equals(password);
-    }
 }
 
 
