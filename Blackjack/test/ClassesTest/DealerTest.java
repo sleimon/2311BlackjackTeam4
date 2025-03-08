@@ -23,7 +23,6 @@ class DealerTest {
 	void testDealer() {
 		String expected = "DEALER";
 		String actual = dealer.getName();
-
 		assertEquals(expected, actual, "The dealer's name should be: DEALER");
 	}
 }
