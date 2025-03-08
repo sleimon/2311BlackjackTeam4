@@ -1,3 +1,4 @@
+    <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -13,7 +14,15 @@
     </properties>
 
     <dependencies>
-        <!-- JUnit 5 (Jupiter API & Engine) for Testing -->
+        <!-- JUnit 4 for testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- JUnit 5 (Jupiter API & Engine) for testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -21,21 +30,12 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Java SQL (JDBC) -->
+        <!-- PostgreSQL JDBC driver -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.5</version>  <!-- Replace with your DB version -->
+            <version>42.7.5</version>  <!-- Latest stable version -->
         </dependency>
-
-        <!-- Java Desktop (Swing) is included in Java SE, so no dependency is needed -->
     </dependencies>
 
     <build>
