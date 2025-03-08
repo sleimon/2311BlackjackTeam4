@@ -1,5 +1,6 @@
 package services;
-
+import Classes.Main;
+import Classes.User;
 import java.sql.*;
 
 // Connecting to the Database and Initializing the tables needed.
