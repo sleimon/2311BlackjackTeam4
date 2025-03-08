@@ -1,5 +1,6 @@
 package services;
 import Classes.User;
+import Classes.Main;
 import java.util.List;
 
 public interface DatabaseService {
