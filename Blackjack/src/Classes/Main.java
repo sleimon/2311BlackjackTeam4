@@ -1,11 +1,18 @@
 package Classes;
 import database.StubDatabase;
+import services.DatabaseService;
+import services.DbConnectService;
+import Classes.User;
+import services.DatabaseSwitching;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Main {
+	//private static DatabaseService databaseService = new StubDatabase(); // Switchable database service
+	//private static DatabaseService databaseService = new DbConnectService(); // Switch to Supabase implementation
+	private static DatabaseService databaseService = DatabaseSwitching.getDatabaseService();
 
 	public static void main(String[] args) {
 		// Create a panel for the login/sign up form
@@ -48,7 +55,7 @@ public class Main {
 				}
 
 				// Check if user exists and if the password matches
-				if (StubDatabase.validatePassword(username, password)) {
+				if (databaseService.validatePassword(username, password)) {
 					// If user exists and password matches, proceed to the game
 					System.out.println("User logged in: " + username);
 					startGame(username);
@@ -72,13 +79,13 @@ public class Main {
 				}
 
 				// Check if user already exists
-				User existingUser = StubDatabase.getUser(username);
+				User existingUser = databaseService.getUser(username);
 				if (existingUser != null) {
 					JOptionPane.showMessageDialog(frame, "Username already exists. Please choose a different username.");
 				} else {
 					// Create new user and add to the database
 					User newUser = new User(username, password, 1000, 0, 0, 0); // 1000 chips by default
-					StubDatabase.addUser(newUser);
+					databaseService.addUser(newUser);
 					JOptionPane.showMessageDialog(frame, "User created successfully.");
 					startGame(username);
 					frame.dispose(); // Close the sign-up window
