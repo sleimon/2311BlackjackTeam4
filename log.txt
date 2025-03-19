@@ -315,7 +315,24 @@ Roop's Development Tasks
 
 ITERATION 3
 
+March 9th
+    - Sleimon creates tasks (5 hours)
 
+March 10th Meeting (3 Hours)
+    - Sleimon assigns tasks
+    - More unit tests assigned to Sleimon
+    - Bug fixes assigned to Sleimon
+    - More integration tests assigned to Arya
+    - Multiplayer feature assigned to Arya and Sleimon
+    - Main menu creation assigned to Mark, George and Roop
+    - Chip leaderboard assigned to Mark, George and Roop
+
+March 12th Meeting (2 hours)
+    - Going over the tasks again
+
+March 19th
+    - Sleimon creates new branches (1 hour)
+    - Sleimon updates iteration 3 planning document (2 hours)
 
 
 
