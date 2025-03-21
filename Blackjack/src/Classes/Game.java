@@ -5,8 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-
 
 
 @SuppressWarnings("serial")
@@ -57,7 +55,7 @@ public class Game extends JPanel {
 	
 	public static final int CARD_WIDTH = 100;
 	public static final int CARD_HEIGHT = 145;
-	public static final String IMAGE_DIR = "bin/cards/";
+	public static final String IMAGE_DIR = "target/classes/cards/";
 	
 
 	//  Constructor to load user data from StubDatabase
