@@ -12,6 +12,8 @@ public class Main {
 
     public static void main(String[] args) {
         // Create a panel for the login/sign up form
+        MainMenu mm = new MainMenu();
+        mm.showMainMenu();
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4, 2));
 
@@ -90,16 +92,16 @@ public class Main {
         });
     }
 
-    private static void startMainMenu(String username) {
-        // Create and show the game window
-        MainMenu menu = new MainMenu();
-        menu.setupMainMenuGUI();
-        JFrame mm = new JFrame("Main Menu");
-        mm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mm.setSize(800, 600);
-        mm.add(menu);
-        mm.setVisible(true);
-    }
+//    private static void startMainMenu(String username) {
+//        // Create and show the game window
+//        MainMenu menu = new MainMenu();
+//        menu.showMainMenu();
+//        JFrame mm = new JFrame("Main Menu");
+//        mm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        mm.setSize(800, 600);
+//        mm.add(menu);
+//        mm.setVisible(true);
+//    }
 
     private static void startGame(String username) {
         // Create and show the game window

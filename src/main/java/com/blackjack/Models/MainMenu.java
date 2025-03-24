@@ -1,31 +1,28 @@
 package com.blackjack.Models;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MainMenu extends JPanel{
 
+    private JFrame windowMainMenu;
     private JLabel Blackjack;
     private JButton PlayGame;
     private JButton LeaderBoard;
     private JButton Quit;
 
-   public void setupMainMenuGUI() {
+    public MainMenu(){
 
-       this.setSize(800, 500);
+        windowMainMenu = new JFrame();
+        windowMainMenu.setTitle("Blackjack Main Menu");
+        windowMainMenu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        windowMainMenu.setSize(800, 500);
+        windowMainMenu.setLocationRelativeTo(null);
 
-       PlayGame = new JButton("Play Game");
-       PlayGame.setBounds(10, 10, 100, 20);
+    }
 
-       LeaderBoard = new JButton("Leaderboard");
-       LeaderBoard.setBounds(120, 10, 100, 20);
+   public void showMainMenu() {
 
-       Quit = new JButton("Quit");
-       Quit.setBounds(230, 10, 100, 20);
-
-       PlayGame.setVisible(true);
-       LeaderBoard.setVisible(true);
-       Quit.setVisible(true);
+       windowMainMenu.setVisible(true);
 
 
    }
