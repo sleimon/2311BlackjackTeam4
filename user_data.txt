@@ -1,1 +1,2 @@
 arya1,pw1,700,0,2,0
+sleimon1,test,850,0,3,0
