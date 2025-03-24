@@ -1,5 +1,6 @@
 package com.blackjack;
 import com.blackjack.Models.Game;
+import com.blackjack.Models.MainMenu;
 import com.blackjack.Models.User;
 import com.blackjack.stubdatabase.StubDatabase;
 import javax.swing.*;
@@ -87,6 +88,17 @@ public class Main {
                 }
             }
         });
+    }
+
+    private static void startMainMenu(String username) {
+        // Create and show the game window
+        MainMenu menu = new MainMenu();
+        menu.setupMainMenuGUI();
+        JFrame mm = new JFrame("Main Menu");
+        mm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mm.setSize(800, 600);
+        mm.add(menu);
+        mm.setVisible(true);
     }
 
     private static void startGame(String username) {
