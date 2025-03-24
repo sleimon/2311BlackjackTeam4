@@ -560,6 +560,7 @@ public class Game extends JPanel {
 	
 	//updates the win loss push stats and the chip count on the gui
 	public void updateStatsDisplay() {
+		currentUser.setChips(player.getChips());
 		chips.setText("Chips: " + currentUser.getChips());
         score.setText("Wins: " + currentUser.getWins() + 
 		" Losses: " + currentUser.getLosses() + 
