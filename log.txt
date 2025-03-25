@@ -20,7 +20,7 @@ Meeting on January 17th at 4pm (2 hours)
 	- Decided to do blackjack instead
 
 Meeting on January 20th at 5pm (1 hour)
-	- After lecture, discussed what'd we use to create the game
+	- After lecture, discussed what we would use to create the game
 	- Ruled out game engines such as Unity and Unreal
 	- Decided to create the project in Java
 	- Talked about what we should do for ITR0
@@ -179,8 +179,8 @@ Sleimon's Development Tasks:
 	- Bug fixing the project                                                  Time allocated: a day                    Time spent: a day
 	- Filling out the log                                                     Time allocated: 4 hours                  Time spent: 5 hours
 	- Updating ITR0                                                           Time allocated: 2 hours                  Time spent: 2 hours
-	- Creating the architecture sketch					  Time allocated: 4 hours                  Time spent: 5 hours
-	- Creating the wiki							  Time allocated: 2 hours	       	   Time spent: 2 hours
+	- Creating the architecture sketch					                      Time allocated: 4 hours                  Time spent: 5 hours
+	- Creating the wiki							                              Time allocated: 2 hours	       	       Time spent: 2 hours
 	- Writing unit tests                                                      Time allocated: a day                    Time spent: a day
 	
 Arya's Development Tasks:
@@ -188,7 +188,7 @@ Arya's Development Tasks:
 	- implementing the database                                               Time allocated: two weeks                Time spent: still ongoing
 	- Helping with the GUI                                                    Time allocated: 3 hours                  Time spent: 3 hours
 	- Implementing the account system and user authentication                 Time allocated: a week                   Time spent: still ongoing
-	- implementing the stub database					  Time allocated: a week		   Time spent: a week
+	- implementing the stub database					                      Time allocated: a week		           Time spent: a week
 
 George's Development Tasks:
 	- Implementing the Card class                                             Time allocated: a day                    Time spent: a day
@@ -212,8 +212,7 @@ Roop's Development Tasks
 	- Researching the database implementation                                 Time allocated: a week                   Time spent: a week
 	- Implementing the account system and user authentication                 Time allocated: a week                   Time spent: still ongoing
 	- implementing the database                                               Time allocated: two weeks                Time spent: still ongoing
-	- implementing the stub database					  Time allocated: a week		   Time spent: a week
-
+	- implementing the stub database					                      Time allocated: a week		           Time spent: a week
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -285,14 +284,14 @@ Sleimon's Development Tasks:
 	- Bug fixing the project                                                  Time allocated: a day                    Time spent: a day
 	- Filling out the log                                                     Time allocated: 4 hours                  Time spent: 5 hours
 	- Creating ITR2 Doc                                                       Time allocated: 2 hours                  Time spent: 2 hours
-	- Creating the wiki							  Time allocated: 2 hours	       	   Time spent: 2 hours
+	- Creating the wiki							                              Time allocated: 2 hours	       	       Time spent: 2 hours
 	- Writing unit tests                                                      Time allocated: a day                    Time spent: a day
 	
 Arya's Development Tasks:
 	- Researching the database implementation                                 Time allocated: a week                   Time spent: week
 	- Implementing the database                                               Time allocated: two weeks                Time spent: three weeks
 	- Implementing the account system and user authentication                 Time allocated: a week                   Time spent: two weeks
-	- Implementing the real database					  Time allocated: a week		   Time spent: a week
+	- Implementing the real database					                      Time allocated: a week		           Time spent: a week
 	- Implementing the User and Friends features                              Time allocated: a day                    Time spent: a day
 
 George's Development Tasks:
@@ -309,7 +308,7 @@ Roop's Development Tasks
 	- Researching the database implementation                                 Time allocated: a week                   Time spent: week
 	- Implementing the database                                               Time allocated: two weeks                Time spent: three weeks
 	- Implementing the account system and user authentication                 Time allocated: a week                   Time spent: two weeks
-	- Implementing the real database					  Time allocated: a week		   Time spent: a week
+	- Implementing the real database					                      Time allocated: a week		           Time spent: a week
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -342,37 +341,11 @@ March 24th
     - Arya and Sleimon do code review, create smell tickets (4 hours)
     - Sleimon works on bugs, bug document and tickets (8 hours)
     - George creates bug tickets and work on bugs (2 hours)
-    - George finishes main menu protoype (6 hours)
+    - George finishes main menu prototype (6 hours)
     - Mark and Roop have meeting discussing Leaderboard (3 hours)
 
 March 25th
-    - Sleimon fixes bugs (tickets #27, and 40 on github) (3 hours)
+    - Sleimon fixes bugs (tickets #27, and #40 on GitHub) (3 hours)
     - Sleimon tweaks the main menu, adding images, changing colour and size (3 hours)
     - Sleimon fixes some of the code smell (3 hours)
->>>>>>> 0db7c8dec5792070fd2abd0b55423a3730928819
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    - Sleimon fixes branch merging problems
