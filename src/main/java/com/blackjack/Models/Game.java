@@ -450,18 +450,18 @@ public class Game extends JPanel {
 
 		if(dealer.has21()){
 			currentUser.setPushes(currentUser.getPushes() + 1);
-			currentUser.setChips(currentUser.getChips() ); // No change in chips			gameMessage.setText("Both Have 21! Push!");
+			player.pushBet();
+			currentUser.setChips(player.getChips() );
+			gameMessage.setText("Both Have 21! Push!");
 			nextRound();
-			//pushes++;
-			//player.pushBet();
+
 		}
 		else{
 			dealer.printHand(dealerCards);
 			currentUser.setWins(currentUser.getWins() + 1);
 			gameMessage.setText("Instant Blackjack Win!");
-			currentUser.setChips(currentUser.getChips() + player.getBet());
-			//this.wins++;
-			//player.instant21();
+			player.instant21();
+			currentUser.setChips(player.getChips());
 			
 		}
 		StubDatabase.updateUser((currentUser));// stub database
@@ -478,12 +478,10 @@ public class Game extends JPanel {
 		gameMessage.setText("Dealer Has 21! You Lose!");
 		revealAll();
 		currentUser.setLosses(currentUser.getLosses() + 1);
-		currentUser.setChips(currentUser.getChips() - player.getBet());
+		player.loseBet();
+		currentUser.setChips(player.getChips());
 		StubDatabase.updateUser((currentUser));// stub database
-		
 		nextRound();
-		//player.loseBet();
-
 	}
 	
 	//checks if the player busts during his turn
@@ -491,12 +489,11 @@ public class Game extends JPanel {
 	    if (player.getHand().calculatedValue() > 21) {
 	        gameMessage.setText("You BUST - Over 21");
 			currentUser.setLosses(currentUser.getLosses() + 1);
-	        currentUser.setChips(currentUser.getChips() - player.getBet()); // Deduct the bet for a bust
-			//losses++;
+			player.loseBet();
+			currentUser.setChips(player.getChips()); // Deduct the bet for a bust
 			revealAll();
 			StubDatabase.updateUser((currentUser));// stub database
 	    	nextRound();
-	        //player.loseBet();
 		}
 	}
 	
@@ -506,11 +503,8 @@ public class Game extends JPanel {
             gameMessage.setText("You have 21!");
             revealAll();
 			currentUser.setWins(currentUser.getWins() + 1);
-			currentUser.setChips(currentUser.getChips() + player.getBet());
-            //wins++;
-           
-            //player.winBet();
-
+			player.winBet();
+			currentUser.setChips(player.getChips());
 			StubDatabase.updateUser((currentUser));// stub database
 			nextRound();
 		}
@@ -530,28 +524,23 @@ public class Game extends JPanel {
 		if(dealer.getHand().calculatedValue()>21){
 			gameMessage.setText("Dealer busts! You Win!");
 			currentUser.setWins(currentUser.getWins() + 1);
-            currentUser.setChips(currentUser.getChips() + player.getBet() );// doubling the win
-			//player.winBet();
-			//wins++;
+			player.winBet();
+			currentUser.setChips(player.getChips());
 		}else if(dealer.getHand().calculatedValue() > player.getHand().calculatedValue()){
 			gameMessage.setText("Dealer Higher Hand! You Lose!");
 			currentUser.setLosses(currentUser.getLosses() + 1);
-			currentUser.setChips(currentUser.getChips() - player.getBet());
-			//player.loseBet();
-			//losses++;
+			player.loseBet();
+			currentUser.setChips(player.getChips());
 		}else if(player.getHand().calculatedValue() > dealer.getHand().calculatedValue()){
 			gameMessage.setText("Player Higher Hand! You Win!");
 			currentUser.setWins(currentUser.getWins() + 1);
-            currentUser.setChips(currentUser.getChips() + player.getBet() );
-			
-			//player.winBet();
-			//wins++;
+			player.winBet();
+			currentUser.setChips(player.getChips());
 		}else {
 			gameMessage.setText("Equal Value Hands! Push!");
 			currentUser.setPushes(currentUser.getPushes() + 1);
-            currentUser.setChips(currentUser.getChips() );//returning the bet
-			//player.pushBet();
-			//pushes++;
+			player.pushBet();
+			currentUser.setChips(player.getChips());
 		}
 		//added these 2 lines to update the user data in the database
 		StubDatabase.updateUser(currentUser);
