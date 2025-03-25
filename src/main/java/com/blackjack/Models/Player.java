@@ -5,9 +5,25 @@ public class Player extends Person{
 	//Fields: The number of chips the player has and the number of chips they're betting
 	private int chips;
 	private int bet;
+	private int wins;
+	private int losses;
+	private int pushes;
+	private String username;
+	private String password;
 	
 	//Constructor: Set name as PLAYER and take the starting chips as the player's chip count
-	public Player(int startingChips) {
+	public Player(int startingChips, String password, String username) {
+		super.setName("PLAYER");
+		this.chips = startingChips;
+		this.bet = 0;
+		this.wins = 0;
+		this.losses = 0;
+		this.pushes = 0;
+		this.username = username;
+		this.password = password;
+	}
+	//temporary constructor
+	public Player(int startingChips){
 		super.setName("PLAYER");
 		this.chips = startingChips;
 		this.bet = 0;
@@ -85,5 +101,57 @@ public class Player extends Person{
 	public void doubleDown() {
 		this.chips -= this.bet;
 		this.bet = this.bet * 2;
+	}
+
+	public int getWins() {
+		return wins;
+	}
+
+	public void setWins(int wins) {
+		this.wins = wins;
+	}
+
+	public int getLosses() {
+		return losses;
+	}
+
+	public void setLosses(int losses) {
+		this.losses = losses;
+	}
+
+	public int getPushes() {
+		return pushes;
+	}
+
+	public void setPushes(int pushes) {
+		this.pushes = pushes;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void oneWin(){
+		this.wins += 1;
+	}
+
+	public void oneLoss(){
+		this.losses += 1;
+	}
+
+	public void onePush(){
+		this.pushes += 1;
 	}
 }
