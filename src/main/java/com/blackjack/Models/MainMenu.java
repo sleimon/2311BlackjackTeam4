@@ -13,8 +13,10 @@ public class MainMenu extends JPanel{
     private JButton leaderboard;
     private JButton quit;
     private String username;
-    private JLabel king;
-    private JLabel ace;
+
+    public static final int CARD_WIDTH = 100;
+    public static final int CARD_HEIGHT = 145;
+    public static final String IMAGE_DIR = "target/classes/cards/";
 
     public MainMenu(String username){
 
@@ -32,15 +34,31 @@ public class MainMenu extends JPanel{
        windowMainMenu.setLocationRelativeTo(null);
 
        JPanel panelMainMenu = new JPanel();
-       //panelMainMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
+       panelMainMenu.setLayout(null); // This allows us to set the position manually
 
+       // Create the buttons
        playGame = new JButton("Play Blackjack");
-       playGame.setBounds(400, 10, 100, 20);
-       panelMainMenu.add(playGame);
        leaderboard = new JButton("Leaderboard");
-       panelMainMenu.add(leaderboard);
        quit = new JButton("Quit");
+
+       // Set the width and height of each button
+       int buttonWidth = 150;
+       int buttonHeight = 30;
+
+       // Center the buttons horizontally by calculating the X position
+       int xPosition = (windowMainMenu.getWidth() - buttonWidth) / 2;
+
+       // Set the positions of the buttons (you can adjust the y-position as needed)
+       playGame.setBounds(xPosition, 300, buttonWidth, buttonHeight); // (centered, y = 150)
+       leaderboard.setBounds(xPosition, 350, buttonWidth, buttonHeight); // (centered, y = 200)
+       quit.setBounds(xPosition, 400, buttonWidth, buttonHeight); // (centered, y = 250)
+
+       // Add buttons to the panel
+       panelMainMenu.add(playGame);
+       panelMainMenu.add(leaderboard);
        panelMainMenu.add(quit);
+
+       addCardImages(panelMainMenu);
 
        panelMainMenu.setBackground(Color.decode("#427643"));
        windowMainMenu.add(panelMainMenu, BorderLayout.CENTER);
@@ -52,6 +70,28 @@ public class MainMenu extends JPanel{
        windowMainMenu.setVisible(true);
 
    }
+
+    private void addCardImages(JPanel panel) {
+        ImageIcon ace = new ImageIcon(new ImageIcon(IMAGE_DIR + "AceSpades.png").getImage().getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_SMOOTH));
+        ImageIcon king = new ImageIcon(new ImageIcon(IMAGE_DIR + "KingHearts.png").getImage().getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_SMOOTH));
+
+
+        // Create JLabel for each card with the respective image
+        JLabel aceLabel = new JLabel(ace);
+        JLabel kingLabel = new JLabel(king);
+
+        // Set the bounds for positioning the cards
+        // For example, place them centered horizontally and spaced vertically
+        int xPosition = (windowMainMenu.getWidth() - CARD_WIDTH - CARD_WIDTH - 20) / 2; // Calculate position for both cards
+
+        // Set positions of card images
+        aceLabel.setBounds(xPosition, 100, CARD_WIDTH, CARD_HEIGHT);
+        kingLabel.setBounds(xPosition + CARD_WIDTH + 10, 100, CARD_WIDTH, CARD_HEIGHT); // Place card 2 next to card 1
+
+        // Add the cards to the panel
+        panel.add(aceLabel);
+        panel.add(kingLabel);
+    }
 
    public void buttonPresses(JButton button) {
 

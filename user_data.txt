@@ -1,2 +1,1 @@
-arya1,pw1,700,0,2,0
-sleimon1,test,375,5,9,1
+sleimon,test,1000,0,0,0
