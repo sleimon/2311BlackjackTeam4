@@ -179,8 +179,8 @@ Sleimon's Development Tasks:
 	- Bug fixing the project                                                  Time allocated: a day                    Time spent: a day
 	- Filling out the log                                                     Time allocated: 4 hours                  Time spent: 5 hours
 	- Updating ITR0                                                           Time allocated: 2 hours                  Time spent: 2 hours
-	- Creating the architecture sketch					                      Time allocated: 4 hours                  Time spent: 5 hours
-	- Creating the wiki							                              Time allocated: 2 hours	       	       Time spent: 2 hours
+	- Creating the architecture sketch					  Time allocated: 4 hours                  Time spent: 5 hours
+	- Creating the wiki							  Time allocated: 2 hours	       	   Time spent: 2 hours
 	- Writing unit tests                                                      Time allocated: a day                    Time spent: a day
 	
 Arya's Development Tasks:
@@ -188,7 +188,7 @@ Arya's Development Tasks:
 	- implementing the database                                               Time allocated: two weeks                Time spent: still ongoing
 	- Helping with the GUI                                                    Time allocated: 3 hours                  Time spent: 3 hours
 	- Implementing the account system and user authentication                 Time allocated: a week                   Time spent: still ongoing
-	- implementing the stub database					                      Time allocated: a week		           Time spent: a week
+	- implementing the stub database					  Time allocated: a week		   Time spent: a week
 
 George's Development Tasks:
 	- Implementing the Card class                                             Time allocated: a day                    Time spent: a day
@@ -212,7 +212,7 @@ Roop's Development Tasks
 	- Researching the database implementation                                 Time allocated: a week                   Time spent: a week
 	- Implementing the account system and user authentication                 Time allocated: a week                   Time spent: still ongoing
 	- implementing the database                                               Time allocated: two weeks                Time spent: still ongoing
-	- implementing the stub database					                      Time allocated: a week		           Time spent: a week
+	- implementing the stub database					  Time allocated: a week		   Time spent: a week
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -284,14 +284,14 @@ Sleimon's Development Tasks:
 	- Bug fixing the project                                                  Time allocated: a day                    Time spent: a day
 	- Filling out the log                                                     Time allocated: 4 hours                  Time spent: 5 hours
 	- Creating ITR2 Doc                                                       Time allocated: 2 hours                  Time spent: 2 hours
-	- Creating the wiki							                              Time allocated: 2 hours	       	       Time spent: 2 hours
+	- Creating the wiki							  Time allocated: 2 hours	       	   Time spent: 2 hours
 	- Writing unit tests                                                      Time allocated: a day                    Time spent: a day
 	
 Arya's Development Tasks:
 	- Researching the database implementation                                 Time allocated: a week                   Time spent: week
 	- Implementing the database                                               Time allocated: two weeks                Time spent: three weeks
 	- Implementing the account system and user authentication                 Time allocated: a week                   Time spent: two weeks
-	- Implementing the real database					                      Time allocated: a week		           Time spent: a week
+	- Implementing the real database					  Time allocated: a week		   Time spent: a week
 	- Implementing the User and Friends features                              Time allocated: a day                    Time spent: a day
 
 George's Development Tasks:
@@ -308,7 +308,7 @@ Roop's Development Tasks
 	- Researching the database implementation                                 Time allocated: a week                   Time spent: week
 	- Implementing the database                                               Time allocated: two weeks                Time spent: three weeks
 	- Implementing the account system and user authentication                 Time allocated: a week                   Time spent: two weeks
-	- Implementing the real database					                      Time allocated: a week		           Time spent: a week
+	- Implementing the real database					  Time allocated: a week		   Time spent: a week
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
