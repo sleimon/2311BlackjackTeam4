@@ -1,10 +1,12 @@
 package com.blackjack.Models;
+import com.blackjack.Services.UserService;
 import com.blackjack.stubdatabase.StubDatabase;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import com.blackjack.Main;
 
 
 @SuppressWarnings("serial")
@@ -59,12 +61,17 @@ public class Game extends JPanel {
 
 	//  Constructor to load user data from StubDatabase
     public Game(String username) {
-        this.currentUser = StubDatabase.getUser(username);
+        this.currentUser = Main.useStubDatabase ? StubDatabase.getUser(username) : UserService.getUser(username);
 
         if (currentUser == null) {
             // If the user is not found, create a new one
             this.currentUser = new User(username, "defaultPass", 1000, 0,0,0);
-            StubDatabase.addUser(currentUser);
+			if(Main.useStubDatabase){
+				StubDatabase.addUser(currentUser);
+			}
+			else {
+				UserService.addUser(currentUser);
+			}
         }
 		// this is to initialize the player with current user's chips
 		this.player = new Player(currentUser.getChips());
@@ -85,7 +92,11 @@ public class Game extends JPanel {
     // Update user's chips after playing a round
     public void updateChips(int amount) {
         currentUser.setChips(currentUser.getChips() + amount);
-        StubDatabase.updateUser(currentUser);
+		if(Main.useStubDatabase){
+			StubDatabase.updateUser(currentUser);
+		}else{
+        UserService.updateUser(currentUser);
+		}
         System.out.println("Updated User: " + currentUser);
     }
 
@@ -463,7 +474,11 @@ public class Game extends JPanel {
 			currentUser.setChips(player.getChips());
 			
 		}
-		StubDatabase.updateUser((currentUser));// stub database
+		if(Main.useStubDatabase){
+			StubDatabase.updateUser(currentUser);
+		}else {
+			UserService.updateUser((currentUser));
+		}// updating user Chip count.
 		nextRound();
 	}
 	
@@ -479,7 +494,13 @@ public class Game extends JPanel {
 		currentUser.setLosses(currentUser.getLosses() + 1);
 		player.loseBet();
 		currentUser.setChips(player.getChips());
-		StubDatabase.updateUser((currentUser));// stub database
+		if(Main.useStubDatabase){
+			StubDatabase.updateUser(currentUser);
+		}else {
+			UserService.updateUser((currentUser));// stub database
+		}
+
+
 		nextRound();
 	}
 	
@@ -491,7 +512,11 @@ public class Game extends JPanel {
 			player.loseBet();
 			currentUser.setChips(player.getChips()); // Deduct the bet for a bust
 			revealAll();
-			StubDatabase.updateUser((currentUser));// stub database
+			if(Main.useStubDatabase){
+				StubDatabase.updateUser(currentUser);
+			}else{
+			UserService.updateUser((currentUser));
+			}// stub database
 	    	nextRound();
 		}
 	}
@@ -502,9 +527,17 @@ public class Game extends JPanel {
             gameMessage.setText("You have 21!");
             revealAll();
 			currentUser.setWins(currentUser.getWins() + 1);
-			player.winBet();
+      player.winBet();
 			currentUser.setChips(player.getChips());
-			StubDatabase.updateUser((currentUser));// stub database
+            
+			if(Main.useStubDatabase){
+				StubDatabase.updateUser(currentUser);
+			}
+			else {
+			UserService.updateUser((currentUser));
+			}
+			// stub database
+
 			nextRound();
 		}
 	}
@@ -542,7 +575,11 @@ public class Game extends JPanel {
 			currentUser.setChips(player.getChips());
 		}
 		//added these 2 lines to update the user data in the database
-		StubDatabase.updateUser(currentUser);
+		if(Main.useStubDatabase){
+			StubDatabase.updateUser(currentUser);
+		}else{
+		UserService.updateUser(currentUser);
+		}
         updateStatsDisplay();
 	}
 	
@@ -566,7 +603,11 @@ public class Game extends JPanel {
 	    //added 2 lines for the updating the losses below
 		currentUser.setLosses(currentUser.getLosses() + 1);
 		currentUser.setChips(currentUser.getChips() - player.getBet());
-        StubDatabase.updateUser(currentUser);
+		if(Main.useStubDatabase){
+			StubDatabase.updateUser(currentUser);
+		}else {
+			UserService.updateUser(currentUser);
+		}
 		nextRound();
 	}
 
