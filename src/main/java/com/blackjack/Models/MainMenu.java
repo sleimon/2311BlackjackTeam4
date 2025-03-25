@@ -9,10 +9,12 @@ public class MainMenu extends JPanel{
 
     private JFrame windowMainMenu;
     private JLabel Blackjack;
-    private JButton PlayGame;
-    private JButton LeaderBoard;
-    private JButton Quit;
+    private JButton playGame;
+    private JButton leaderboard;
+    private JButton quit;
     private String username;
+    private JLabel king;
+    private JLabel ace;
 
     public MainMenu(String username){
 
@@ -26,25 +28,26 @@ public class MainMenu extends JPanel{
        windowMainMenu = new JFrame();
        windowMainMenu.setTitle("Blackjack Main Menu");
        windowMainMenu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-       windowMainMenu.setSize(800, 500);
+       windowMainMenu.setSize(800, 600);
        windowMainMenu.setLocationRelativeTo(null);
 
        JPanel panelMainMenu = new JPanel();
-       panelMainMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
+       //panelMainMenu.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
 
-       PlayGame = new JButton("Play Blackjack");
-       panelMainMenu.add(PlayGame);
-       LeaderBoard = new JButton("Leaderboard");
-       panelMainMenu.add(LeaderBoard);
-       Quit = new JButton("Quit");
-       panelMainMenu.add(Quit);
+       playGame = new JButton("Play Blackjack");
+       playGame.setBounds(400, 10, 100, 20);
+       panelMainMenu.add(playGame);
+       leaderboard = new JButton("Leaderboard");
+       panelMainMenu.add(leaderboard);
+       quit = new JButton("Quit");
+       panelMainMenu.add(quit);
 
-       panelMainMenu.setBackground(Color.GREEN);
+       panelMainMenu.setBackground(Color.decode("#427643"));
        windowMainMenu.add(panelMainMenu, BorderLayout.CENTER);
 
-       buttonPresses(PlayGame);
-       buttonPresses(LeaderBoard);
-       buttonPresses(Quit);
+       buttonPresses(playGame);
+       buttonPresses(leaderboard);
+       buttonPresses(quit);
 
        windowMainMenu.setVisible(true);
 
@@ -55,13 +58,13 @@ public class MainMenu extends JPanel{
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(button == PlayGame){
+                if(button == playGame){
                     System.out.println("The Play Blackjack button was pressed.  ");
                     windowMainMenu.dispose();
                     startGame(username);
                 }
-                else if(button == LeaderBoard){
-                    System.out.println("The Leaderboard button was pressed.  ");
+                else if(button == leaderboard){
+                    System.out.println("The leaderboard button was pressed.  ");
                 }
                 else {
                     System.exit(0);

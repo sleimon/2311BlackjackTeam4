@@ -44,7 +44,6 @@ public class Game extends JPanel {
 	private JButton bet100;
 	private JButton restart;
 	private JButton exit;
-	//private JButton menu;
 
 	private JLabel score;
 	private JLabel playerHandValue;
@@ -75,7 +74,7 @@ public class Game extends JPanel {
 			}
         }
 		// this is to initialize the player with current user's chips
-		this.player= new Player(currentUser.getChips());
+		this.player = new Player(currentUser.getChips());
         System.out.println("Loaded User: " + currentUser);
     
 		//Initializing rest of the game 

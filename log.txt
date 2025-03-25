@@ -347,6 +347,8 @@ March 24th
 
 March 25th
     - Sleimon fixes bugs (tickets #27, and 40 on github) (3 hours)
+    - Sleimon tweaks the main menu, adding images, changing colour and size (3 hours)
+    - Sleimon fixes some of the code smell (3 hours)
 >>>>>>> 0db7c8dec5792070fd2abd0b55423a3730928819
 
 
