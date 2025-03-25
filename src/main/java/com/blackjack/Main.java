@@ -1,5 +1,6 @@
 package com.blackjack;
 import com.blackjack.Models.Game;
+import com.blackjack.Models.MainMenu;
 import com.blackjack.Models.User;
 import com.blackjack.stubdatabase.StubDatabase;
 import javax.swing.*;
@@ -11,6 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
         // Create a panel for the login/sign up form
+       // MainMenu mm = new MainMenu();
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4, 2));
 
@@ -53,7 +55,7 @@ public class Main {
                 if (StubDatabase.validatePassword(username, password)) {
                     // If user exists and password matches, proceed to the game
                     System.out.println("User logged in: " + username);
-                    startGame(username);
+                    startMainMenu(username);
                     frame.dispose(); // Close the login window
                 } else {
                     JOptionPane.showMessageDialog(frame, "Incorrect username or password.");
@@ -82,11 +84,16 @@ public class Main {
                     User newUser = new User(username, password, 1000, 0, 0, 0); // 1000 chips by default
                     StubDatabase.addUser(newUser);
                     JOptionPane.showMessageDialog(frame, "User created successfully.");
-                    startGame(username);
+                    startMainMenu(username);
                     frame.dispose(); // Close the sign-up window
                 }
             }
         });
+    }
+
+    private static void startMainMenu(String username) {
+//        // Create and show the game window
+        MainMenu menu = new MainMenu(username);
     }
 
     private static void startGame(String username) {
