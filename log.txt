@@ -334,9 +334,19 @@ March 19th
     - Sleimon creates new branches (1 hour)
     - Sleimon updates iteration 3 planning document (2 hours)
 
+March 23rd
+    - George works on main menu (6 hours)
+    - Sleimon works on bugs (3 hours)
 
+March 24th
+    - Arya and Sleimon do code review, create smell tickets (4 hours)
+    - Sleimon works on bugs, bug document and tickets (8 hours)
+    - George creates bug tickets and work on bugs (2 hours)
+    - George finishes main menu protoype (6 hours)
+    - Mark and Roop have meeting discussing Leaderboard (3 hours)
 
-
+March 25th
+    - Sleimon fixes bugs (tickets #27, and 40 on github) (3 hours)
 >>>>>>> 0db7c8dec5792070fd2abd0b55423a3730928819
 
 
