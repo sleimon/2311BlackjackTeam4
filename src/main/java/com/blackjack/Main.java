@@ -1,6 +1,7 @@
 package com.blackjack;
 
 import com.blackjack.Models.Game;
+import com.blackjack.Models.MainMenu;
 import com.blackjack.Models.User;
 import com.blackjack.Services.UserService;
 import com.blackjack.stubdatabase.StubDatabase;
@@ -15,7 +16,8 @@ public class Main {
     public static boolean useStubDatabase = false; // Toggle state
 
     public static void main(String[] args) {
-        // Create a panel for the login/sign-up form
+        // Create a panel for the login/sign up form
+       // MainMenu mm = new MainMenu();
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(5, 2)); // Extra row for toggle switch
 
@@ -75,7 +77,7 @@ public class Main {
 
                 if (user != null && UserService.validatePassword(username, password)) {
                     System.out.println("User logged in: " + username);
-                    startGame(username);
+                    startMainMenu(username);
                     frame.dispose(); // Close the login window
                 } else {
                     JOptionPane.showMessageDialog(frame, "Incorrect username or password.");
@@ -111,11 +113,16 @@ public class Main {
                     }
 
                     JOptionPane.showMessageDialog(frame, "User created successfully.");
-                    startGame(username);
+                    startMainMenu(username);
                     frame.dispose(); // Close the sign-up window
                 }
             }
         });
+    }
+
+    private static void startMainMenu(String username) {
+//        // Create and show the game window
+        MainMenu menu = new MainMenu(username);
     }
 
     private static void startGame(String username) {
