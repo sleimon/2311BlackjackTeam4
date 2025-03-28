@@ -351,10 +351,11 @@ March 25th
     - Sleimon fixes branch merging problems (1 hour)
 
 March 28th
-    - Sleimon fixes some code smells (6 hours)
+    - Sleimon fixes some code smells (7 hours)
         - Ticket #30, code smell ID #2
         - Ticket #33, code smell ID #5
         - Ticket #25, problem report number 2
         - Ticket #34, code smell ID #6
         - Ticket #37, code smell ID #9
         - Ticket #24, problem report number 1
+        - Ticket #32, code smell ID #4
