@@ -126,11 +126,6 @@ public class Main {
         MainMenu menu = new MainMenu(username);
     }
 
-    private static void startLeaderboard() {
-//        // Create and show the game window
-        Leaderboard lb = new Leaderboard();
-    }
-
     private static void startGame(String username) {
         // Create and show the game window
         Game game = new Game(username);
