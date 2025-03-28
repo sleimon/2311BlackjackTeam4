@@ -1,1 +1,1 @@
-sleimon,test,750,0,4,0
+sleimon,test,500,1,8,0

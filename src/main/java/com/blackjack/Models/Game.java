@@ -212,7 +212,7 @@ public class Game extends JPanel {
 				dealerTurn();
 				non21Win();
 				updateScreen();
-				dealer.printHand(dealerCards);
+				printHand(dealerCards, dealer);
 				hit.setVisible(false);
 				stand.setVisible(false);
 				doubleDown.setVisible(false);
@@ -343,7 +343,7 @@ public class Game extends JPanel {
 					dealerTurn();
 					non21Win();
 					updateScreen();
-					dealer.printHand(dealerCards);
+					printHand(dealerCards, dealer);
 				}
 				hit.setVisible(false);
 				stand.setVisible(false);
@@ -359,10 +359,23 @@ public class Game extends JPanel {
 			}
 		});
 	}
+
+	public void printHand(JLabel[] cards, Person person){
+		for(int i = 0; i < 11; i++){
+			cards[i].setVisible(false);
+		}
+		for(int i = 0; i < person.getHand().getHandSize(); i++){
+			String rank = person.getHand().getCard(i).getRank();
+			String suit = person.getHand().getCard(i).getSuit();
+			String filename = rank + suit + ".png";
+			cards[i].setIcon(new ImageIcon(new ImageIcon(Game.IMAGE_DIR+filename).getImage().getScaledInstance(Game.CARD_WIDTH, Game.CARD_HEIGHT, Image.SCALE_SMOOTH)));
+			cards[i].setVisible(true);
+		}
+	}
 	
 	public void updateScreen(){
         playerHandValue.setText("Player's Hand Value: " + player.getHand().calculatedValue());
-        player.printHand(playerCards);
+        printHand(playerCards, player);
     }
 	
 	public void startRound() {
@@ -408,8 +421,8 @@ public class Game extends JPanel {
 		player.getHand().takeCardFromDeck(deck);
 		player.getHand().takeCardFromDeck(deck);
 		
-		dealer.printHand(dealerCards);
-		player.printHand(playerCards);
+		printHand(dealerCards, dealer);
+		printHand(playerCards, player);
 		faceDown();
 	}
 	
@@ -427,7 +440,7 @@ public class Game extends JPanel {
 			nextRound();
 		}
 		else{
-			dealer.printHand(dealerCards);
+			printHand(dealerCards, dealer);
 			currentUser.setWins(currentUser.getWins() + 1);
 			gameMessage.setText("Instant Blackjack Win!");
 			player.instant21();
@@ -544,7 +557,7 @@ public class Game extends JPanel {
 	public void surrenderRound() {
 	    player.surrenderBet();
 	    gameMessage.setText("You surrendered!");
-	    dealer.printHand(dealerCards);
+	    printHand(dealerCards, dealer);
         dealerHandValue.setText("Dealer's Hand Value: " + dealer.getHand().calculatedValue());
 	    //added 2 lines for the updating the losses below
 		currentUser.setLosses(currentUser.getLosses() + 1);
@@ -577,8 +590,8 @@ public class Game extends JPanel {
         insurance.setVisible(true);
         neither.setVisible(true);
         
-        dealer.printHand(dealerCards);
-        player.printHand(playerCards);
+        printHand(dealerCards, dealer);
+        printHand(playerCards, player);
         dealerCards[1].setIcon(new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage()
 				.getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_DEFAULT)));
         
@@ -590,8 +603,8 @@ public class Game extends JPanel {
 	}
 	
 	public void revealAll() {
-        dealer.printHand(dealerCards);
-        player.printHand(playerCards);
+        printHand(dealerCards, dealer);
+        printHand(playerCards, player);
         
         dealerHandValue.setText("Dealer's hand value: " + dealer.getHand().calculatedValue());
 		playerHandValue.setText("Your Hand Value: " + player.getHand().calculatedValue());
