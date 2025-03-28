@@ -362,3 +362,4 @@ March 28th
         - Ticket #39, code smell ID #11
         - Ticket #41, code smell ID #12
         - Ticket #38, code smell ID #10
+        - Ticket #43, code smell ID #14
