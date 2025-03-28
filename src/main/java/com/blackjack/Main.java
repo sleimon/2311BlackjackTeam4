@@ -1,6 +1,7 @@
 package com.blackjack;
 
 import com.blackjack.Models.Game;
+import com.blackjack.Models.Leaderboard;
 import com.blackjack.Models.MainMenu;
 import com.blackjack.Models.User;
 import com.blackjack.Services.UserService;
@@ -123,6 +124,11 @@ public class Main {
     private static void startMainMenu(String username) {
 //        // Create and show the game window
         MainMenu menu = new MainMenu(username);
+    }
+
+    private static void startLeaderboard() {
+//        // Create and show the game window
+        Leaderboard lb = new Leaderboard();
     }
 
     private static void startGame(String username) {
