@@ -78,16 +78,6 @@ public class Game extends JPanel {
 		startRound();
 	}
 
-//    public void updateChips(int amount) {
-//        currentUser.setChips(currentUser.getChips() + amount);
-//		if(Main.useStubDatabase){
-//			StubDatabase.updateUser(currentUser);
-//		}else{
-//        UserService.updateUser(currentUser);
-//		}
-//        System.out.println("Updated User: " + currentUser);
-//    }
-
 	public void paintComponent(Graphics g) {
 	    super.paintComponent(g);
 	    g.setColor(Color.decode("#427643"));
@@ -97,54 +87,7 @@ public class Game extends JPanel {
 	public void setupGUI() {
 		this.setSize(800, 500);
 
-		surrender = new JButton("Surrender");
-	    surrender.setBounds(10, 10, 100, 20);
-	    insurance = new JButton("Insurance");
-	    insurance.setBounds(120, 10, 100, 20);
-	    neither = new JButton("Neither");
-	    neither.setBounds(230, 10, 100, 20);
-	    bet50 = new JButton("Bet 50");
-	    bet50.setBounds(10, 10, 100, 20);
-	    bet100 = new JButton("Bet 100");
-	    bet100.setBounds(120, 10, 100, 20);
-	    betAll = new JButton("Bet All");
-	    betAll.setBounds(230, 10, 100, 20);
-	    hit = new JButton("Hit");
-	    hit.setBounds(10, 10, 50, 20);
-	    stand = new JButton("Stand");
-	    stand.setBounds(70, 10, 100, 20);
-	    nextRound = new JButton("Next Round");
-	    nextRound.setBounds(10, 10, 140, 20);
-	    doubleDown = new JButton("Double Down");
-	    doubleDown.setBounds(180, 10, 140, 20);
-	    restart = new JButton("Restart");
-	    restart.setBounds(10, 10, 100, 20);
-	    exit = new JButton("Exit");
-	    exit.setBounds(120, 10, 100, 20);
-	    hit.setVisible(false);
-	    stand.setVisible(false);
-	    nextRound.setVisible(false);
-	    doubleDown.setVisible(false);
-	    surrender.setVisible(false);
-	    neither.setVisible(false);
-	    insurance.setVisible(false);
-	    restart.setVisible(false);
-	    exit.setVisible(false);
-
-	    this.setLayout(null);
-	    
-	    this.add(hit);
-	    this.add(stand);
-	    this.add(nextRound);
-	    this.add(surrender);
-	    this.add(insurance);
-	    this.add(neither);
-	    this.add(bet100);
-	    this.add(bet50);
-	    this.add(betAll);
-	    this.add(doubleDown);
-	    this.add(restart);
-	    this.add(exit);
+		createButtons();
 
 	    this.dealerCards = new JLabel[11];
 	    this.playerCards = new JLabel[11];
@@ -197,169 +140,224 @@ public class Game extends JPanel {
 	    playerHandValue.setForeground(Color.WHITE);
 	    score.setForeground(Color.WHITE);
 	    chips.setForeground(Color.WHITE);
-	    
-	    hit.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            player.hit(deck, discarded);
-	            updateScreen();
-	            playerTurn();
-	            checkPlayer21();
-	        }
-	    });
-	    
-	    stand.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            dealerTurn();
-	            non21Win();
-	            updateScreen();
-	            dealer.printHand(dealerCards);
-	            hit.setVisible(false);
-	            stand.setVisible(false);
-	            doubleDown.setVisible(false);
-	            nextRound.setVisible(true);
-	        }
-	    });
-	    
-	    nextRound.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            nextRound.setVisible(false);
-	            hit.setVisible(false);
-	            stand.setVisible(false);
-	            doubleDown.setVisible(false);
-	            bet100.setVisible(true);
-	            bet50.setVisible(true);
-	            betAll.setVisible(true);
-	            startRound();
-	        }
-	    });
-	    
-	    surrender.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            surrenderRound();
-	        }
-	    });
-	    
-	    neither.addActionListener(new ActionListener() {
-	    	@Override
-	    	public void actionPerformed(ActionEvent e) {
-	    		surrender.setVisible(false);
-	    		neither.setVisible(false);
-	    		insurance.setVisible(false);
-	    		hit.setVisible(true);
-	    		stand.setVisible(true);
-	    		if(player.getBet() <= player.getChips()) {
-	    			doubleDown.setVisible(true);
-	    		}
-	    		if(dealer.has21()) {
-	    			dealerInitialBlackjack();
-	    		}else {
-		    		gameMessage.setText("Hit or Stand?");
-	    		}
-	    	}
-	    });
-	    
-	    insurance.addActionListener(new ActionListener() {
-	    	@Override
-	    	public void actionPerformed(ActionEvent e) {
-	    		player.insuranceBet();
-	    		if(dealer.has21()) {
-	    			insurance();
-	    			nextRound.setVisible(true);
-	    		}else {
-	    			player.loseInsurance();
-	    			hit.setVisible(true);
-		    		stand.setVisible(true);
-		    		if(player.getBet() <= player.getChips()) {
-		    			doubleDown.setVisible(true);
-		    		}
-	    		}
-	    		surrender.setVisible(false);
-	    		neither.setVisible(false);
-	    		insurance.setVisible(false);
-	    		updateStatsDisplay();
-	    	}
-	    });
-	    
-	    bet100.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            player.placeBet(100);
-	            updateStatsDisplay();
-	            if(player.has21()) {
-	            	initialBlackjack();
-	            }else {
-	            	insuranceOrSurrender();
-	            }
-	        }
-	    });
-	    
-	    bet50.addActionListener(new ActionListener() {
-	    	@Override
-	    	public void actionPerformed(ActionEvent e) {
-	    		player.placeBet(50);
-	            updateStatsDisplay();
-	            if(player.has21()) {
-	            	initialBlackjack();
-	            }else {
-	            	insuranceOrSurrender();
-	            }
-	        }
-	    });
-	    
-	    betAll.addActionListener(new ActionListener() {
-	    	@Override
-	    	public void actionPerformed(ActionEvent e) {
-	    		player.placeBet(player.getChips());
-	            updateStatsDisplay();
-	            if(player.has21()) {
-	            	initialBlackjack();
-	            }else {
-	            	insuranceOrSurrender();
-	            }
-	    	}
-	    });
-	    
-	    restart.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	            restart();
-	        }
-	    });
-	    
-	    doubleDown.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	player.hit(deck, discarded);
-	        	player.doubleDown();
-	        	updateScreen();
-	        	updateStatsDisplay();
-	        	if (player.getHand().calculatedValue() > 21) {
-	        		playerTurn();
-	        	}else if(player.getHand().calculatedValue() == 21) {
-		            checkPlayer21();
-	        	}else {
-	        		dealerTurn();
-		            non21Win();
-		            updateScreen();
-		            dealer.printHand(dealerCards);
-	        	}  
-	            hit.setVisible(false);
-	            stand.setVisible(false);
-	            doubleDown.setVisible(false);
-	            nextRound.setVisible(true);
-	        }
-	    });
-	    
-	    exit.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	System.exit(0);
-	        }
-	    });
+
+		actionListeners();
+	}
+
+	public void createButtons(){
+		surrender = new JButton("Surrender");
+		surrender.setBounds(10, 10, 100, 20);
+		insurance = new JButton("Insurance");
+		insurance.setBounds(120, 10, 100, 20);
+		neither = new JButton("Neither");
+		neither.setBounds(230, 10, 100, 20);
+		bet50 = new JButton("Bet 50");
+		bet50.setBounds(10, 10, 100, 20);
+		bet100 = new JButton("Bet 100");
+		bet100.setBounds(120, 10, 100, 20);
+		betAll = new JButton("Bet All");
+		betAll.setBounds(230, 10, 100, 20);
+		hit = new JButton("Hit");
+		hit.setBounds(10, 10, 50, 20);
+		stand = new JButton("Stand");
+		stand.setBounds(70, 10, 100, 20);
+		nextRound = new JButton("Next Round");
+		nextRound.setBounds(10, 10, 140, 20);
+		doubleDown = new JButton("Double Down");
+		doubleDown.setBounds(180, 10, 140, 20);
+		restart = new JButton("Restart");
+		restart.setBounds(10, 10, 100, 20);
+		exit = new JButton("Exit");
+		exit.setBounds(120, 10, 100, 20);
+		hit.setVisible(false);
+		stand.setVisible(false);
+		nextRound.setVisible(false);
+		doubleDown.setVisible(false);
+		surrender.setVisible(false);
+		neither.setVisible(false);
+		insurance.setVisible(false);
+		restart.setVisible(false);
+		exit.setVisible(false);
+
+		this.setLayout(null);
+
+		this.add(hit);
+		this.add(stand);
+		this.add(nextRound);
+		this.add(surrender);
+		this.add(insurance);
+		this.add(neither);
+		this.add(bet100);
+		this.add(bet50);
+		this.add(betAll);
+		this.add(doubleDown);
+		this.add(restart);
+		this.add(exit);
+	}
+
+	public void actionListeners(){
+		hit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				player.hit(deck, discarded);
+				updateScreen();
+				playerTurn();
+				checkPlayer21();
+			}
+		});
+
+		stand.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dealerTurn();
+				non21Win();
+				updateScreen();
+				dealer.printHand(dealerCards);
+				hit.setVisible(false);
+				stand.setVisible(false);
+				doubleDown.setVisible(false);
+				nextRound.setVisible(true);
+			}
+		});
+
+		nextRound.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				nextRound.setVisible(false);
+				hit.setVisible(false);
+				stand.setVisible(false);
+				doubleDown.setVisible(false);
+				bet100.setVisible(true);
+				bet50.setVisible(true);
+				betAll.setVisible(true);
+				startRound();
+			}
+		});
+
+		surrender.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				surrenderRound();
+			}
+		});
+
+		neither.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				surrender.setVisible(false);
+				neither.setVisible(false);
+				insurance.setVisible(false);
+				hit.setVisible(true);
+				stand.setVisible(true);
+				if(player.getBet() <= player.getChips()) {
+					doubleDown.setVisible(true);
+				}
+				if(dealer.has21()) {
+					dealerInitialBlackjack();
+				}else {
+					gameMessage.setText("Hit or Stand?");
+				}
+			}
+		});
+
+		insurance.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				player.insuranceBet();
+				if(dealer.has21()) {
+					insurance();
+					nextRound.setVisible(true);
+				}else {
+					player.loseInsurance();
+					hit.setVisible(true);
+					stand.setVisible(true);
+					if(player.getBet() <= player.getChips()) {
+						doubleDown.setVisible(true);
+					}
+				}
+				surrender.setVisible(false);
+				neither.setVisible(false);
+				insurance.setVisible(false);
+				updateStatsDisplay();
+			}
+		});
+
+		bet100.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				player.placeBet(100);
+				updateStatsDisplay();
+				if(player.has21()) {
+					initialBlackjack();
+				}else {
+					insuranceOrSurrender();
+				}
+			}
+		});
+
+		bet50.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				player.placeBet(50);
+				updateStatsDisplay();
+				if(player.has21()) {
+					initialBlackjack();
+				}else {
+					insuranceOrSurrender();
+				}
+			}
+		});
+
+		betAll.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				player.placeBet(player.getChips());
+				updateStatsDisplay();
+				if(player.has21()) {
+					initialBlackjack();
+				}else {
+					insuranceOrSurrender();
+				}
+			}
+		});
+
+		restart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				restart();
+			}
+		});
+
+		doubleDown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				player.hit(deck, discarded);
+				player.doubleDown();
+				updateScreen();
+				updateStatsDisplay();
+				if (player.getHand().calculatedValue() > 21) {
+					playerTurn();
+				}else if(player.getHand().calculatedValue() == 21) {
+					checkPlayer21();
+				}else {
+					dealerTurn();
+					non21Win();
+					updateScreen();
+					dealer.printHand(dealerCards);
+				}
+				hit.setVisible(false);
+				stand.setVisible(false);
+				doubleDown.setVisible(false);
+				nextRound.setVisible(true);
+			}
+		});
+
+		exit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 	}
 	
 	public void updateScreen(){
