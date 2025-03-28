@@ -6,34 +6,27 @@ import javax.swing.*;
 
 public class Person {
 	
-	//Fields: A name to identify the person and whatever combination of cards there are holding in their hand
 	private String name;
 	private Hand hand;
 	
-	//Constructor: The name is the empty string because it will be set by the child classes. The hand is an empty new hand
 	public Person() {
 		this.name = "";
 		this.hand = new Hand();
 	}
 	
-	//Methods
-	
-	//Returns the name of the person
+
 	public String getName() {
 		return this.name;
 	}
 	
-	//Sets the name of the person
 	public void setName(String name) {
 		this.name = name;
 	}
 	
-	//Returns the hand the person is holding
 	public Hand getHand() {
 		return this.hand;
 	}
 	
-	//Sets the hand the person is holding
 	public void setHand(Hand hand) {
 		this.hand = hand;
 	}
@@ -53,7 +46,6 @@ public class Person {
 	    }
 	}
 	
-	//The method to hit on the person's turn
 	public void hit(deckOfCards deck, deckOfCards discard){
 		if (!deck.hasCards()) {
 			deck.reloadDeckFromDiscard(discard);
@@ -63,7 +55,6 @@ public class Person {
 		this.getHand();
 	}
 	
-	//Returns whether the person has a blackjack or not
 	public boolean has21(){
 		if(this.getHand().calculatedValue() == 21){
 			return true;
@@ -72,7 +63,6 @@ public class Person {
 		}
 	}
 
-	//Overridden equals method for the Person class
 	public boolean equals(Object obj) {
 		if(this == obj) { return true; }
 		if(obj == null || this.getClass() != obj.getClass()) { return false; }
@@ -81,7 +71,6 @@ public class Person {
 				this.hand.equals(other.hand);
 	}
 
-	//Returns a String representation of the Person object
 	public String toString() {
 		String result = this.name + " " + this.hand.toString();
 		return result;

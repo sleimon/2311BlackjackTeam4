@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class deckOfCards {
 	
-	//Field: An ArrayList of Card objects that comprise the deck
 	private ArrayList<Card> deck;
 	
 	//Constructor: Creates the standard 52 card deck
@@ -27,7 +26,6 @@ public class deckOfCards {
 	
 	//Methods:
 	
-	//Checks if the deck has any cards
 	public boolean hasCards() {
 		if(this.deck.size() > 0) {
 			return true;
@@ -35,56 +33,46 @@ public class deckOfCards {
 		return false;
 	}
 	
-	//Adds all the cards in some ArrayList of Cards to a deck
 	public void addCards(ArrayList<Card> cards) {
 		this.deck.addAll(cards);
 	}
 	
-	//Adds all the cards in a Hand Object to a deckOfCards object
 	public void addCards(Hand hand) {
 		this.deck.addAll(hand.getHand());
 	}
 	
-	//Adds all the cards in a deckOfCards Object to a deckOfCards object
 	public void addCards(deckOfCards deck1) {
 		this.deck.addAll(deck1.deck);
 	}
 	
-	//Empties the deck
 	public void emptyDeck() {
 		deck.clear();
 	}
 	
-	//Returns the deck
 	public ArrayList<Card> getDeck(){
 		return this.deck;
 	}
 	
-	//Shuffles the order of the Cards in the deck
 	public void shuffle() {
 		Collections.shuffle(this.deck, new Random());
 	}
 	
-	//Refills this deck with the contents from another deck, shuffles it and empties the given deck
 	public void reloadDeckFromDiscard(deckOfCards discard) {
 		this.addCards(discard.getDeck());
 		this.shuffle();
 		discard.emptyDeck();
 	}
 	
-	//Returns the first card in the deck and removes it form the deck
 	public Card takeCard() {
 		Card card = new Card(this.deck.get(0));
 		this.deck.remove(0);
 		return card;
 	}
 	
-	//Returns how many cards are left in the deck
 	public int cardsLeft() {
 		return this.deck.size();
 	}
 
-	//Adds a card to the deck. Written for testing purposes only
 	public void addCard(Card card) {
 		this.deck.add(card);
 	}
@@ -108,7 +96,6 @@ public class deckOfCards {
 		return equals;	
 	}
 	
-	//Returns a String representation of a deckOfCards object
 	public String toString() {
 		String result = "";
 

@@ -10,7 +10,6 @@ public class User {
     private int pushes;
 
 
-    // Constructor to include the data we want to store
     public User(String username, String password, int chips, int wins, int losses, int pushes) {
         this.username = username;
         this.password = password;
@@ -19,8 +18,7 @@ public class User {
         this.losses = losses;
         this.pushes = pushes;
     }
-// getters and setters
-    public String getUsername() { 
+    public String getUsername() {
         return username;
      }
     public void setUsername(String username) {

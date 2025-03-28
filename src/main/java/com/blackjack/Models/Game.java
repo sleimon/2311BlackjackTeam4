@@ -15,17 +15,6 @@ public class Game extends JPanel {
 
     private User currentUser; //  user data from stub database
 
-	@SuppressWarnings("unused")
-	private int wins;
-	@SuppressWarnings("unused")
-	private int losses;
-	@SuppressWarnings("unused")
-	private int pushes;
-	@SuppressWarnings("unused")
-	private int roundsPlayed;
-	@SuppressWarnings("unused")
-	private int startingChips;
-
 	private deckOfCards deck;
 	private deckOfCards discarded;
 
@@ -89,27 +78,16 @@ public class Game extends JPanel {
 		startRound();
 	}
 
-    // Update user's chips after playing a round
-    public void updateChips(int amount) {
-        currentUser.setChips(currentUser.getChips() + amount);
-		if(Main.useStubDatabase){
-			StubDatabase.updateUser(currentUser);
-		}else{
-        UserService.updateUser(currentUser);
-		}
-        System.out.println("Updated User: " + currentUser);
-    }
+//    public void updateChips(int amount) {
+//        currentUser.setChips(currentUser.getChips() + amount);
+//		if(Main.useStubDatabase){
+//			StubDatabase.updateUser(currentUser);
+//		}else{
+//        UserService.updateUser(currentUser);
+//		}
+//        System.out.println("Updated User: " + currentUser);
+//    }
 
-	/*public Game(int startingChips) {
-		
-		this.wins = 0;
-		this.losses = 0;
-		this.pushes = 0;
-		this.roundsPlayed = 0;
-		this.startingChips = startingChips;
- 		this.player = new Player(startingChips);*/
-		
-	
 	public void paintComponent(Graphics g) {
 	    super.paintComponent(g);
 	    g.setColor(Color.decode("#427643"));
@@ -119,7 +97,6 @@ public class Game extends JPanel {
 	public void setupGUI() {
 		this.setSize(800, 500);
 
-	    //Make Buttons for actions
 		surrender = new JButton("Surrender");
 	    surrender.setBounds(10, 10, 100, 20);
 	    insurance = new JButton("Insurance");
@@ -156,7 +133,6 @@ public class Game extends JPanel {
 
 	    this.setLayout(null);
 	    
-	    //add to JPanel
 	    this.add(hit);
 	    this.add(stand);
 	    this.add(nextRound);
@@ -173,11 +149,9 @@ public class Game extends JPanel {
 	    this.dealerCards = new JLabel[11];
 	    this.playerCards = new JLabel[11];
 	    
-	    //card placement
 	    int cardX = 10;
 	    int cardY = 150;
 	    
-	    //card images
 	    for (int i = 0; i < dealerCards.length; i++) {
 
 	        dealerCards[i] = new JLabel(new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage().getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_SMOOTH)));
@@ -195,11 +169,9 @@ public class Game extends JPanel {
 
 	    }
 	    
-	    //JLabel setup
 	    score = new JLabel("Wins: " + currentUser.getWins() +
 		 "  Losses: " + currentUser.getLosses() + 
 		 "  Pushes: " + currentUser.getPushes());
-		//score = new JLabel("Wins: 0   Losses: 0   Pushes: 0");
 	    score.setBounds(450, 10, 300, 50);
 	    this.add(score);
 	    
@@ -226,7 +198,6 @@ public class Game extends JPanel {
 	    score.setForeground(Color.WHITE);
 	    chips.setForeground(Color.WHITE);
 	    
-	    //action listeners for buttons
 	    hit.addActionListener(new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
@@ -391,7 +362,6 @@ public class Game extends JPanel {
 	    });
 	}
 	
-	//update's players hand value and hand's cards images
 	public void updateScreen(){
         playerHandValue.setText("Player's Hand Value: " + player.getHand().calculatedValue());
         player.printHand(playerCards);
@@ -418,11 +388,8 @@ public class Game extends JPanel {
 		if(player.getChips() <= 0) {
 			gameOver();
 		}
-
-		this.roundsPlayed++;
 	}
 
-	//handles the game over feature when the player gets to 0 chips
 	public void gameOver() {
 		gameMessage.setText("Game Over!");
 		nextRound();
@@ -431,13 +398,11 @@ public class Game extends JPanel {
 		exit.setVisible(true);
 	}
 	
-	//resets the hands to empty for the start of the round
 	public void resetHands() {
 		dealer.getHand().discardHandToDeck(discarded);
 		player.getHand().discardHandToDeck(discarded);
 	}
 
-	//deals cards to both the dealer and the player
 	public void dealCards() {
 		dealer.getHand().takeCardFromDeck(deck);
 		dealer.getHand().takeCardFromDeck(deck);
@@ -445,13 +410,11 @@ public class Game extends JPanel {
 		player.getHand().takeCardFromDeck(deck);
 		player.getHand().takeCardFromDeck(deck);
 		
-		//print the hands and then hide them for the betting phase
 		dealer.printHand(dealerCards);
 		player.printHand(playerCards);
 		faceDown();
 	}
 	
-	//check if the player has a blackjack after the betting phase
 	public void initialBlackjack() {
 		revealAll();
 		betAll.setVisible(false);
@@ -464,7 +427,6 @@ public class Game extends JPanel {
 			currentUser.setChips(player.getChips() );
 			gameMessage.setText("Both Have 21! Push!");
 			nextRound();
-
 		}
 		else{
 			dealer.printHand(dealerCards);
@@ -472,23 +434,20 @@ public class Game extends JPanel {
 			gameMessage.setText("Instant Blackjack Win!");
 			player.instant21();
 			currentUser.setChips(player.getChips());
-			
 		}
 		if(Main.useStubDatabase){
 			StubDatabase.updateUser(currentUser);
 		}else {
 			UserService.updateUser((currentUser));
-		}// updating user Chip count.
+		}
 		nextRound();
 	}
 	
-	//checks if the dealer has a blackjack after the insurance or surrender phase
 	public void dealerInitialBlackjack() {
 		betAll.setVisible(false);
 		bet50.setVisible(false);
 		bet100.setVisible(false);
 		
-		//losses++;
 		gameMessage.setText("Dealer Has 21! You Lose!");
 		revealAll();
 		currentUser.setLosses(currentUser.getLosses() + 1);
@@ -499,12 +458,9 @@ public class Game extends JPanel {
 		}else {
 			UserService.updateUser((currentUser));// stub database
 		}
-
-
 		nextRound();
 	}
 	
-	//checks if the player busts during his turn
 	public void playerTurn(){
 	    if (player.getHand().calculatedValue() > 21) {
 	        gameMessage.setText("You BUST - Over 21");
@@ -516,7 +472,7 @@ public class Game extends JPanel {
 				StubDatabase.updateUser(currentUser);
 			}else{
 			UserService.updateUser((currentUser));
-			}// stub database
+			}
 	    	nextRound();
 		}
 	}
@@ -536,13 +492,10 @@ public class Game extends JPanel {
 			else {
 			UserService.updateUser((currentUser));
 			}
-			// stub database
-
 			nextRound();
 		}
 	}
 	
-	//dealer hits until he's above 18
 	public void dealerTurn() {
 		while(dealer.getHand().calculatedValue()<17){
 			dealer.hit(deck, discarded);
@@ -550,7 +503,6 @@ public class Game extends JPanel {
 		}
 	}
 	
-	//sorts out who wins if neither gets 21
 	public void non21Win() {
 		dealerHandValue.setText("Dealer's Hand Value: " + dealer.getHand().calculatedValue());
 		if(dealer.getHand().calculatedValue()>21){
@@ -574,7 +526,6 @@ public class Game extends JPanel {
 			player.pushBet();
 			currentUser.setChips(player.getChips());
 		}
-		//added these 2 lines to update the user data in the database
 		if(Main.useStubDatabase){
 			StubDatabase.updateUser(currentUser);
 		}else{
@@ -583,7 +534,6 @@ public class Game extends JPanel {
         updateStatsDisplay();
 	}
 	
-	//updates the win loss push stats and the chip count on the gui
 	public void updateStatsDisplay() {
 		currentUser.setChips(player.getChips());
 		chips.setText("Chips: " + currentUser.getChips());
@@ -591,10 +541,8 @@ public class Game extends JPanel {
 		" Losses: " + currentUser.getLosses() + 
 		" Pushes: " + currentUser.getPushes());
 	    //chips.setText("Chips: " + player.getChips());
-		//score.setText("Wins: " + wins + "   Losses: " + losses + "   Pushes: " + pushes);
 	}
 	
-	//called to surrender the round
 	public void surrenderRound() {
 	    player.surrenderBet();
 	    gameMessage.setText("You surrendered!");
@@ -611,7 +559,6 @@ public class Game extends JPanel {
 		nextRound();
 	}
 
-	//puts the dealt cards face down during the betting phase
 	public void faceDown() {
 		for(int i = 0; i < 2; i++) {
 			dealerCards[i].setIcon(new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage()
@@ -622,12 +569,9 @@ public class Game extends JPanel {
 		dealerHandValue.setText("Dealer's Hand Value: ?");
 		playerHandValue.setText("Your Hand Value: ?");
 		gameMessage.setText("Betting Phase");
-
 	}
 	
-	//handles the insurance or surrender logic
 	public void insuranceOrSurrender() {
-		//set the right buttons on the screen
 		betAll.setVisible(false);
         bet100.setVisible(false);
         bet50.setVisible(false);
@@ -635,13 +579,11 @@ public class Game extends JPanel {
         insurance.setVisible(true);
         neither.setVisible(true);
         
-        //reveal cards
         dealer.printHand(dealerCards);
         player.printHand(playerCards);
         dealerCards[1].setIcon(new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage()
 				.getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_DEFAULT)));
         
-        //reveal hand values
         dealerHandValue.setText("Dealer's hand value: " + dealer.getHand().getCard(0).getValue() + " + ?");
 		playerHandValue.setText("Your Hand Value: " + player.getHand().calculatedValue());
 		
@@ -649,18 +591,14 @@ public class Game extends JPanel {
 
 	}
 	
-	//reveals all hands and all hand values
 	public void revealAll() {
-		//reveal cards
         dealer.printHand(dealerCards);
         player.printHand(playerCards);
         
-        //reveal hand values
         dealerHandValue.setText("Dealer's hand value: " + dealer.getHand().calculatedValue());
 		playerHandValue.setText("Your Hand Value: " + player.getHand().calculatedValue());
 	}
 	
-	//puts only the next round button on screen
 	public void nextRound() {
 		hit.setVisible(false);
 	    stand.setVisible(false);
@@ -674,14 +612,12 @@ public class Game extends JPanel {
         doubleDown.setVisible(false);
 	}
 	
-	//handles insurance
 	public void insurance() {
 		player.winInsurance();
 		revealAll();
 		gameMessage.setText("You were insured against the dealer");
 	}
 	
-	//a restart method to restart the game anew
 	public void restart() {
 		 
 		/*this.wins = 0;
@@ -706,14 +642,12 @@ public class Game extends JPanel {
 
 		this.dealer = new Dealer();
 		this.player = new Player(currentUser.getChips());
-		//this.player = new Player(this.startingChips);
 
 		this.deck = new deckOfCards();
 		this.discarded = new deckOfCards();
 		this.discarded.emptyDeck();
 		this.deck.shuffle();
 		
-		//reset the gui
 		startRound();
 		restart.setVisible(false);
 		exit.setVisible(false);
@@ -722,4 +656,3 @@ public class Game extends JPanel {
         bet50.setVisible(true);
 	}
 }
-
