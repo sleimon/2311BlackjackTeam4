@@ -38,6 +38,10 @@ public class Leaderboard extends JPanel {
         frameLB.setSize(500, 300);
         frameLB.setVisible(true);
 
+    }
+
+    //To-do: Implement this function that will every users chip count after each new entry.
+    public void sortByChips() {
 
 
 
