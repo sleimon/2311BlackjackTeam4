@@ -37,6 +37,8 @@ public class Leaderboard extends JPanel {
 
        */
         String[] columnNames = {"Rank", "Username", "Chips", "Wins", "Losses", "Pushes"};
+        List<User> sortedUsers = UserService.getAllUsers();
+        sortedUsers.sort(Comparator.comparingInt(User::getChips).reversed());
 
         table = new JTable(data, columnNames);
         table.setBounds(30, 40, 200, 300);
