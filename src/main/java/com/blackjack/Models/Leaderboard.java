@@ -30,15 +30,13 @@ public class Leaderboard extends JPanel {
         frameLB.setSize(600, 400);
         frameLB.setLocationRelativeTo(null);
 
-      /*  String[][] data = {
-                            {"1", "user123", "5000"},
-                            {"2", "jeff554", "3201"}
-                          };
-
-       */
         String[] columnNames = {"Rank", "Username", "Chips", "Wins", "Losses", "Pushes"};
+        //fetching data
         List<User> sortedUsers = UserService.getAllUsers();
         sortedUsers.sort(Comparator.comparingInt(User::getChips).reversed());
+
+        String[][] data = new String[Math.min(sortedUsers.size(),10)][6];
+
 
         table = new JTable(data, columnNames);
         table.setBounds(30, 40, 200, 300);
