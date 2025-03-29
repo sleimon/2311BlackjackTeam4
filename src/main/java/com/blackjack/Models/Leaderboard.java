@@ -1,15 +1,15 @@
 package com.blackjack.Models;
-
+import com.blackjack.Services.UserService;
+//import com.blackjack.Models.User;
 import javax.swing.*;
-import javax.swing.table.TableCellEditor;
+import java.awt.*;
+import java.util.List;
+import java.util.Comparator;
+import javax.swing.table.DefaultTableModel;
 
-import javax.swing.text.TableView;
+
 
 public class Leaderboard extends JPanel {
-
-    private JFrame frameLB;
-    private JTable table = new JTable();
-
 
     public Leaderboard(){
 
@@ -19,31 +19,34 @@ public class Leaderboard extends JPanel {
 
     public void initLeaderboard(){
 
-        frameLB = new JFrame();
+        JFrame frameLB = new JFrame();
         frameLB.setTitle("Blackjack Leaderboard");
         frameLB.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frameLB.setSize(800, 600);
+        frameLB.setSize(600, 400);
         frameLB.setLocationRelativeTo(null);
 
-        String[][] data = {
-                            {"1", "user123", "5000"},
-                            {"2", "jeff554", "3201"}
-                          };
-        String[] columnNames = {"Rank", "Username", "Chip Count"};
+        String[] columnNames = {"Rank", "Username", "Chips", "Wins", "Losses", "Pushes"};
+        //fetching data
+        List<User> sortedUsers = UserService.getAllUsers();
+        sortedUsers.sort(Comparator.comparingInt(User::getChips).reversed());
 
-        table = new JTable(data, columnNames);
-        table.setBounds(30, 40, 200, 300);
+        String[][] data = new String[Math.min(sortedUsers.size(),10)][6];
+        for(int i=0; i<data.length; i++){
+            User user = sortedUsers.get(i);
+            data[i][0]= String.valueOf(i+1);
+            data[i][1]= user.getUsername();
+            data[i][2]= String.valueOf(user.getChips());
+            data[i][3]= String.valueOf(user.getWins());
+            data[i][4]= String.valueOf(user.getLosses());
+            data[i][5]= String.valueOf(user.getPushes());
+        }
+
+        JTable table = new JTable(new DefaultTableModel(data, columnNames));
+        //table.setBounds(30, 40, 200, 300);
         JScrollPane sp = new JScrollPane(table);
-        frameLB.add(sp);
-        frameLB.setSize(500, 300);
+        frameLB.add(sp, BorderLayout.CENTER);
+        //frameLB.setSize(500, 300);
         frameLB.setVisible(true);
-
-    }
-
-    //To-do: Implement this function that will every users chip count after each new entry.
-    public void sortByChips() {
-
-
 
     }
 
