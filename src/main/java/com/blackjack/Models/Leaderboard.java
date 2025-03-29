@@ -36,7 +36,7 @@ public class Leaderboard extends JPanel {
                           };
 
        */
-        String[] columnNames = {"Rank", "Username", "Chip Count"};
+        String[] columnNames = {"Rank", "Username", "Chips", "Wins", "Losses", "Pushes"};
 
         table = new JTable(data, columnNames);
         table.setBounds(30, 40, 200, 300);
