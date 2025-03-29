@@ -1,1 +1,2 @@
 sleimon,test,500,1,8,0
+username123,password123,1000,0,0,0

@@ -90,7 +90,7 @@ public class MainMenu extends JPanel{
                     startGame(username);
                 }
                 else if(button == leaderboard){
-                    //TODO: leaderboard
+                    startLeaderboard();
                 }
                 else { //button == quit
                     System.exit(0);
@@ -106,5 +106,9 @@ public class MainMenu extends JPanel{
         gameFrame.setSize(800, 600);
         gameFrame.add(game);
         gameFrame.setVisible(true);
+    }
+    private static void startLeaderboard() {
+//        // Create and show the game window
+        Leaderboard lb = new Leaderboard();
     }
 }

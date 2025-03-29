@@ -1,6 +1,7 @@
 package com.blackjack;
 
 import com.blackjack.Models.Game;
+import com.blackjack.Models.Leaderboard;
 import com.blackjack.Models.MainMenu;
 import com.blackjack.Models.User;
 import com.blackjack.Services.UserService;
