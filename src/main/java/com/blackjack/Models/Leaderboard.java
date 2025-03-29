@@ -27,13 +27,15 @@ public class Leaderboard extends JPanel {
         frameLB = new JFrame();
         frameLB.setTitle("Blackjack Leaderboard");
         frameLB.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frameLB.setSize(800, 600);
+        frameLB.setSize(600, 400);
         frameLB.setLocationRelativeTo(null);
 
-        String[][] data = {
+      /*  String[][] data = {
                             {"1", "user123", "5000"},
                             {"2", "jeff554", "3201"}
                           };
+
+       */
         String[] columnNames = {"Rank", "Username", "Chip Count"};
 
         table = new JTable(data, columnNames);
