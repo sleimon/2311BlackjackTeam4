@@ -33,7 +33,8 @@ public class Leaderboard extends JPanel {
         frameLB.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frameLB.setSize(600, 400);
         frameLB.setLocationRelativeTo(null);
-        frameLB.getContentPane().setBackground(Color.GREEN);
+        //frameLB.getContentPane().setBackground(Color.GREEN);
+
 
         String[] columnNames = {"Rank", "Username", "Chips", "Wins", "Losses", "Pushes"};
         //fetching data
@@ -47,7 +48,6 @@ public class Leaderboard extends JPanel {
             data[i][4] = String.valueOf(user.getLosses());
             data[i][5] = String.valueOf(user.getPushes());
         }
-
         DefaultTableModel model = new DefaultTableModel(data, columnNames){
         //table.setBounds(30, 40, 200, 300);
         @Override
