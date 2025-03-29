@@ -14,8 +14,7 @@ import javax.swing.table.DefaultTableModel;
 public class Leaderboard extends JPanel {
 
     private JFrame frameLB;
-    private JTable table = new JTable();
-
+    private JTable table;
 
     public Leaderboard(){
 
