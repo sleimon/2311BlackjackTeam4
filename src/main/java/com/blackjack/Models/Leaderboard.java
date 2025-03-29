@@ -25,7 +25,7 @@ public class Leaderboard extends JPanel {
 
         if (sortedUsers.isEmpty()) {
             JOptionPane jOptionPane = new JOptionPane();
-            jOptionPane.showMessageDialog(null, "No User available.", "Leaderboard", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No User available.", "Leaderboard", JOptionPane.INFORMATION_MESSAGE);
         }
         JFrame frameLB = new JFrame();
         frameLB.setTitle("Blackjack Leaderboard");
