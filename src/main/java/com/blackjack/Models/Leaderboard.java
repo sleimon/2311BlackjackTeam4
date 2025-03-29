@@ -26,20 +26,21 @@ public class Leaderboard extends JPanel {
         if (sortedUsers.isEmpty()) {
             JOptionPane jOptionPane = new JOptionPane();
             JOptionPane.showMessageDialog(null, "No User available.", "Leaderboard", JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
         JFrame frameLB = new JFrame();
-        frameLB.setTitle("Blackjack Leaderboard");
+        frameLB.setTitle("\uD83C\uDFC6 Blackjack Leaderboard");
         frameLB.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frameLB.setSize(600, 400);
         frameLB.setLocationRelativeTo(null);
+        frameLB.getContentPane().setBackground(Color.GREEN);
 
         String[] columnNames = {"Rank", "Username", "Chips", "Wins", "Losses", "Pushes"};
         //fetching data
-
         String[][] data = new String[Math.min(sortedUsers.size(), 10)][6];
         for (int i = 0; i < data.length; i++) {
             User user = sortedUsers.get(i);
-            data[i][0] = String.valueOf(i + 1);
+            data[i][0] = " \uD83C\uDFC5 "+ String.valueOf(i + 1);
             data[i][1] = user.getUsername();
             data[i][2] = String.valueOf(user.getChips());
             data[i][3] = String.valueOf(user.getWins());
