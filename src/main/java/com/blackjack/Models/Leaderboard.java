@@ -1,9 +1,7 @@
 package com.blackjack.Models;
 import com.blackjack.Services.UserService;
-import com.blackjack.Models.User;
+//import com.blackjack.Models.User;
 import javax.swing.*;
-import javax.swing.table.TableCellEditor;
-import javax.swing.text.TableView;
 import java.awt.*;
 import java.util.List;
 import java.util.Comparator;
@@ -13,9 +11,6 @@ import javax.swing.table.DefaultTableModel;
 
 public class Leaderboard extends JPanel {
 
-    private JFrame frameLB;
-    private JTable table;
-
     public Leaderboard(){
 
         initLeaderboard();
@@ -24,7 +19,7 @@ public class Leaderboard extends JPanel {
 
     public void initLeaderboard(){
 
-        frameLB = new JFrame();
+        JFrame frameLB = new JFrame();
         frameLB.setTitle("Blackjack Leaderboard");
         frameLB.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frameLB.setSize(600, 400);
@@ -46,7 +41,7 @@ public class Leaderboard extends JPanel {
             data[i][5]= String.valueOf(user.getPushes());
         }
 
-        table = new JTable(new DefaultTableModel(data,columnNames));
+        JTable table = new JTable(new DefaultTableModel(data, columnNames));
         //table.setBounds(30, 40, 200, 300);
         JScrollPane sp = new JScrollPane(table);
         frameLB.add(sp, BorderLayout.CENTER);
