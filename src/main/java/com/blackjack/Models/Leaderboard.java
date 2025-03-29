@@ -46,19 +46,12 @@ public class Leaderboard extends JPanel {
             data[i][5]= String.valueOf(user.getPushes());
         }
 
-        table = new JTable(data, columnNames);
-        table.setBounds(30, 40, 200, 300);
+        table = new JTable(new DefaultTableModel(data,columnNames));
+        //table.setBounds(30, 40, 200, 300);
         JScrollPane sp = new JScrollPane(table);
-        frameLB.add(sp);
-        frameLB.setSize(500, 300);
+        frameLB.add(sp, BorderLayout.CENTER);
+        //frameLB.setSize(500, 300);
         frameLB.setVisible(true);
-
-    }
-
-    //To-do: Implement this function that will every users chip count after each new entry.
-    public void sortByChips() {
-
-
 
     }
 
