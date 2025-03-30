@@ -8,7 +8,7 @@ public class User {
     private int wins;
     private int losses;
     private int pushes;
-
+    //User class keeps track of lifetime wins and losses
 
     public User(String username, String password, int chips, int wins, int losses, int pushes) {
         this.username = username;
@@ -53,6 +53,17 @@ public class User {
     }
     public void setPushes(int pushes){
         this.pushes =pushes;
+    }
+    public void oneWin(){
+        this.wins += 1;
+    }
+
+    public void oneLoss(){
+        this.losses += 1;
+    }
+
+    public void onePush(){
+        this.pushes += 1;
     }
     
     

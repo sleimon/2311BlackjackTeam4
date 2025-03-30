@@ -379,3 +379,9 @@ March 30th
     - Sleimon fixes more bugs and code smells (3 hours)
         - Ticket #65, problem report #7
         - Ticket #64, problem report #6
+        - Ticket #67, code smell ID #15
+        - Ticket #29, code smell ID #1
+        - Ticker #35, code smell ID #7
+    - Sleimon added some new methods to the User class (1 hour)
+    - Sleimon added a new feature, lifetime wins and losses (2 hours)
+    - Sleimon cleared some general code smell (1 hour)
