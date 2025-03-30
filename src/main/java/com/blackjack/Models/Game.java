@@ -34,7 +34,8 @@ public class Game extends JPanel {
 	private JButton restart;
 	private JButton exit;
 
-	private JLabel score;
+	private JLabel sessionScore;
+	private JLabel lifeTimeScore;
 	private JLabel playerHandValue;
 	private JLabel dealerHandValue;
 	private JLabel gameMessage;
@@ -64,8 +65,7 @@ public class Game extends JPanel {
         }
 		// this is to initialize the player with current user's chips
 		this.player = new Player(currentUser.getChips());
-        System.out.println("Loaded User: " + currentUser);
-    
+
 		//Initializing rest of the game 
 		this.dealer = new Dealer();	
 		this.deck = new deckOfCards();
@@ -111,15 +111,22 @@ public class Game extends JPanel {
 	        cardY -= 17;
 
 	    }
-	    
-	    score = new JLabel("Wins: " + currentUser.getWins() +
-		 "  Losses: " + currentUser.getLosses() + 
-		 "  Pushes: " + currentUser.getPushes());
-	    score.setBounds(450, 10, 300, 50);
-	    this.add(score);
+
+	    sessionScore = new JLabel("Session - Wins: " + player.getWins() +
+		 		"  Losses: " + player.getLosses() +
+		 		"  Pushes: " + player.getPushes());
+	    sessionScore.setBounds(375, 10, 300, 50);
+	    this.add(sessionScore);
+
+		sessionScore.setFont(new Font("Arial", Font.BOLD, 16));  // Change 20 to your desired font size
+
+		lifeTimeScore = new JLabel("Lifetime - Wins: " + currentUser.getWins() +
+				"  Losses: " + currentUser.getLosses() +
+				"  Pushes: " + currentUser.getPushes());
+		lifeTimeScore.setBounds(410, 30, 300, 50);
+		this.add(lifeTimeScore);
 	    
 		chips = new JLabel("Chips: " + currentUser.getChips());
-	    //chips = new JLabel("Chips: " + player.getChips());
 	    chips.setBounds(700, 10, 300, 50);
 	    this.add(chips);
 
@@ -138,7 +145,8 @@ public class Game extends JPanel {
 	    gameMessage.setForeground(Color.WHITE);
 	    dealerHandValue.setForeground(Color.WHITE);
 	    playerHandValue.setForeground(Color.WHITE);
-	    score.setForeground(Color.WHITE);
+	    sessionScore.setForeground(Color.WHITE);
+		lifeTimeScore.setForeground(Color.WHITE);
 	    chips.setForeground(Color.WHITE);
 
 		actionListeners();
@@ -380,22 +388,17 @@ public class Game extends JPanel {
 	
 	public void startRound() {
 		updateStatsDisplay();
-
 		resetHands();
-
 		if(deck.cardsLeft() < 4){
 			deck.reloadDeckFromDiscard(discarded);
 		}
-						
 		dealCards();
-		
 		if(player.getChips() < 50) {
 			bet100.setVisible(false);
 			bet50.setVisible(false);
 		} else if(player.getChips() < 100) {
 			bet100.setVisible(false);
 		}
-		
 		if(player.getChips() <= 0) {
 			gameOver();
 		}
@@ -417,10 +420,8 @@ public class Game extends JPanel {
 	public void dealCards() {
 		dealer.getHand().takeCardFromDeck(deck);
 		dealer.getHand().takeCardFromDeck(deck);
-		
 		player.getHand().takeCardFromDeck(deck);
 		player.getHand().takeCardFromDeck(deck);
-		
 		printHand(dealerCards, dealer);
 		printHand(playerCards, player);
 		faceDown();
@@ -431,26 +432,23 @@ public class Game extends JPanel {
 		betAll.setVisible(false);
 		bet50.setVisible(false);
 		bet100.setVisible(false);
-
 		if(dealer.has21()){
-			currentUser.setPushes(currentUser.getPushes() + 1);
+			player.onePush();
+			currentUser.onePush();
 			player.pushBet();
-			currentUser.setChips(player.getChips() );
+			currentUser.setChips(player.getChips());
 			gameMessage.setText("Both Have 21! Push!");
 			nextRound();
 		}
 		else{
 			printHand(dealerCards, dealer);
-			currentUser.setWins(currentUser.getWins() + 1);
+			player.oneWin();
+			currentUser.oneWin();
 			gameMessage.setText("Instant Blackjack Win!");
 			player.instant21();
 			currentUser.setChips(player.getChips());
 		}
-		if(Main.useStubDatabase){
-			StubDatabase.updateUser(currentUser);
-		}else {
-			UserService.updateUser((currentUser));
-		}
+		whichDb();
 		nextRound();
 	}
 	
@@ -458,51 +456,38 @@ public class Game extends JPanel {
 		betAll.setVisible(false);
 		bet50.setVisible(false);
 		bet100.setVisible(false);
-		
 		gameMessage.setText("Dealer Has 21! You Lose!");
 		revealAll();
-		currentUser.setLosses(currentUser.getLosses() + 1);
+		player.oneLoss();
+		currentUser.oneLoss();
 		player.loseBet();
 		currentUser.setChips(player.getChips());
-		if(Main.useStubDatabase){
-			StubDatabase.updateUser(currentUser);
-		}else {
-			UserService.updateUser((currentUser));// stub database
-		}
+		whichDb();
 		nextRound();
 	}
 	
 	public void playerTurn(){
 	    if (player.getHand().calculatedValue() > 21) {
 	        gameMessage.setText("You BUST - Over 21");
-			currentUser.setLosses(currentUser.getLosses() + 1);
+			player.oneLoss();
+			currentUser.oneLoss();
 			player.loseBet();
-			currentUser.setChips(player.getChips()); // Deduct the bet for a bust
+			currentUser.setChips(player.getChips());
 			revealAll();
-			if(Main.useStubDatabase){
-				StubDatabase.updateUser(currentUser);
-			}else{
-			UserService.updateUser((currentUser));
-			}
+			whichDb();
 	    	nextRound();
 		}
 	}
 	
-	//checks if the player hit a blackjack
 	public void checkPlayer21() {
 		if(player.getHand().calculatedValue() == 21){
             gameMessage.setText("You have 21!");
             revealAll();
-			currentUser.setWins(currentUser.getWins() + 1);
-      player.winBet();
+			player.oneWin();
+			currentUser.oneWin();
+      		player.winBet();
 			currentUser.setChips(player.getChips());
-            
-			if(Main.useStubDatabase){
-				StubDatabase.updateUser(currentUser);
-			}
-			else {
-			UserService.updateUser((currentUser));
-			}
+			whichDb();
 			nextRound();
 		}
 	}
@@ -518,55 +503,53 @@ public class Game extends JPanel {
 		dealerHandValue.setText("Dealer's Hand Value: " + dealer.getHand().calculatedValue());
 		if(dealer.getHand().calculatedValue()>21){
 			gameMessage.setText("Dealer busts! You Win!");
-			currentUser.setWins(currentUser.getWins() + 1);
+			player.oneWin();
+			currentUser.oneWin();
 			player.winBet();
 			currentUser.setChips(player.getChips());
 		}else if(dealer.getHand().calculatedValue() > player.getHand().calculatedValue()){
 			gameMessage.setText("Dealer Higher Hand! You Lose!");
-			currentUser.setLosses(currentUser.getLosses() + 1);
+			player.oneLoss();
+			currentUser.oneLoss();
 			player.loseBet();
 			currentUser.setChips(player.getChips());
 		}else if(player.getHand().calculatedValue() > dealer.getHand().calculatedValue()){
 			gameMessage.setText("Player Higher Hand! You Win!");
-			currentUser.setWins(currentUser.getWins() + 1);
+			player.oneWin();
+			currentUser.oneWin();
 			player.winBet();
 			currentUser.setChips(player.getChips());
 		}else {
 			gameMessage.setText("Equal Value Hands! Push!");
-			currentUser.setPushes(currentUser.getPushes() + 1);
+			player.onePush();
+			currentUser.onePush();
 			player.pushBet();
 			currentUser.setChips(player.getChips());
 		}
-		if(Main.useStubDatabase){
-			StubDatabase.updateUser(currentUser);
-		}else{
-		UserService.updateUser(currentUser);
-		}
+		whichDb();
         updateStatsDisplay();
 	}
 	
 	public void updateStatsDisplay() {
 		currentUser.setChips(player.getChips());
 		chips.setText("Chips: " + currentUser.getChips());
-        score.setText("Wins: " + currentUser.getWins() + 
-		" Losses: " + currentUser.getLosses() + 
-		" Pushes: " + currentUser.getPushes());
-	    //chips.setText("Chips: " + player.getChips());
+        sessionScore.setText("Session - Wins: " + player.getWins() +
+				" Losses: " + player.getLosses() +
+				" Pushes: " + player.getPushes());
+		lifeTimeScore.setText("Lifetime - Wins: " + currentUser.getWins() +
+				" Losses: " + currentUser.getLosses() +
+				" Pushes: " + currentUser.getPushes());
 	}
 	
 	public void surrenderRound() {
 	    player.surrenderBet();
+		player.oneLoss();
 	    gameMessage.setText("You surrendered!");
 	    printHand(dealerCards, dealer);
         dealerHandValue.setText("Dealer's Hand Value: " + dealer.getHand().calculatedValue());
-	    //added 2 lines for the updating the losses below
-		currentUser.setLosses(currentUser.getLosses() + 1);
-		currentUser.setChips(currentUser.getChips() - player.getBet());
-		if(Main.useStubDatabase){
-			StubDatabase.updateUser(currentUser);
-		}else {
-			UserService.updateUser(currentUser);
-		}
+		currentUser.oneLoss();
+		currentUser.setChips(player.getChips());
+		whichDb();
 		nextRound();
 	}
 
@@ -589,15 +572,12 @@ public class Game extends JPanel {
         surrender.setVisible(true);
         insurance.setVisible(true);
         neither.setVisible(true);
-        
         printHand(dealerCards, dealer);
         printHand(playerCards, player);
         dealerCards[1].setIcon(new ImageIcon(new ImageIcon(IMAGE_DIR + "CardDown.png").getImage()
 				.getScaledInstance(CARD_WIDTH, CARD_HEIGHT, Image.SCALE_DEFAULT)));
-        
         dealerHandValue.setText("Dealer's hand value: " + dealer.getHand().getCard(0).getValue() + " + ?");
 		playerHandValue.setText("Your Hand Value: " + player.getHand().calculatedValue());
-		
 		gameMessage.setText("Surrender or Insurance?");
 
 	}
@@ -605,7 +585,6 @@ public class Game extends JPanel {
 	public void revealAll() {
         printHand(dealerCards, dealer);
         printHand(playerCards, player);
-        
         dealerHandValue.setText("Dealer's hand value: " + dealer.getHand().calculatedValue());
 		playerHandValue.setText("Your Hand Value: " + player.getHand().calculatedValue());
 	}
@@ -630,41 +609,26 @@ public class Game extends JPanel {
 	}
 	
 	public void restart() {
-		 
-		/*this.wins = 0;
-		this.losses = 0;
-		this.pushes = 0;
-		this.roundsPlayed = 0;
-
-		// Reset the GUI
-		startRound();
-		restart.setVisible(false);
-		exit.setVisible(false);
-		betAll.setVisible(true);
-		bet100.setVisible(true);
-		bet50.setVisible(true);
-	}
-
-		currentUser.setChips(1000);
-        currentUser.setWins(0);
-        currentUser.setLosses(0);
-        currentUser.setPushes(0);
-        StubDatabase.updateUser(currentUser);*/
-
 		this.dealer = new Dealer();
 		currentUser.setChips(1000);
 		this.player = new Player(currentUser.getChips());
-
 		this.deck = new deckOfCards();
 		this.discarded = new deckOfCards();
 		this.discarded.emptyDeck();
 		this.deck.shuffle();
-		
 		startRound();
 		restart.setVisible(false);
 		exit.setVisible(false);
 		betAll.setVisible(true);
         bet100.setVisible(true);
         bet50.setVisible(true);
+	}
+
+	public void whichDb(){
+		if(Main.useStubDatabase){
+			StubDatabase.updateUser(currentUser);
+		}else {
+			UserService.updateUser(currentUser);
+		}
 	}
 }

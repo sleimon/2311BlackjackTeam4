@@ -39,11 +39,7 @@ public class Person {
 	}
 	
 	public boolean has21(){
-		if(this.getHand().calculatedValue() == 21){
-			return true;
-		}else {
-			return false;
-		}
+		return this.getHand().calculatedValue() == 21;
 	}
 
 	public boolean equals(Object obj) {
@@ -55,7 +51,6 @@ public class Person {
 	}
 
 	public String toString() {
-		String result = this.name + " " + this.hand.toString();
-		return result;
+		 return this.name + " " + this.hand.toString();
 	}
 }
