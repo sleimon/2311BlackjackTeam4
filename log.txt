@@ -351,7 +351,7 @@ March 25th
     - Sleimon fixes branch merging problems (1 hour)
 
 March 28th
-    - Sleimon fixes some code smells (9 hours)
+    - Sleimon fixes some code smells (10 hours)
         - Ticket #30, code smell ID #2
         - Ticket #33, code smell ID #5
         - Ticket #25, problem report number 2
@@ -363,3 +363,19 @@ March 28th
         - Ticket #41, code smell ID #12
         - Ticket #38, code smell ID #10
         - Ticket #43, code smell ID #14
+        - Ticket #44, problem report #5
+    - George and Roop finish leaderboard (6 hours)
+
+Meeting March 28th (2 hours)
+    - Sleimon, Roop and George go over what they've done
+
+March 29th
+    - Roop tries to customize the leaderboard (2 hours)
+    - Roop makes the leaderboard non-editable (2 hours)
+    - Mark gets the second customer interview done (2 hours)
+    - George works on architecture sketch (2 hours)
+
+March 30th
+    - Sleimon fixes more bugs and code smells (3 hours)
+        - Ticket #65, problem report #7
+        - Ticket #64, problem report #6
