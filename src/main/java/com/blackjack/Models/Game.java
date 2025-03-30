@@ -626,7 +626,7 @@ public class Game extends JPanel {
 	public void insurance() {
 		player.winInsurance();
 		revealAll();
-		gameMessage.setText("You were insured against the dealer");
+		gameMessage.setText("Insured!");
 	}
 	
 	public void restart() {
@@ -652,6 +652,7 @@ public class Game extends JPanel {
         StubDatabase.updateUser(currentUser);*/
 
 		this.dealer = new Dealer();
+		currentUser.setChips(1000);
 		this.player = new Player(currentUser.getChips());
 
 		this.deck = new deckOfCards();
