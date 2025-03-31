@@ -132,11 +132,11 @@ public class GameLogic {
 			player.insuranceBet(); updateUserChips();
 			if (isNaturalBlackjack(dealer)) {
 				player.winInsurance(); currentUser.setWins(currentUser.getWins() + 1);
-				gameMessage = "Insurance Won! (Dealer had Blackjack)";
+				gameMessage = "Insurance Won!";
 				updateUserChips(); saveUserData(); currentState = GameState.ROUND_OVER; dealerCardHidden = false;
 			} else {
 				player.loseInsurance(); updateUserChips();
-				gameMessage = "Insurance Lost. Dealer didn't have Blackjack.";
+				gameMessage = "Insurance Lost.";
 				currentState = GameState.PLAYER_TURN; // Go to Player Turn
 				gameMessage += " " + getPlayerTurnPrompt(); // Set prompt for start of player turn
 				dealerCardHidden = true;
