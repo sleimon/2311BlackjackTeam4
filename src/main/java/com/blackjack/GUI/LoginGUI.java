@@ -63,12 +63,12 @@ public class LoginGUI {
         signUpButton = new JButton("Sign Up");
         panel.add(signUpButton, gbc);
 
-        // Database Toggle Button
-        gbc.gridx = 0; gbc.gridy = 3; panel.add(new JLabel("Database:"), gbc);
-        gbc.gridx = 1; gbc.gridy = 3; gbc.gridwidth = 2;
-        toggleDatabaseButton = new JToggleButton("Use Real Database");
-        toggleDatabaseButton.setSelected(!Main.useStubDatabase); // Reflect state from Main
-        panel.add(toggleDatabaseButton, gbc);
+//        // Database Toggle Button
+//        gbc.gridx = 0; gbc.gridy = 3; panel.add(new JLabel("Database:"), gbc);
+//        gbc.gridx = 1; gbc.gridy = 3; gbc.gridwidth = 2;
+//        toggleDatabaseButton = new JToggleButton("Use Real Database");
+//        toggleDatabaseButton.setSelected(!Main.useStubDatabase); // Reflect state from Main
+//        panel.add(toggleDatabaseButton, gbc);
 
         loginFrame.add(panel);
 
@@ -83,12 +83,12 @@ public class LoginGUI {
      */
     private void setupActionListeners() {
         // Database Toggle Listener
-        toggleDatabaseButton.addActionListener(e -> {
-            // Update the static flag in Main directly
-            Main.useStubDatabase = !toggleDatabaseButton.isSelected();
-            toggleDatabaseButton.setText(Main.useStubDatabase ? "Use Stub Database" : "Use Real Database");
-            System.out.println("[LoginGUI] Database mode set to: " + (Main.useStubDatabase ? "Stub" : "Real"));
-        });
+//        toggleDatabaseButton.addActionListener(e -> {
+//            // Update the static flag in Main directly
+//            Main.useStubDatabase = !toggleDatabaseButton.isSelected();
+//            toggleDatabaseButton.setText(Main.useStubDatabase ? "Use Stub Database" : "Use Real Database");
+//            System.out.println("[LoginGUI] Database mode set to: " + (Main.useStubDatabase ? "Stub" : "Real"));
+//        });
 
         // Login Button Listener
         loginButton.addActionListener(e -> handleLogin());

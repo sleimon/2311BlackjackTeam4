@@ -331,8 +331,7 @@ public class GameGUI extends JPanel {
         scoreLabel.setText("W: " + user.getWins() + " | L: " + user.getLosses() + " | P: " + user.getPushes());
         chipsLabel.setText("Chips: " + user.getChips());
         String message = gameLogic.getGameMessage();
-        gameMessageLabel.setText("<html><body style='text-align: center; width: 95%;'>" +
-                (message != null ? message : "") + // Add null check
+        gameMessageLabel.setText("<html><body style='text-align: center; width: 95%;'>" + (message != null ? message : "") + // Add null check
                 "</body></html>");
         if (gameLogic.getCurrentState() == GameLogic.GameState.BETTING) {
             playerHandValueLabel.setText("Player Hand: ?");
