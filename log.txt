@@ -381,7 +381,63 @@ March 30th
         - Ticket #64, problem report #6
         - Ticket #67, code smell ID #15
         - Ticket #29, code smell ID #1
-        - Ticker #35, code smell ID #7
+        - Ticket #35, code smell ID #7
+        - Ticket #36, code smell ID #8
     - Sleimon added some new methods to the User class (1 hour)
     - Sleimon added a new feature, lifetime wins and losses (2 hours)
     - Sleimon cleared some general code smell (1 hour)
+    - Arya refactors the game class into two classes (2 hours)
+    - Arya updates the GUI (3 hours)
+    - Arya clears up some general code smell (1 hour)
+    - Sleimon finishes the refactor and planning documents (2 hours)
+    - Sleimon finishes the log (1 hour)
+    - Sleimon finishes the wiki (1 hour)
+    - Sleimon finishes the presentation slides (1 hour)
+
+Meeting March 30th
+    - Arya and Sleimon discuss their changes (2 hours)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Total Iteration 3 Meeting Time: 9 hours
+Total Meeting Time: 59 hours
+
+Sleimon's Development Tasks:
+	- Assigning weekly tasks to the team                                      Time allocated: a day                    Time spent: a day
+	- Refactoring everyone's code                                             Time allocated: a week                   Time spent: a week
+	- Bug fixing the project                                                  Time allocated: a week                   Time spent: a week
+	- Filling out the log                                                     Time allocated: a day                    Time spent: a day
+	- Creating ITR3 Doc                                                       Time allocated: a day                    Time spent: a day
+	- Creating the wiki							  Time allocated: a day                    Time spent: a day
+	- Cleaning up code smells                                                 Time allocated: a week                   Time spent: a week
+	- Implementing the Main Menu                                              Time allocated: a day                    Time spent: a day
+	- Updating the GUI                                                        Time allocated: a day                    Time spent: a day
+	- Multiplayer                                                             Time allocated: two weeks                Time spent: ongoing/not done
+	- Creating the presentation                                               Time allocated: a day                    Time spent: a day
+	- Refactor document                                                       Time allocated: a day                    Time spent: a day
+	- Three design refactor document                                          Time allocated: a day                    Time spent: a day
+	
+Arya's Development Tasks:
+	- Implementing the Main Menu                                              Time allocated: a week                   Time spent: a week
+	- Implementing the Leaderboard                                            Time allocated: a week                   Time spent: a week
+	- Cleaning up code smells                                                 Time allocated: a week                   Time spent: a week
+	- Refactoring everyone's code                                             Time allocated: a week                   Time spent: a week
+	- Bug fixing the project                                                  Time allocated: a week                   Time spent: a week
+	- Updating the GUI                                                        Time allocated: a day                    Time spent: a day
+	- Multiplayer                                                             Time allocated: two weeks                Time spent: ongoing/not done
+
+George's Development Tasks:
+	- Implementing the Main Menu                                              Time allocated: a week                   Time spent: a week
+	- Implementing the Leaderboard                                            Time allocated: a week                   Time spent: a week
+	- Creating the architecture sketch                                        Time allocated: 2 days                   Time spent: 2 days
+
+Mark's Development Tasks
+	- Implementing the Main Menu                                              Time allocated: a week                   Time spent: a week
+	- Implementing the Leaderboard                                            Time allocated: a week                   Time spent: a week
+	- Second Customer Meeting                                                 Time allocated: a day                    Time spent: a day
+
+Roop's Development Tasks
+	- Implementing the Main Menu                                              Time allocated: a week                   Time spent: a week
+	- Implementing the Leaderboard                                            Time allocated: a week                   Time spent: a week
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
