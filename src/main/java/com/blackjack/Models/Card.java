@@ -2,55 +2,49 @@ package com.blackjack.Models;
 
 public class Card {
 	
-	//Fields: three fields consisting of rank, suit and value in a blackjack game
+	//three fields consisting of rank, suit and value
+	//synonymous with an actual card's attributes
 	private String cardRank;
 	private String cardSuit;
 	private int cardValue;
-	
-	//Constructor: creates a card with the input being the rank, suit and value
+
 	public Card(String rank, String suit, int value) {
 		cardRank = rank;
 		cardSuit = suit;
 		cardValue = value;
 	}
-	
-	//Constructor: copy constructor
+
+	//This constructor is needed to make it easier to deep copy another card object
 	public Card(Card card) {
 		this.cardRank = card.cardRank;
 		this.cardSuit = card.cardSuit;
 		this.cardValue = card.cardValue;
 	}
 	
-	//Methods
-	
-	//Get the rank of the card
 	public String getRank() {
 		return this.cardRank;
 	}
 	
-	//Get the suit of the card
 	public String getSuit() {
 		return this.cardSuit;
 	}
 	
-	//Get the value the card is worth in blackjack
 	public int getValue() {
 		return this.cardValue;
 	}
 	
-	//toString method for the card
 	public String toString() {
 		return this.cardRank + " of " + this.cardSuit + "(" + this.cardValue + ")";
 	}
 	
-	//Overridden equals method to compare cards
+	//Overridden equals method to compare cards for debugging
 	public boolean equals(Object obj) {
 		 if(this == obj) { return true; }
 		 if(obj == null || this.getClass() != obj.getClass()) { return false; }
 		 Card other = (Card) obj;
 		 return 
-				 this.cardRank == other.cardRank &&
-				 this.cardSuit == other.cardSuit &&
+				 this.cardRank.equals(other.cardRank) &&
+				 this.cardSuit.equals(other.cardSuit) &&
 				 this.cardValue == other.cardValue;
 	}
 }

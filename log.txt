@@ -20,7 +20,7 @@ Meeting on January 17th at 4pm (2 hours)
 	- Decided to do blackjack instead
 
 Meeting on January 20th at 5pm (1 hour)
-	- After lecture, discussed what'd we use to create the game
+	- After lecture, discussed what we would use to create the game
 	- Ruled out game engines such as Unity and Unreal
 	- Decided to create the project in Java
 	- Talked about what we should do for ITR0
@@ -214,7 +214,6 @@ Roop's Development Tasks
 	- implementing the database                                               Time allocated: two weeks                Time spent: still ongoing
 	- implementing the stub database					  Time allocated: a week		   Time spent: a week
 
-
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ITERATION 2
@@ -342,35 +341,47 @@ March 24th
     - Arya and Sleimon do code review, create smell tickets (4 hours)
     - Sleimon works on bugs, bug document and tickets (8 hours)
     - George creates bug tickets and work on bugs (2 hours)
-    - George finishes main menu protoype (6 hours)
+    - George finishes main menu prototype (6 hours)
     - Mark and Roop have meeting discussing Leaderboard (3 hours)
 
 March 25th
-    - Sleimon fixes bugs (tickets #27, and 40 on github) (3 hours)
->>>>>>> 0db7c8dec5792070fd2abd0b55423a3730928819
+    - Sleimon fixes bugs (tickets #27, and #40 on GitHub) (3 hours)
+    - Sleimon tweaks the main menu, adding images, changing colour and size (3 hours)
+    - Sleimon fixes some of the code smell (3 hours)
+    - Sleimon fixes branch merging problems (1 hour)
 
+March 28th
+    - Sleimon fixes some code smells (10 hours)
+        - Ticket #30, code smell ID #2
+        - Ticket #33, code smell ID #5
+        - Ticket #25, problem report number 2
+        - Ticket #34, code smell ID #6
+        - Ticket #37, code smell ID #9
+        - Ticket #24, problem report number 1
+        - Ticket #32, code smell ID #4
+        - Ticket #39, code smell ID #11
+        - Ticket #41, code smell ID #12
+        - Ticket #38, code smell ID #10
+        - Ticket #43, code smell ID #14
+        - Ticket #44, problem report #5
+    - George and Roop finish leaderboard (6 hours)
 
+Meeting March 28th (2 hours)
+    - Sleimon, Roop and George go over what they've done
 
+March 29th
+    - Roop tries to customize the leaderboard (2 hours)
+    - Roop makes the leaderboard non-editable (2 hours)
+    - Mark gets the second customer interview done (2 hours)
+    - George works on architecture sketch (2 hours)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+March 30th
+    - Sleimon fixes more bugs and code smells (3 hours)
+        - Ticket #65, problem report #7
+        - Ticket #64, problem report #6
+        - Ticket #67, code smell ID #15
+        - Ticket #29, code smell ID #1
+        - Ticker #35, code smell ID #7
+    - Sleimon added some new methods to the User class (1 hour)
+    - Sleimon added a new feature, lifetime wins and losses (2 hours)
+    - Sleimon cleared some general code smell (1 hour)

@@ -8,9 +8,8 @@ public class User {
     private int wins;
     private int losses;
     private int pushes;
+    //User class keeps track of lifetime wins and losses
 
-
-    // Constructor to include the data we want to store
     public User(String username, String password, int chips, int wins, int losses, int pushes) {
         this.username = username;
         this.password = password;
@@ -19,8 +18,7 @@ public class User {
         this.losses = losses;
         this.pushes = pushes;
     }
-// getters and setters
-    public String getUsername() { 
+    public String getUsername() {
         return username;
      }
     public void setUsername(String username) {
@@ -55,6 +53,17 @@ public class User {
     }
     public void setPushes(int pushes){
         this.pushes =pushes;
+    }
+    public void oneWin(){
+        this.wins += 1;
+    }
+
+    public void oneLoss(){
+        this.losses += 1;
+    }
+
+    public void onePush(){
+        this.pushes += 1;
     }
     
     

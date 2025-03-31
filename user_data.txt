@@ -1,2 +1,2 @@
-arya1,pw1,700,0,2,0
-sleimon1,test,525,5,8,1
+sleimon,test,675,2,16,0
+username123,password123,1000,0,0,0
