@@ -1,5 +1,7 @@
 package com.blackjack.Models;
 
+import com.blackjack.GUI.GameGUI;
+
 import java.awt.Image;
 
 import javax.swing.*;
@@ -38,20 +40,21 @@ public class Person {
 		this.hand = hand;
 	}
 	
-	//Prints the hand into the Game class into the GUI as card images
-	public void printHand(JLabel[] cards){
-	    for(int i = 0; i < 11; i++){
-	        cards[i].setVisible(false);
-	    }
-	    
-	    for(int i = 0; i < this.hand.getHandSize(); i++){
-	        String rank = this.hand.getCard(i).getRank();
-	        String suit = this.hand.getCard(i).getSuit();
-	        String filename = rank + suit + ".png";
-	        cards[i].setIcon(new ImageIcon(new ImageIcon(Game.IMAGE_DIR+filename).getImage().getScaledInstance(Game.CARD_WIDTH, Game.CARD_HEIGHT, Image.SCALE_SMOOTH)));
-	        cards[i].setVisible(true);
-	    }
-	}
+//	//Prints the hand into the Game class into the GUI as card images
+//	public void printHand(JLabel[] cards){
+//	    for(int i = 0; i < 11; i++){
+//	        cards[i].setVisible(false);
+//	    }
+//
+//	    for(int i = 0; i < this.hand.getHandSize(); i++){
+//	        String rank = this.hand.getCard(i).getRank();
+//	        String suit = this.hand.getCard(i).getSuit();
+//	        String filename = rank + suit + ".png";
+//	        cards[i].setIcon(new ImageIcon(new ImageIcon(GameGUI.IMAGE_DIR+filename).getImage().getScaledInstance(GameGUI.CARD_WIDTH, GameGUI.CARD_HEIGHT, Image.SCALE_SMOOTH)));
+//	        cards[i].setVisible(true);
+//	    }
+//	}
+	//Commented out the unused method above.
 	
 	//The method to hit on the person's turn
 	public void hit(deckOfCards deck, deckOfCards discard){
@@ -65,11 +68,7 @@ public class Person {
 	
 	//Returns whether the person has a blackjack or not
 	public boolean has21(){
-		if(this.getHand().calculatedValue() == 21){
-			return true;
-		}else {
-			return false;
-		}
+        return this.getHand().calculatedValue() == 21;
 	}
 
 	//Overridden equals method for the Person class

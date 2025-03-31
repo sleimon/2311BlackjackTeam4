@@ -1,137 +1,94 @@
 package com.blackjack;
 
-import com.blackjack.Models.Game;
-import com.blackjack.Models.MainMenu;
-import com.blackjack.Models.User;
-import com.blackjack.Services.UserService;
-import com.blackjack.stubdatabase.StubDatabase;
+// GUI Imports
+import com.blackjack.GUI.GameGUI;
+import com.blackjack.GUI.LoginGUI; // Import the new Login GUI
+import com.blackjack.GUI.MainMenuGUI;
 
+// Model/Logic Imports
+import com.blackjack.Services.GameLogic;
+// No longer need User model directly in Main usually
+// import com.blackjack.Models.User;
+
+// Service Imports
+import com.blackjack.Services.LoginService; // Import the new Login Service
+
+// Swing Imports
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+// No longer need these directly in Main:
+// import java.awt.*;
+// import java.nio.charset.StandardCharsets;
+// import java.util.Arrays;
 
 public class Main {
 
-    public static boolean useStubDatabase = false; // Toggle state
+    // This flag controls database choice; LoginService will access it.
+    // Consider passing this to LoginService constructor if you prefer less static coupling.
+    public static boolean useStubDatabase = false; // Default to Real DB
 
     public static void main(String[] args) {
-        // Create a panel for the login/sign up form
-       // MainMenu mm = new MainMenu();
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2)); // Extra row for toggle switch
+        // Standard Swing entry point
+        SwingUtilities.invokeLater(() -> {
+            // 1. Create the service layer object
+            LoginService loginService = new LoginService();
 
-        // Username and password fields
-        JLabel usernameLabel = new JLabel("Username:");
-        JTextField usernameField = new JTextField(20);
-        JLabel passwordLabel = new JLabel("Password:");
-        JPasswordField passwordField = new JPasswordField(20);
+            // 2. Create the initial GUI, passing the service
+            LoginGUI loginGui = new LoginGUI(loginService);
 
-        // Login and Sign Up buttons
-        JButton loginButton = new JButton("Login");
-        JButton signUpButton = new JButton("Sign Up");
-
-        // Toggle switch for database selection
-        JToggleButton toggleDatabaseButton = new JToggleButton("Use Stub Database (OFF)");
-
-        // Add components to panel
-        panel.add(usernameLabel);
-        panel.add(usernameField);
-        panel.add(passwordLabel);
-        panel.add(passwordField);
-        panel.add(loginButton);
-        panel.add(signUpButton);
-        panel.add(new JLabel("Database Mode:"));
-        panel.add(toggleDatabaseButton);
-
-        // Create the frame and add the panel
-        JFrame frame = new JFrame("BlackJack Login");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 250);
-        frame.add(panel);
-        frame.setVisible(true);
-
-        // Toggle button action listener
-        toggleDatabaseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                useStubDatabase = toggleDatabaseButton.isSelected();
-                toggleDatabaseButton.setText(useStubDatabase ? "Use Stub Database (ON)" : "Use Stub Database (OFF)");
-            }
-        });
-
-        // Login button action listener
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText().trim();
-                String password = new String(passwordField.getPassword()).trim();
-
-                if (username.isEmpty() || password.isEmpty()) {
-                    JOptionPane.showMessageDialog(frame, "Please enter both username and password.");
-                    return;
-                }
-
-                // Get user based on the toggle state
-                User user = useStubDatabase ? StubDatabase.getUser(username) : UserService.getUser(username);
-
-                if (user != null && UserService.validatePassword(username, password)) {
-                    System.out.println("User logged in: " + username);
-                    startMainMenu(username);
-                    frame.dispose(); // Close the login window
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Incorrect username or password.");
-                }
-            }
-        });
-
-        // Sign-up button action listener
-        signUpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText().trim();
-                String password = new String(passwordField.getPassword()).trim();
-
-                if (username.isEmpty() || password.isEmpty()) {
-                    JOptionPane.showMessageDialog(frame, "Please enter both username and password.");
-                    return;
-                }
-
-                // Check if user already exists in the selected database
-                User existingUser = useStubDatabase ? StubDatabase.getUser(username) : UserService.getUser(username);
-
-                if (existingUser != null) {
-                    JOptionPane.showMessageDialog(frame, "Username already exists. Please choose a different username.");
-                } else {
-                    // Create new user and add to the selected database
-                    User newUser = new User(username, password, 1000, 0, 0, 0); // 1000 chips by default
-
-                    if (useStubDatabase) {
-                        StubDatabase.addUser(newUser);
-                    } else {
-                        UserService.addUser(newUser);
-                    }
-
-                    JOptionPane.showMessageDialog(frame, "User created successfully.");
-                    startMainMenu(username);
-                    frame.dispose(); // Close the sign-up window
-                }
-            }
+            // 3. Display the GUI
+            loginGui.display();
         });
     }
 
-    private static void startMainMenu(String username) {
-//        // Create and show the game window
-        MainMenu menu = new MainMenu(username);
+    // --- Navigation Methods ---
+    // These are called by other GUI classes to transition views
+
+    /**
+     * Called by LoginGUI upon successful login to show the Main Menu.
+     * @param username The username of the logged-in user.
+     * @param frameToDispose The JFrame of the previous screen (LoginGUI) to close.
+     */
+    public static void startMainMenu(String username, JFrame frameToDispose) {
+        SwingUtilities.invokeLater(() -> {
+            System.out.println("[Main] Starting Main Menu for: " + username);
+            MainMenuGUI menu = new MainMenuGUI(username, frameToDispose);
+            // MainMenuGUI's constructor should handle disposing the old frame
+            // and making the new one visible.
+        });
     }
 
-    private static void startGame(String username) {
-        // Create and show the game window
-        Game game = new Game(username);
-        JFrame gameFrame = new JFrame("BlackJack");
-        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameFrame.setSize(800, 600);
-        gameFrame.add(game);
-        gameFrame.setVisible(true);
+    /**
+     * Called by MainMenuGUI to start the actual game.
+     * @param username The username of the player.
+     * @param frameToDispose The JFrame of the previous screen (MainMenuGUI) to close.
+     */
+    public static void startGame(String username, JFrame frameToDispose) {
+        SwingUtilities.invokeLater(() -> {
+            System.out.println("[Main] Starting game for user: " + username);
+
+            // Create game logic and UI
+            GameLogic gameLogic = new GameLogic(username); // Uses Main.useStubDatabase internally
+            GameGUI gamePanel = new GameGUI(gameLogic);
+
+            // Setup game window
+            JFrame gameFrame = new JFrame("Blackjack - " + username);
+            gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            gameFrame.setResizable(false);
+            gameFrame.add(gamePanel);
+            gameFrame.pack();
+            gameFrame.setLocationRelativeTo(null);
+
+            // Dispose old frame (Main Menu) and show game frame
+            if (frameToDispose != null) {
+                frameToDispose.dispose();
+            }
+            gameFrame.setVisible(true);
+        });
     }
+
+    // Removed methods that are now in LoginService or LoginGUI:
+    // - createAndShowLoginGUI() -> Moved to LoginGUI constructor/initialize
+    // - attemptLogin() -> Moved to LoginService
+    // - attemptSignUp() -> Moved to LoginService
+    // - bytesToHex() -> Moved to LoginGUI (if still needed for debug)
 }

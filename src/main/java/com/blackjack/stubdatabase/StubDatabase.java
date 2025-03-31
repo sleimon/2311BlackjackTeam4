@@ -24,10 +24,16 @@ public class StubDatabase {
     }
 
     // Adding a new user to the stub database (if not already existing)
-    public static void addUser(User user) {
+    public static boolean addUser(User user) {
         if (getUser(user.getUsername()) == null) { // Prevent duplicates
             users.add(user);
             saveUsersToFile(); // Save changes
+        }
+        if(getUser(user.getUsername())!=null){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
