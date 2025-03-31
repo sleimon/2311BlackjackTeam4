@@ -58,6 +58,24 @@ public class Main {
     }
 
     /**
+     * Called when returning to the main menu from another screen (Game, Leaderboard).
+     * @param username The username to display on the menu.
+     * @param frameToDispose The JFrame of the screen being left (GameGUI/LeaderboardGUI) to close.
+     */
+    public static void returnToMainMenu(String username, JFrame frameToDispose) {
+        SwingUtilities.invokeLater(() -> {
+            System.out.println("[Main] Returning to Main Menu for: " + username);
+            // Dispose the incoming frame FIRST
+            if (frameToDispose != null) {
+                frameToDispose.dispose();
+            }
+            // Create and show the Main Menu (passing null as the frame to dispose this time)
+            // MainMenuGUI constructor needs to handle a null frame parameter gracefully.
+            MainMenuGUI menu = new MainMenuGUI(username, null); // Pass null for loginFrame
+        });
+    }
+
+    /**
      * Called by MainMenuGUI to start the actual game.
      * @param username The username of the player.
      * @param frameToDispose The JFrame of the previous screen (MainMenuGUI) to close.
