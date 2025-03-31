@@ -207,4 +207,44 @@ public class Hand {
 		return false;
 		// Could also be written as: return !this.hand.isEmpty();
 	}
+
+	// --- NEW isSoft() Method ---
+	/**
+	 * Checks if the hand is "soft". A soft hand contains an Ace that is
+	 * currently being counted as 11 points, and the total hand value is 21 or less.
+	 *
+	 * @return true if the hand is soft, false otherwise.
+	 */
+	public boolean isSoft() {
+		boolean containsAce = false;
+		int valueIfAcesAre1 = 0;
+
+		// Calculate the value assuming ALL Aces are worth 1,
+		// and check if any Aces exist at all.
+		for (Card card : this.hand) {
+			if (card == null) continue; // Skip null cards
+			int cardValue = card.getValue(); // Original value (Ace=11)
+			if (cardValue == 11) {
+				containsAce = true;
+				valueIfAcesAre1 += 1; // Count Ace as 1 for this calculation
+			} else {
+				valueIfAcesAre1 += cardValue; // Use face value for non-Aces
+			}
+		}
+
+		// If there are no aces, the hand cannot be soft.
+		if (!containsAce) {
+			return false;
+		}
+
+		// Get the final, adjusted value using the existing calculatedValue() method.
+		// This method already handles flipping Aces from 11 to 1 if needed to avoid busting.
+		int finalCalculatedValue = this.calculatedValue();
+
+		// The hand is soft IF it contains an Ace AND the final calculated value
+		// is DIFFERENT from the value calculated with all Aces forced to 1.
+		// This difference implies at least one Ace *must* still be counting as 11
+		// in the finalCalculatedValue without busting.
+		return finalCalculatedValue != valueIfAcesAre1;
+	}
 }

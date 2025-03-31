@@ -1,515 +1,354 @@
-package com.blackjack.Services;
-import com.blackjack.Models.*;
+package com.blackjack.Services; // Or Services package
+
+import com.blackjack.Services.UserService;
 import com.blackjack.stubdatabase.StubDatabase;
-
 import com.blackjack.Main;
-
+import com.blackjack.Models.*;
+import java.util.Collections; // Needed for unmodifiable list in getter
 import java.util.EnumSet;
 import java.util.List;
 
+
+
 public class GameLogic {
 
-	private User currentUser;
+	// --- Fields ---
+	private User currentUser; // Master record for stats/chips
 	private deckOfCards deck;
 	private deckOfCards discarded;
-	private Dealer dealer;
-	private Player player;
-
+	private Dealer dealer; // Assuming Dealer extends Person
+	private Player player; // Assuming Player extends Person
 	private GameState currentState;
 	private String gameMessage;
 	private boolean dealerCardHidden;
 
-	// Enum to represent the current state of the game round
-	public enum GameState {
-		BETTING,
-		INSURANCE_SURRENDER, // Optional phase after betting, before main play
-		PLAYER_TURN,
-		DEALER_TURN,
-		ROUND_OVER,
-		GAME_OVER
-	}
+	// --- Enums ---
+	public enum GameState { BETTING, INSURANCE_SURRENDER, PLAYER_TURN, DEALER_TURN, ROUND_OVER, GAME_OVER }
+	public enum PlayerAction { HIT, STAND, DOUBLE_DOWN, SURRENDER, INSURANCE, NEITHER, BET_50, BET_100, BET_ALL, NEXT_ROUND, RESTART, EXIT }
 
-	// Enum to represent actions available to the player
-	public enum PlayerAction {
-		HIT, STAND, DOUBLE_DOWN, SURRENDER, INSURANCE, BET_50, BET_100, BET_ALL, NEXT_ROUND, RESTART, EXIT, NEITHER // NEITHER for insurance/surrender
-	}
-
-	// Constructor
+	// --- Constructor ---
 	public GameLogic(String username) {
 		loadOrCreateUser(username);
-		// Initialize player with current user's chips from the loaded/created user
-		this.player = new Player(currentUser.getChips());
+		if (this.currentUser != null) {
+			this.player = new Player(currentUser.getChips());
+			// Initialize session stats in Player if needed (though logic uses User)
+			// player.setWins(0); player.setLosses(0); player.setPushes(0);
+		} else {
+			System.err.println("FATAL: Cannot initialize GameLogic, currentUser is null.");
+			this.player = new Player(0); // Avoid null pointer
+		}
 		this.dealer = new Dealer();
 		this.deck = new deckOfCards();
 		this.discarded = new deckOfCards();
 		this.discarded.emptyDeck();
 		this.deck.shuffle();
-		this.currentState = GameState.BETTING; // Start in betting phase
+		this.currentState = GameState.BETTING;
 		this.gameMessage = "Place your bet.";
-		this.dealerCardHidden = true; // Initially hide dealer's second card
-		// Deal initial cards but keep them "hidden" logically until bet is placed
-		prepareInitialDeal();
+		this.dealerCardHidden = true; // Start hidden
+		// Only deal if player object is valid and hands exist
+		if (this.player != null && this.player.getHand() != null && this.dealer != null && this.dealer.getHand() != null) {
+			prepareInitialDeal();
+		} else {
+			System.err.println("GameLogic Constructor: Cannot deal cards, player or dealer hand missing.");
+		}
 	}
 
+	// --- User Loading ---
 	private void loadOrCreateUser(String username) {
 		this.currentUser = Main.useStubDatabase ? StubDatabase.getUser(username) : UserService.getUser(username);
 		if (currentUser == null) {
 			System.out.println("User not found, creating new user: " + username);
+			// Use a temporary default password for creation logic.
 			this.currentUser = new User(username, "defaultPass", 1000, 0, 0, 0);
-			if (Main.useStubDatabase) {
-				StubDatabase.addUser(currentUser);
-			} else {
-				UserService.addUser(currentUser);
-			}
-		} else {
-			System.out.println("Loaded User: " + currentUser);
+			if (Main.useStubDatabase) { StubDatabase.addUser(currentUser); }
+			else { if (!UserService.addUser(currentUser)) { System.err.println("Failed to add new user!"); this.currentUser = null; } }
+		}
+		if (this.currentUser != null) {
+			System.out.println("Loaded User: " + currentUser.getUsername() + " Chips: " + currentUser.getChips());
 		}
 	}
 
-	// --- Game Flow Methods ---
-
+	// --- Game Setup ---
 	public void prepareInitialDeal() {
-		// Ensure deck has enough cards
-		if (deck.cardsLeft() < 4) {
-			System.out.println("Deck low, reloading from discard pile.");
-			deck.reloadDeckFromDiscard(discarded);
-		}
-		// Deal cards but don't evaluate state yet
-		dealer.getHand().takeCardFromDeck(deck);
-		dealer.getHand().takeCardFromDeck(deck);
-		player.getHand().takeCardFromDeck(deck);
-		player.getHand().takeCardFromDeck(deck);
-	}
-
-	public void placeBet(int amount) {
-		if (currentState != GameState.BETTING) return;
-		if (amount > player.getChips()) {
-			gameMessage = "Not enough chips to bet " + amount;
-			return; // Or handle insufficient funds appropriately
-		}
-
-		player.placeBet(amount);
-		updateUserChips(); // Update user object immediately after bet
-		gameMessage = "Bet placed: " + amount;
-		dealerCardHidden = true; // Keep dealer card hidden visually for now
-
-		// Check for initial Blackjacks AFTER bet is placed
-		if (player.has21()) {
-			handleInitialPlayerBlackjack();
-		} else if (dealer.getHand().getCard(0).getValue() == 11) { // Check if dealer showing Ace for insurance
-			currentState = GameState.INSURANCE_SURRENDER;
-			gameMessage = "Dealer showing Ace. Insurance or Surrender?";
-		} else {
-			// If no player blackjack and no dealer Ace showing, proceed to player turn
-			currentState = GameState.PLAYER_TURN;
-			gameMessage = "Hit, Stand, or Double Down?";
-			dealerCardHidden = true; // Keep hidden until player stands or busts
-		}
-		// Note: Dealer Blackjack check happens either in insurance phase or after player stands
-	}
-
-	public void chooseNeitherInsuranceSurrender() {
-		if (currentState != GameState.INSURANCE_SURRENDER) return;
-		// Player chose neither, check if dealer has Blackjack *now*
-		if (dealer.has21()) {
-			handleDealerBlackjack();
-		} else {
-			// Dealer does not have Blackjack, proceed to player's normal turn
-			currentState = GameState.PLAYER_TURN;
-			gameMessage = "Hit, Stand, or Double Down?";
-			dealerCardHidden = true; // Keep hidden
-		}
-	}
-
-	public void requestInsurance() {
-		if (currentState != GameState.INSURANCE_SURRENDER) return;
-		if (player.getChips() < player.getBet() / 2) {
-			gameMessage = "Not enough chips for insurance.";
-			// Stay in INSURANCE_SURRENDER state or revert? Revert might be better.
-			currentState = GameState.PLAYER_TURN; // Allow normal play
-			gameMessage = "Insufficient funds for insurance. Hit, Stand, or Double?";
+		if (deck == null || discarded == null || player == null || dealer == null || player.getHand() == null || dealer.getHand() == null) {
+			System.err.println("Error preparing deal: Game objects not initialized.");
 			return;
 		}
-
-		player.insuranceBet();
-		updateUserChips(); // Update chips for insurance cost
-
-		if (dealer.has21()) {
-			// Insurance pays out, main bet is lost (unless player also had BJ)
-			player.winInsurance();
-			gameMessage = "Insurance paid! Dealer had Blackjack.";
-			// Since dealer had BJ, player loses original bet regardless
-			handleDealerBlackjack(); // This handles the loss of the main bet too
-			currentState = GameState.ROUND_OVER;
-			dealerCardHidden = false; // Reveal dealer hand
-		} else {
-			// Insurance lost, dealer does not have BJ
-			player.loseInsurance();
-			gameMessage = "Insurance lost. Dealer doesn't have Blackjack. Hit, Stand, or Double?";
-			currentState = GameState.PLAYER_TURN;
-			dealerCardHidden = true; // Keep hidden
-		}
-		updateUserChips(); // Update chips after insurance win/loss
+		if (deck.cardsLeft() < 4) { deck.reloadDeckFromDiscard(discarded); }
+		player.getHand().discardHandToDeck(discarded);
+		dealer.getHand().discardHandToDeck(discarded);
+		dealer.getHand().takeCardFromDeck(deck);
+		dealer.getHand().takeCardFromDeck(deck);
+		player.getHand().takeCardFromDeck(deck);
+		player.getHand().takeCardFromDeck(deck);
+		System.out.println("[GameLogic] Cards dealt for new round.");
+		this.dealerCardHidden = true; // Ensure dealer card starts hidden visually
 	}
 
+	// --- Helper for Natural Blackjack ---
+	private boolean isNaturalBlackjack(Person person) {
+		return person != null && person.getHand() != null &&
+				person.getHand().getSize() == 2 && person.getHand().calculatedValue() == 21;
+	}
 
+	// --- Betting Phase ---
+	public void placeBet(int amount) {
+		if (currentState != GameState.BETTING) return;
+		if (amount <= 0 || amount > currentUser.getChips()) { gameMessage = "Invalid bet amount."; return; }
+
+		player.placeBet(amount); // Deducts from player.chips
+		updateUserChips();       // Syncs currentUser.chips
+		gameMessage = "Bet placed: " + amount + ".";
+		dealerCardHidden = true;
+
+		// State Transition Logic
+		boolean playerHasNaturalBj = isNaturalBlackjack(player);
+		int dealerUpCardValue = 0; Card dealerUpCard = null;
+		if (dealer.getHand() != null && dealer.getHand().getSize() > 0) {
+			dealerUpCard = dealer.getHand().getCard(0); dealerUpCardValue = dealerUpCard.getValue();
+		} else { System.err.println("Error: Dealer has no cards after deal!"); return; }
+
+		boolean dealerShowsAce = (dealerUpCardValue == 11);
+		boolean dealerShowsTenValue = (dealerUpCardValue == 10);
+		boolean offerInsuranceOpportunity = dealerShowsAce || dealerShowsTenValue;
+
+		if (playerHasNaturalBj) {
+			handleInitialPlayerBlackjack();
+		} else if (offerInsuranceOpportunity) {
+			currentState = GameState.INSURANCE_SURRENDER;
+			String affordabilityText = player.getChips() >= player.getBet() ? "" : " (Cannot Afford)";
+			if (dealerShowsAce) gameMessage = "Dealer showing Ace. Insurance offered." + affordabilityText;
+			else gameMessage = "Dealer showing " + dealerUpCard.getRank() + ". Insurance offered." + affordabilityText;
+			dealerCardHidden = true;
+		} else {
+			currentState = GameState.PLAYER_TURN;
+			gameMessage = "Hit, Stand, Double Down, or Surrender?";
+			dealerCardHidden = true;
+		}
+	}
+
+	// --- Insurance/Surrender Phase Actions ---
+	public void requestInsurance() {
+		if (currentState != GameState.INSURANCE_SURRENDER) return;
+		if (player.getChips() >= player.getBet()) {
+			player.insuranceBet(); updateUserChips();
+			if (isNaturalBlackjack(dealer)) {
+				player.winInsurance();
+				// Treat non-standard insurance win as overall win
+				currentUser.setWins(currentUser.getWins() + 1); // Update User stats
+				// player.oneWin(); // Don't use Player stats if User is master
+				gameMessage = "Insurance Won! (Dealer had Blackjack)";
+				updateUserChips(); saveUserData();
+				currentState = GameState.ROUND_OVER; dealerCardHidden = false;
+			} else {
+				player.loseInsurance(); updateUserChips();
+				gameMessage = "Insurance Lost. Dealer didn't have Blackjack.";
+				currentState = GameState.PLAYER_TURN;
+				gameMessage += " Hit, Stand, Double Down, or Surrender?";
+				dealerCardHidden = true;
+			}
+		} else { gameMessage = "Not enough chips for Insurance."; }
+	}
+
+	public void declineInsurance() { // Renamed from neither
+		if (currentState != GameState.INSURANCE_SURRENDER) return;
+		gameMessage = "Insurance declined.";
+		if (isNaturalBlackjack(dealer)) {
+			gameMessage += " Dealer reveals Blackjack!";
+			handleDealerBlackjack();
+		} else {
+			gameMessage += " Dealer does not have Blackjack.";
+			currentState = GameState.PLAYER_TURN;
+			gameMessage += " Hit, Stand, Double Down, or Surrender?";
+			dealerCardHidden = true;
+		}
+	}
+
+	// --- Player Turn Actions ---
 	public void hit() {
 		if (currentState != GameState.PLAYER_TURN) return;
-
-		player.hit(deck, discarded);
+		player.hit(deck, discarded); // Pass both args
 		gameMessage = "Player Hits.";
-		dealerCardHidden = true; // Keep hidden
-
-		if (player.getHand().calculatedValue() > 21) {
-			handlePlayerBust();
-		} else if (player.getHand().calculatedValue() == 21) {
-			gameMessage = "Player has 21!";
-			// Player got 21, but not Blackjack (more than 2 cards). Move to dealer's turn.
-			stand(); // Automatically stand on 21
-		} else {
-			gameMessage = "Hit or Stand?";
-			// Stay in PLAYER_TURN
-		}
+		if (player.getHand().calculatedValue() > 21) { handlePlayerBust(); }
+		else if (player.getHand().calculatedValue() == 21) { gameMessage = "Player has 21!"; stand(); }
+		else { gameMessage = "Hit, Stand, Double Down, or Surrender?"; }
 	}
 
 	public void stand() {
 		if (currentState != GameState.PLAYER_TURN) return;
-
 		currentState = GameState.DEALER_TURN;
 		gameMessage = "Player Stands. Dealer's turn.";
-		dealerCardHidden = false; // Reveal dealer's card
+		dealerCardHidden = false;
 		executeDealerTurn();
 	}
 
 	public void doubleDown() {
-		if (currentState != GameState.PLAYER_TURN || player.getHand().getHandSize() != 2 || player.getChips() < player.getBet()) {
-			gameMessage = "Cannot Double Down now.";
-			return;
-		}
-
-		player.doubleDown(); // Doubles the bet internally
-		updateUserChips(); // Reflect the doubled bet cost
-		player.hit(deck, discarded); // Player gets exactly one more card
-		gameMessage = "Player Doubled Down.";
-
-		if (player.getHand().calculatedValue() > 21) {
-			handlePlayerBust();
-		} else {
-			// Player doubled and didn't bust, proceed immediately to dealer's turn
-			currentState = GameState.DEALER_TURN;
-			dealerCardHidden = false; // Reveal dealer's card
-			gameMessage += " Dealer's turn.";
-			executeDealerTurn();
-		}
+		if (currentState != GameState.PLAYER_TURN) return;
+		if (player.getHand().getSize() != 2) { gameMessage = "Can only Double Down on first two cards."; return; }
+		if (player.getChips() >= player.getBet()) { // Check affordability
+			player.doubleDown(); updateUserChips();
+			player.hit(deck, discarded); // Pass both args
+			gameMessage = "Player Doubled Down.";
+			if (player.getHand().calculatedValue() > 21) { handlePlayerBust(); }
+			else { currentState = GameState.DEALER_TURN; dealerCardHidden = false; gameMessage += " Dealer's turn."; executeDealerTurn(); }
+		} else { gameMessage = "Not enough chips to Double Down."; }
 	}
 
-
-	public void surrender() {
-		// Typically only allowed as the very first action on the first two cards
-		if (currentState != GameState.INSURANCE_SURRENDER && !(currentState == GameState.PLAYER_TURN && player.getHand().getHandSize() == 2)) {
-			gameMessage = "Cannot surrender now.";
-			return;
-		}
-
-		player.surrenderBet(); // Player gets half the bet back
-		currentUser.setLosses(currentUser.getLosses() + 1);
-		// Chips are adjusted within player.surrenderBet(), update user object
-		updateUserChips();
-		saveUserData();
-
+	public void surrender() { // Available anytime during PLAYER_TURN
+		if (currentState != GameState.PLAYER_TURN) { gameMessage = "Cannot surrender now."; return; }
+		player.surrenderBet();
+		currentUser.setLosses(currentUser.getLosses() + 1); // Update User stats
+		// player.oneLoss(); // Don't use Player stats if User is master
+		updateUserChips(); saveUserData();
 		gameMessage = "Player Surrendered. Half bet returned.";
-		currentState = GameState.ROUND_OVER;
-		dealerCardHidden = false; // Reveal dealer hand
+		currentState = GameState.ROUND_OVER; dealerCardHidden = false;
 	}
 
-
+	// --- Dealer's Turn and Round Resolution ---
 	private void executeDealerTurn() {
 		if (currentState != GameState.DEALER_TURN) return;
-		dealerCardHidden = false; // Make sure it's revealed
-
-		// Check if dealer had Blackjack initially (if insurance wasn't offered/taken)
-		if (dealer.has21() && dealer.getHand().getHandSize() == 2) {
-			handleDealerBlackjack();
-			return; // Round ends immediately
-		}
-
-		while (dealer.getHand().calculatedValue() < 17) {
-			dealer.hit(deck, discarded);
+		dealerCardHidden = false;
+		if (isNaturalBlackjack(dealer)) { handleDealerBlackjack(); return; }
+		while (dealer.getHand().calculatedValue() < 17 || (dealer.getHand().calculatedValue() == 17 && dealer.getHand().isSoft())) {
+			dealer.hit(deck, discarded); // Pass both args
 		}
 		determineOutcome();
 	}
 
+	private void determineOutcome() {
+		if (currentState != GameState.DEALER_TURN) return;
+		int dealerValue = dealer.getHand().calculatedValue();
+		int playerValue = player.getHand().calculatedValue();
+
+		if (dealerValue > 21) {
+			gameMessage = "Dealer Busts! You win!"; player.winBet();
+			currentUser.setWins(currentUser.getWins() + 1); // Update User stats
+			// player.oneWin();
+		} else if (dealerValue > playerValue) {
+			gameMessage = "Dealer wins!"; player.loseBet();
+			currentUser.setLosses(currentUser.getLosses() + 1); // Update User stats
+			// player.oneLoss();
+		} else if (playerValue > dealerValue) {
+			gameMessage = "You win!"; player.winBet();
+			currentUser.setWins(currentUser.getWins() + 1); // Update User stats
+			// player.oneWin();
+		} else {
+			gameMessage = "Push!"; player.pushBet();
+			currentUser.setPushes(currentUser.getPushes() + 1); // Update User stats
+			// player.onePush();
+		}
+		updateUserChips(); saveUserData();
+		currentState = GameState.ROUND_OVER;
+		if (currentUser.getChips() <= 0) { handleGameOver(); }
+	}
+
+	// --- Blackjack/Bust Handling ---
 	private void handleInitialPlayerBlackjack() {
-		dealerCardHidden = false; // Reveal dealer card to check for push
-		if (dealer.has21()) { // Dealer also has Blackjack
-			player.pushBet();
-			currentUser.setPushes(currentUser.getPushes() + 1);
-			gameMessage = "Push! Both have Blackjack!";
-		} else { // Player wins with Blackjack
-			player.instant21(); // Pays 3:2
-			currentUser.setWins(currentUser.getWins() + 1);
+		dealerCardHidden = false;
+		if (isNaturalBlackjack(dealer)) {
+			player.pushBet(); currentUser.setPushes(currentUser.getPushes() + 1);
+			gameMessage = "Push! Both have Natural Blackjack!";
+		} else {
+			player.instant21(); currentUser.setWins(currentUser.getWins() + 1);
 			gameMessage = "Player Blackjack! You win!";
 		}
-		updateUserChips();
-		saveUserData();
+		updateUserChips(); saveUserData();
 		currentState = GameState.ROUND_OVER;
 	}
 
 	private void handleDealerBlackjack() {
-		dealerCardHidden = false; // Reveal hand
-		// Player loses main bet unless they also had Blackjack (handled in handleInitialPlayerBlackjack)
-		if (!player.has21()) { // Avoid double counting if it was a push
-			player.loseBet();
-			currentUser.setLosses(currentUser.getLosses() + 1);
-			gameMessage = "Dealer Blackjack! You lose.";
-		} else if (player.has21()) {
-			// This case (both BJ) should have been caught by handleInitialPlayerBlackjack
-			// If reached here via insurance path where player didn't have BJ, it's correct loss.
-			// If somehow player had BJ and insurance was involved, push was already handled.
-			// Let's assume loss if not player BJ.
-			player.loseBet();
-			currentUser.setLosses(currentUser.getLosses() + 1);
-			gameMessage = "Dealer Blackjack! You lose.";
-		}
-		updateUserChips();
-		saveUserData();
+		dealerCardHidden = false;
+		player.loseBet(); // Player loses original bet
+		currentUser.setLosses(currentUser.getLosses() + 1);
+		gameMessage = (gameMessage.contains("Insurance declined") ? gameMessage + " " : "") + "Dealer Blackjack! You lose.";
+		updateUserChips(); saveUserData();
 		currentState = GameState.ROUND_OVER;
 	}
 
 	private void handlePlayerBust() {
 		player.loseBet();
 		currentUser.setLosses(currentUser.getLosses() + 1);
-		updateUserChips();
-		saveUserData();
+		updateUserChips(); saveUserData();
 		gameMessage = "Player Busts! You lose.";
-		currentState = GameState.ROUND_OVER;
-		dealerCardHidden = false; // Reveal dealer hand
+		currentState = GameState.ROUND_OVER; dealerCardHidden = false;
 	}
 
-
-	private void determineOutcome() {
-		if (currentState != GameState.DEALER_TURN) return; // Should only be called after dealer turn
-
-		int dealerValue = dealer.getHand().calculatedValue();
-		int playerValue = player.getHand().calculatedValue();
-
-		if (dealerValue > 21) {
-			gameMessage = "Dealer Busts! You win!";
-			player.winBet();
-			currentUser.setWins(currentUser.getWins() + 1);
-		} else if (dealerValue > playerValue) {
-			gameMessage = "Dealer wins!";
-			player.loseBet();
-			currentUser.setLosses(currentUser.getLosses() + 1);
-		} else if (playerValue > dealerValue) {
-			gameMessage = "You win!";
-			player.winBet();
-			currentUser.setWins(currentUser.getWins() + 1);
-		} else { // Push
-			gameMessage = "Push!";
-			player.pushBet();
-			currentUser.setPushes(currentUser.getPushes() + 1);
-		}
-
-		updateUserChips();
-		saveUserData();
-		currentState = GameState.ROUND_OVER;
-
-		if (player.getChips() <= 0) {
-			handleGameOver();
-		}
-	}
-
+	// --- Round/Game Lifecycle ---
 	public void nextRound() {
 		if (currentState != GameState.ROUND_OVER) return;
-
-		// Check for game over condition again before starting new round
-		if (player.getChips() <= 0) {
-			handleGameOver();
-			return;
-		}
-
-
-		// Move played cards to discard pile
+		if (currentUser.getChips() <= 0) { handleGameOver(); return; }
 		player.getHand().discardHandToDeck(discarded);
 		dealer.getHand().discardHandToDeck(discarded);
-		player.resetBet(); // Reset bet amount for the new round
-
-		// Prepare for the next round
-		prepareInitialDeal();
-		currentState = GameState.BETTING;
-		gameMessage = "Place your bet for the next round.";
-		dealerCardHidden = true;
+		player.resetBet(); // Resets player internal bet state
+		prepareInitialDeal(); currentState = GameState.BETTING;
+		gameMessage = "Place your bet for the next round."; dealerCardHidden = true;
 	}
-
-	private void handleGameOver() {
-		gameMessage = "Game Over! No more chips.";
-		currentState = GameState.GAME_OVER;
-		// User data is already saved round by round
-	}
-
+	private void handleGameOver() { gameMessage = "Game Over! No more chips."; currentState = GameState.GAME_OVER; }
 	public void restartGame() {
-		// Reset player stats and chips based on *initial* user load or a fixed amount
-		// For simplicity, let's reset to the state when the user was first loaded/created for this session
-		// Or reset to a fixed default like 1000 chips and 0 stats
-		currentUser.setChips(1000); // Reset to default starting chips
-		currentUser.setWins(0);
-		currentUser.setLosses(0);
-		currentUser.setPushes(0);
-		saveUserData(); // Persist the reset state
-
-		// Re-initialize game components
-		this.player = new Player(currentUser.getChips()); // Create new player with reset chips
+		currentUser.setChips(1000); currentUser.setWins(0); currentUser.setLosses(0); currentUser.setPushes(0);
+		saveUserData(); // Save reset state
+		this.player = new Player(currentUser.getChips()); // New Player with reset chips
 		this.dealer = new Dealer();
-		this.deck = new deckOfCards();
-		this.discarded = new deckOfCards();
-		this.discarded.emptyDeck();
-		this.deck.shuffle();
-
-		// Reset state for a new game
-		prepareInitialDeal();
-		currentState = GameState.BETTING;
-		gameMessage = "Game Restarted. Place your bet.";
-		dealerCardHidden = true;
+		this.deck = new deckOfCards(); this.discarded = new deckOfCards();
+		this.discarded.emptyDeck(); this.deck.shuffle();
+		prepareInitialDeal(); currentState = GameState.BETTING;
+		gameMessage = "Game Restarted. Place your bet."; dealerCardHidden = true;
 	}
 
-
-	// --- Utility and State Update Methods ---
-
+	// --- Utility Methods ---
 	private void updateUserChips() {
-		// Sync the User object's chip count with the Player object's chip count
-		currentUser.setChips(player.getChips());
-		// No need to call saveUserData here, it's called after win/loss determination
+		if(player != null && currentUser != null) currentUser.setChips(player.getChips());
 	}
-
 	private void saveUserData() {
-		// Persist the current user data
-		if (Main.useStubDatabase) {
-			StubDatabase.updateUser(currentUser);
-		} else {
-			UserService.updateUser(currentUser);
-		}
-		System.out.println("User data saved: " + currentUser); // For debugging
+		if (currentUser == null) return;
+		if (Main.useStubDatabase) { StubDatabase.updateUser(currentUser); }
+		else { UserService.updateUser(currentUser); } // Assumes this handles errors
 	}
 
-	// --- Getters for GUI ---
+	// --- Getters ---
+	public User getCurrentUser() { return currentUser; }
+	public Player getPlayer() { return player; }
+	public Dealer getDealer() { return dealer; }
+	public GameState getCurrentState() { return currentState; }
+	public String getGameMessage() { return gameMessage; }
+	public boolean isDealerCardHidden() { return dealerCardHidden && currentState != GameState.DEALER_TURN && currentState != GameState.ROUND_OVER && currentState != GameState.GAME_OVER; }
+	public int getPlayerHandValue() { return (player != null && player.getHand() != null) ? player.getHand().calculatedValue() : 0; }
+	public int getDealerHandValue() { return (dealer != null && dealer.getHand() != null) ? dealer.getHand().calculatedValue() : 0; }
+	public int getDealerVisibleValue() { return (dealer != null && dealer.getHand() != null && dealer.getHand().getSize() > 0 && dealer.getHand().getCard(0) != null) ? dealer.getHand().getCard(0).getValue() : 0; }
+	public List<Card> getPlayerCards() { return (player != null && player.getHand() != null) ? player.getHand().getCards() : Collections.emptyList(); }
+	public List<Card> getDealerCards() { return (dealer != null && dealer.getHand() != null) ? dealer.getHand().getCards() : Collections.emptyList(); }
 
-	public User getCurrentUser() {
-		return currentUser;
-	}
-
-	public Player getPlayer() {
-		return player;
-	}
-
-	public Dealer getDealer() {
-		return dealer;
-	}
-
-	public GameState getCurrentState() {
-		return currentState;
-	}
-
-	public String getGameMessage() {
-		return gameMessage;
-	}
-
-	public boolean isDealerCardHidden() {
-		return dealerCardHidden && currentState != GameState.ROUND_OVER && currentState != GameState.GAME_OVER;
-	}
-
-	public int getPlayerHandValue() {
-		return player.getHand().calculatedValue();
-	}
-
-	public int getDealerHandValue() {
-		// Return 0 or a specific value if card is hidden? Or let GUI handle display?
-		// Let GUI handle the display logic based on isDealerCardHidden()
-		return dealer.getHand().calculatedValue();
-	}
-
-	public int getDealerVisibleValue() {
-		if (dealer.getHand().getHandSize() > 0) {
-			return dealer.getHand().getCard(0).getValue(); // Assumes Ace value logic is handled in Card/Hand
-		}
-		return 0;
-	}
-
-
-	public List<Card> getPlayerCards() {
-		return player.getHand().getCards(); // Assuming Hand has getCards()
-	}
-
-	public List<Card> getDealerCards() {
-		return dealer.getHand().getCards(); // Assuming Hand has getCards()
-	}
-
-	// Determine which actions (buttons) should be available based on the current state
-	// Inside GameLogic.java -> getAvailableActions() method
-
+	// --- Available Actions Logic ---
 	public EnumSet<PlayerAction> getAvailableActions() {
 		EnumSet<PlayerAction> actions = EnumSet.noneOf(PlayerAction.class);
-		Player player = getPlayer(); // Assuming you have access to player object
-		Dealer dealer = getDealer(); // Assuming access to dealer
+		if (player == null || dealer == null || player.getHand() == null || dealer.getHand() == null || currentUser == null) return actions;
 
 		switch (currentState) {
 			case BETTING:
-				// ... existing betting logic ...
-				if (player.getChips() >= 50) actions.add(PlayerAction.BET_50);
-				if (player.getChips() >= 100) actions.add(PlayerAction.BET_100);
-				if (player.getChips() > 0) actions.add(PlayerAction.BET_ALL);
+				if (currentUser.getChips() >= 50) actions.add(PlayerAction.BET_50);
+				if (currentUser.getChips() >= 100) actions.add(PlayerAction.BET_100);
+				if (currentUser.getChips() > 0) actions.add(PlayerAction.BET_ALL);
 				break;
-
-			// ---> THIS IS THE KEY STATE <---
 			case INSURANCE_SURRENDER:
-				System.out.println("[DEBUG GameLogic] In INSURANCE_SURRENDER state. Adding actions."); // DEBUG
-				// Always offer Neither
-				actions.add(PlayerAction.NEITHER);
-
-				// Offer Surrender (check specific house rules, often only allowed now)
-				// Example: Assuming surrender allowed on first 2 cards
-				if (player.getHand().getSize() == 2) { // Or check specific flag
-					actions.add(PlayerAction.SURRENDER);
-					System.out.println("  -> Adding SURRENDER"); // DEBUG
-				}
-
-				// Offer Insurance only if dealer shows Ace AND player can afford it
-				// Assuming getDealerVisibleValue() gets the upcard's value correctly
-				if (dealer.getHand().getCard(0).getValue() == 11 && // Dealer showing Ace
-						player.getChips() >= player.getBet() / 2) {      // Can afford insurance bet
-					actions.add(PlayerAction.INSURANCE);
-					System.out.println("  -> Adding INSURANCE"); // DEBUG
-				}
+				actions.add(PlayerAction.NEITHER); // Decline Insurance
+				int dealerUpVal = (dealer.getHand().getSize() > 0) ? dealer.getHand().getCard(0).getValue() : 0;
+				boolean canAffordIns = player.getChips() >= player.getBet(); // Non-std check
+				boolean offerIns = (dealerUpVal == 11 || dealerUpVal == 10);
+				if (offerIns && canAffordIns) actions.add(PlayerAction.INSURANCE);
 				break;
-
 			case PLAYER_TURN:
-				// ... existing hit/stand logic ...
-				actions.add(PlayerAction.HIT);
-				actions.add(PlayerAction.STAND);
-
-				// Offer Double Down (only on first two cards and if affordable)
-				if (player.getHand().getSize() == 2 && player.getChips() >= player.getBet()) {
-					actions.add(PlayerAction.DOUBLE_DOWN);
-				}
-
-//				// Optional: Offer Surrender as first action? (If rules allow & not already handled in INSURANCE_SURRENDER)
-//				 if (player.getHand().getSize() == 2 && /* check if it's the very first decision */) {
-//				    actions.add(PlayerAction.SURRENDER);
-//				 }
+				actions.add(PlayerAction.HIT); actions.add(PlayerAction.STAND); actions.add(PlayerAction.SURRENDER);
+				if (player.getHand().getSize() == 2 && player.getChips() >= player.getBet()) actions.add(PlayerAction.DOUBLE_DOWN);
 				break;
-
-			case DEALER_TURN:
-				// No player actions
-				break;
+			case DEALER_TURN: break;
 			case ROUND_OVER:
-				actions.add(PlayerAction.NEXT_ROUND);
+				if (currentUser.getChips() > 0) actions.add(PlayerAction.NEXT_ROUND);
+				else { actions.add(PlayerAction.RESTART); actions.add(PlayerAction.EXIT); }
 				break;
 			case GAME_OVER:
-				actions.add(PlayerAction.RESTART);
-				actions.add(PlayerAction.EXIT);
+				actions.add(PlayerAction.RESTART); actions.add(PlayerAction.EXIT);
 				break;
 		}
-		System.out.println("[DEBUG GameLogic] Available Actions: " + actions); // DEBUG
 		return actions;
 	}
 }

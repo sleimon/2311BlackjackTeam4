@@ -1,139 +1,180 @@
 package com.blackjack.GUI;
 
-import com.blackjack.Main; // Import Main to call its static startGame method
+import com.blackjack.Main;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-// MainMenu doesn't necessarily need to be a JPanel itself if it just creates a JFrame
-// public class MainMenu extends JPanel{
-public class MainMenuGUI { // Changed to a standard class that manages a JFrame
+public class MainMenuGUI {
 
     private JFrame windowMainMenu;
-    // private JLabel Blackjack; // This label wasn't used, can be removed or added properly if needed
-    private JButton playGameButton; // Renamed for clarity
-    private JButton leaderBoardButton; // Renamed for clarity
-    private JButton quitButton; // Renamed for clarity
+    private JButton playGameButton;
+    private JButton leaderBoardButton;
+    private JButton quitButton;
     private String username;
-    private JFrame loginFrameToDispose; // To hold the frame we need to close
+    private JFrame loginFrameToDispose;
 
-    /**
-     * Constructor for the Main Menu.
-     * @param username The username of the logged-in user.
-     * @param loginFrame The login JFrame instance to dispose once the main menu is shown.
-     */
+    // --- Theming Constants ---
+    private static final Color FELT_GREEN = new Color(0, 85, 30);        // Rich dark green
+    private static final Color DARK_WOOD_BORDER = new Color(51, 34, 17);   // Dark brown for border
+    private static final Color BUTTON_BG = new Color(20, 20, 20);          // Very dark grey/black
+    private static final Color BUTTON_FG = Color.WHITE;
+    private static final Color BUTTON_BORDER_COLOR = new Color(218, 165, 32); // Gold color for border
+    private static final Color BUTTON_HOVER_BG = new Color(50, 50, 50);    // Lighter grey on hover
+    private static final Color TEXT_COLOR = Color.WHITE;
+    private static final Color WELCOME_TEXT_COLOR = new Color(255, 230, 180); // Soft gold/off-white
+
+    private static final Font TITLE_FONT = new Font("Georgia", Font.BOLD, 28); // More elegant title font
+    private static final Font WELCOME_FONT = new Font("Georgia", Font.PLAIN, 18);
+    private static final Font BUTTON_FONT = new Font("Segoe UI", Font.BOLD, 14); // Keep button font clean
+
+    // Button Border: Gold line outside, padding inside
+    private static final Border BUTTON_BORDER = BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(BUTTON_BORDER_COLOR, 1), // Gold line border
+            new EmptyBorder(10, 30, 10, 30) // Padding
+    );
+    private static final Dimension BUTTON_SIZE = new Dimension(220, 50); // Slightly larger buttons
+
     public MainMenuGUI(String username, JFrame loginFrame) {
         this.username = username;
         this.loginFrameToDispose = loginFrame;
-        initializeMainMenu(); // Create and show the main menu GUI
+        // Ensure GUI creation happens on the Event Dispatch Thread
+        SwingUtilities.invokeLater(this::initializeMainMenu);
     }
 
-    /**
-     * Sets up and displays the Main Menu JFrame.
-     */
     private void initializeMainMenu() {
+        windowMainMenu = new JFrame("Blackjack"); // Simple Title
+        windowMainMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        windowMainMenu.setMinimumSize(new Dimension(400, 400)); // Ensure minimum size
+        windowMainMenu.setLocationRelativeTo(null);
+        // Use a panel with border as the main background container
+        JPanel backgroundPanel = new JPanel(new BorderLayout());
+        backgroundPanel.setBackground(DARK_WOOD_BORDER); // Outer border color
+        backgroundPanel.setBorder(new EmptyBorder(15, 15, 15, 15)); // Space around the felt
 
-        windowMainMenu = new JFrame();
-        windowMainMenu.setTitle("Blackjack Main Menu - Welcome " + username); // Personalized title
-        windowMainMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Exit application if this window is closed
-        windowMainMenu.setSize(400, 200); // Adjusted size, can be packed later
-        windowMainMenu.setLocationRelativeTo(null); // Center screen
+        // Main content panel (the "felt")
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBackground(FELT_GREEN); // Felt green background
+        contentPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(DARK_WOOD_BORDER.brighter(), 1), // Subtle inner border
+                new EmptyBorder(40, 60, 40, 60) // Padding inside the felt
+        ));
 
-        // Create a panel for the buttons
-        JPanel panelMainMenu = new JPanel();
-        // Using GridBagLayout for better centering and spacing
-        panelMainMenu.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); // Padding around buttons
-        gbc.gridx = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL; // Make buttons same width
+        // Title Label
+        JLabel titleLabel = new JLabel("BLACKJACK");
+        titleLabel.setFont(TITLE_FONT);
+        titleLabel.setForeground(BUTTON_BORDER_COLOR); // Use gold color
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleLabel.setBorder(new EmptyBorder(0, 0, 15, 0)); // Space below title
 
-        // Add a welcome label (Optional but nice)
-        JLabel welcomeLabel = new JLabel("Welcome, " + username + "!", SwingConstants.CENTER);
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        gbc.gridy = 0;
-        panelMainMenu.add(welcomeLabel, gbc);
+        // Welcome Label
+        JLabel welcomeLabel = new JLabel("Welcome, " + username + "!");
+        welcomeLabel.setFont(WELCOME_FONT);
+        welcomeLabel.setForeground(WELCOME_TEXT_COLOR);
+        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        welcomeLabel.setBorder(new EmptyBorder(0, 0, 35, 0)); // More space below welcome
 
-        // Create and add buttons
-        playGameButton = new JButton("Play Blackjack");
-        gbc.gridy = 1; // Next row
-        panelMainMenu.add(playGameButton, gbc);
+        contentPanel.add(titleLabel);
+        contentPanel.add(welcomeLabel);
 
-        leaderBoardButton = new JButton("Leaderboard");
-        gbc.gridy = 2; // Next row
-        panelMainMenu.add(leaderBoardButton, gbc);
+        // Create and style buttons
+        playGameButton = createStyledButton("Play Game");
+        leaderBoardButton = createStyledButton("Leaderboard");
+        quitButton = createStyledButton("Quit");
 
-        quitButton = new JButton("Quit Game");
-        gbc.gridy = 3; // Next row
-        panelMainMenu.add(quitButton, gbc);
+        // Add buttons with spacing
+        contentPanel.add(playGameButton);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Vertical space
+        contentPanel.add(leaderBoardButton);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Vertical space
+        contentPanel.add(quitButton);
 
-        // Set background if desired (applied to panel)
-        // panelMainMenu.setBackground(Color.GREEN); // A bit harsh, maybe light gray?
-        panelMainMenu.setBackground(new Color(230, 230, 230));
+        // Add felt panel to background panel
+        backgroundPanel.add(contentPanel, BorderLayout.CENTER);
+        // Set background panel as the content pane
+        windowMainMenu.setContentPane(backgroundPanel);
 
-        // Add panel to the frame's content pane
-        windowMainMenu.setContentPane(panelMainMenu); // Set as the main content
-
-        // Add action listeners using a separate method for clarity
+        // Add action listeners
         setupButtonActions();
 
-        // Dispose the login frame passed from Main
-        if (loginFrameToDispose != null) {
-            loginFrameToDispose.dispose();
-        } else {
-            System.err.println("Warning: MainMenu created without a login frame to dispose.");
-        }
+        // Dispose login frame
+        disposeLoginFrame();
 
-        // Pack the frame to fit components and make it visible
-        // windowMainMenu.pack(); // Calculate optimal size
-        windowMainMenu.setVisible(true); // Show the main menu
+        windowMainMenu.pack(); // Pack to fit contents
+        windowMainMenu.setLocationRelativeTo(null); // Re-center after packing
+        windowMainMenu.setVisible(true);
     }
 
-    /**
-     * Sets up the ActionListener for each button.
-     */
+    // Helper to create themed buttons
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        button.setFont(BUTTON_FONT);
+        button.setBackground(BUTTON_BG);
+        button.setForeground(BUTTON_FG);
+        button.setBorder(BUTTON_BORDER);
+        button.setFocusPainted(false); // Remove blue outline on focus
+        button.setOpaque(true); // Needed for background color on some systems
+        button.setContentAreaFilled(true);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Set min/max/pref size for consistency with BoxLayout
+        button.setMaximumSize(BUTTON_SIZE);
+        button.setPreferredSize(BUTTON_SIZE);
+        button.setMinimumSize(BUTTON_SIZE);
+
+        // Hover effect
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(BUTTON_HOVER_BG);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(BUTTON_BG);
+            }
+        });
+
+        return button;
+    }
+
     private void setupButtonActions() {
         playGameButton.addActionListener(e -> {
             System.out.println("Play Blackjack button pressed by user: " + username);
-            // Call the static startGame method in the Main class
-            // Pass the username and THIS main menu frame (windowMainMenu) to be disposed
             Main.startGame(this.username, this.windowMainMenu);
-            // No need to dispose windowMainMenu here, Main.startGame will do it
         });
 
         leaderBoardButton.addActionListener(e -> {
             System.out.println("Leaderboard button pressed.");
-            // --- Placeholder for Leaderboard Functionality ---
-            // You would typically create and show a new JFrame or JDialog here
-            // to display the leaderboard, fetching data via UserService or similar.
-            JOptionPane.showMessageDialog(windowMainMenu,
-                    "Leaderboard feature not yet implemented.",
-                    "Leaderboard",
-                    JOptionPane.INFORMATION_MESSAGE);
-            // --- End Placeholder ---
+            try {
+                LeaderboardGUI leaderboardGUI = new LeaderboardGUI();
+                // Consider disabling main menu while leaderboard is open if it's modal
+            } catch (Exception ex) {
+                System.err.println("Error opening Leaderboard: " + ex.getMessage());
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(windowMainMenu,
+                        "Could not display Leaderboard.", "Leaderboard Error",
+                        JOptionPane.WARNING_MESSAGE);
+            }
         });
 
         quitButton.addActionListener(e -> {
             System.out.println("Quit button pressed.");
-            // Ask for confirmation before exiting (optional but good practice)
             int choice = JOptionPane.showConfirmDialog(windowMainMenu,
-                    "Are you sure you want to quit?",
-                    "Confirm Exit",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
+                    "Are you sure you want to quit?", "Confirm Exit",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (choice == JOptionPane.YES_OPTION) {
-                System.exit(0); // Terminate the application
+                System.exit(0);
             }
         });
     }
 
-    /*
-     * This method is now removed because the responsibility of starting the game
-     * (creating GameLogic, GameGUI, and the game JFrame) belongs to the Main class.
-     * The Play button now calls Main.startGame(...) instead.
-     *
-    private static void startGame(String username) {
-        // ... old implementation ...
+    private void disposeLoginFrame() {
+        if (loginFrameToDispose != null) {
+            // Ensure disposal happens on the EDT
+            SwingUtilities.invokeLater(() -> loginFrameToDispose.dispose());
+        } else {
+            System.err.println("Warning: MainMenu created without a login frame to dispose.");
+        }
     }
-    */
 }

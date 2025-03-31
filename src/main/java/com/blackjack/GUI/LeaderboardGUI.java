@@ -1,4 +1,5 @@
-package com.blackjack.Models;
+package com.blackjack.GUI;
+import com.blackjack.Models.User;
 import com.blackjack.Services.UserService;
 //import com.blackjack.Models.User;
 import javax.swing.*;
@@ -9,9 +10,9 @@ import javax.swing.table.DefaultTableModel;
 
 
 
-public class Leaderboard extends JPanel {
+public class LeaderboardGUI extends JPanel {
 
-    public Leaderboard(){
+    public LeaderboardGUI(){
 
         initLeaderboard();
 
