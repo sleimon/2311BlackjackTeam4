@@ -389,6 +389,10 @@ March 30th
     - Arya refactors the game class into two classes (2 hours)
     - Arya updates the GUI (3 hours)
     - Arya clears up some general code smell (1 hour)
+    - Sleimon finishes the refactor and planning documents (2 hours)
+    - Sleimon finishes the log (1 hour)
+    - Sleimon finishes the wiki (1 hour)
+    - Sleimon finishes the presentation slides (1 hour)
 
 Meeting March 30th
     - Arya and Sleimon discuss their changes (2 hours)
@@ -399,12 +403,12 @@ Total Iteration 3 Meeting Time: 9 hours
 Total Meeting Time: 59 hours
 
 Sleimon's Development Tasks:
-	- Assigning weekly tasks to the team                                      Time allocated: 3 hours                  Time spent: 3 hours
+	- Assigning weekly tasks to the team                                      Time allocated: a day                    Time spent: a day
 	- Refactoring everyone's code                                             Time allocated: a week                   Time spent: a week
 	- Bug fixing the project                                                  Time allocated: a week                   Time spent: a week
-	- Filling out the log                                                     Time allocated: 4 hours                  Time spent: 5 hours
-	- Creating ITR3 Doc                                                       Time allocated: 2 hours                  Time spent: 2 hours
-	- Creating the wiki							  Time allocated: 2 hours	       	   Time spent: 2 hours
+	- Filling out the log                                                     Time allocated: a day                    Time spent: a day
+	- Creating ITR3 Doc                                                       Time allocated: a day                    Time spent: a day
+	- Creating the wiki							  Time allocated: a day                    Time spent: a day
 	- Cleaning up code smells                                                 Time allocated: a week                   Time spent: a week
 	- Implementing the Main Menu                                              Time allocated: a day                    Time spent: a day
 	- Updating the GUI                                                        Time allocated: a day                    Time spent: a day
