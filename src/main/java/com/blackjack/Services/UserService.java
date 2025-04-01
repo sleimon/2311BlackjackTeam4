@@ -133,6 +133,48 @@ public class UserService {
         return null;
     }
 
+    public static User getUser(int userId) {
+        String query = "SELECT id, username, password, chips, wins, losses, pushes FROM Users WHERE id = ?";
+        System.out.println("[DEBUG getUser] Attempting to fetch user: " + userId); // DEBUG
+        try (Connection conn = DbConnectService.connect();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int retrievedUserId = rs.getInt("id");
+                String retrievedUsername = rs.getString("username");
+                String retrievedHashedPassword = rs.getString("password"); // Get Argon2 hash from DB
+                int retrievedChips = rs.getInt("chips");
+                int retrievedWins = rs.getInt("wins");
+                int retrievedLosses = rs.getInt("losses");
+                int retrievedPushes = rs.getInt("pushes");
+
+                System.out.println("[DEBUG getUser] User Found: " + retrievedUsername);
+                System.out.println("[DEBUG getUser] HASH FROM ResultSet (Argon2): '" + retrievedHashedPassword + "'");
+                System.out.println("[DEBUG getUser] Hash Length from ResultSet: " + (retrievedHashedPassword != null ? retrievedHashedPassword.length() : "null"));
+
+                User user = new User(
+                        retrievedUserId,
+                        retrievedUsername,
+                        retrievedHashedPassword, // Pass the retrieved Argon2 hash
+                        retrievedChips,
+                        retrievedWins,
+                        retrievedLosses,
+                        retrievedPushes
+                );
+                System.out.println("[DEBUG getUser] User object created."); // DEBUG
+                return user;
+            } else {
+                System.out.println("[DEBUG getUser] User NOT Found: " + userId); // DEBUG
+            }
+        } catch (SQLException e) {
+            System.err.println("[ERROR getUser] SQLException fetching user '" + userId + "': " + e.getMessage());
+        }
+        return null;
+    }
+
     /**
      * Adds a new user to the database after hashing their password using Argon2.
      * Checks for existing username first.
