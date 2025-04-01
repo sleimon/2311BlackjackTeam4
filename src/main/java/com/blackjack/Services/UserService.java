@@ -133,7 +133,7 @@ public class UserService {
         return null;
     }
 
-    public static User getUser(int userId) {
+    public static User getUserbyId(int userId) {
         String query = "SELECT id, username, password, chips, wins, losses, pushes FROM Users WHERE id = ?";
         System.out.println("[DEBUG getUser] Attempting to fetch user: " + userId); // DEBUG
         try (Connection conn = DbConnectService.connect();

@@ -290,7 +290,7 @@ public class TournamentGameLogic {
         this.currentTournament = TournamentService.getTournamentFromName(currentTournament.getName());
 
         if (TournamentService.isTournamentInactive(currentTournament.getTournamentId())) {
-            System.out.println("[Tournament] Tournament already won by: " + UserService.getUser(currentTournament.getWonBy()).getUsername());
+            System.out.println("[Tournament] Tournament already won by: " + UserService.getUserbyId(currentTournament.getWonBy()).getUsername());
             return;
         }
 

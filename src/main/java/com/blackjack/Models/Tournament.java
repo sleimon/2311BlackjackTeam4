@@ -8,10 +8,10 @@ public class Tournament {
     private int targetChips;
     private int activePlayers;
     private String status;
-    private String wonBy;
+    private int wonBy;
     private Timestamp createdAt;
 
-    public Tournament(int tournamentId, String name, int targetChips, int activePlayers, String status, String wonBy, Timestamp createdAt) {
+    public Tournament(int tournamentId, String name, int targetChips, int activePlayers, String status, int wonBy, Timestamp createdAt) {
         this.tournamentId = tournamentId;
         this.name = name;
         this.targetChips = targetChips;
@@ -41,7 +41,7 @@ public class Tournament {
         return status;
     }
 
-    public String getWonBy() {
+    public int getWonBy() {
         return wonBy;
     }
 

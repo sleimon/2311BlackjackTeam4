@@ -24,7 +24,7 @@ public class TournamentService {
                         rs.getInt("target_chips"),
                         rs.getInt("active_players"),
                         rs.getString("status"),
-                        rs.getString("won_by"), // Fetch the winner
+                        rs.getInt("won_by"), // Fetch the winner
                         rs.getTimestamp("created_at")
                 );
                 activeTournaments.add(tournament);
@@ -130,7 +130,7 @@ public class TournamentService {
                             rs.getInt("target_chips"),
                             rs.getInt("active_players"),
                             rs.getString("status"),
-                            rs.getString("won_by"), // Ensure null safety in Tournament class
+                            rs.getInt("won_by"), // Ensure null safety in Tournament class
                             rs.getTimestamp("created_at")
                     );
                 }
