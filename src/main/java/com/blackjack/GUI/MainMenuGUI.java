@@ -41,7 +41,7 @@ public class MainMenuGUI {
             BorderFactory.createLineBorder(BUTTON_BORDER_COLOR, 1),
             new EmptyBorder(10, 30, 10, 30)
     );
-    private static final Dimension BUTTON_SIZE = new Dimension(220, 50);
+    private static final Dimension BUTTON_SIZE = new Dimension(300, 50);
 
     public MainMenuGUI(String username, JFrame loginFrame) {
         this.username = username;
@@ -87,7 +87,7 @@ public class MainMenuGUI {
         leaderBoardButton = createStyledButton("Leaderboard");
         tutorialButton = createStyledButton("Tutorial");
         quitButton = createStyledButton("Quit");
-        tournamentButton = createStyledButton("Online Multiplayer (Tournament)"); // <-- ADDED: Create tournament button
+        tournamentButton = createStyledButton("Tournament (Online Multiplayer)"); // <-- ADDED: Create tournament button
 
         // Add buttons with spacing
         contentPanel.add(playGameButton);
