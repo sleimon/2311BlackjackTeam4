@@ -114,6 +114,7 @@ public class Main {
             player.setName(username);
             TournamentGUI tournamentGUI = new TournamentGUI(tournamentGameLogic);
             JFrame gameFrame = new JFrame("Blackjack - " + username);
+            gameFrame.setResizable(true);
             gameFrame.setContentPane(tournamentGUI);
             gameFrame.revalidate();
             gameFrame.repaint();

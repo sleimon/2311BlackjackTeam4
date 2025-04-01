@@ -11,6 +11,15 @@ public class User {
     private int pushes;
     //User class keeps track of lifetime wins and losses
 
+    public User(int userId, String username, String password, int chips, int wins, int losses, int pushes) {
+        this.userId= userId;
+        this.username = username;
+        this.password = password;
+        this.chips = chips;
+        this.wins = wins;
+        this.losses = losses;
+        this.pushes = pushes;
+    }
     public User(String username, String password, int chips, int wins, int losses, int pushes) {
         this.username = username;
         this.password = password;

@@ -92,7 +92,7 @@ public class UserService {
      * @return User object if found, null otherwise.
      */
     public static User getUser(String username) {
-        String query = "SELECT username, password, chips, wins, losses, pushes FROM Users WHERE username = ?";
+        String query = "SELECT id, username, password, chips, wins, losses, pushes FROM Users WHERE username = ?";
         System.out.println("[DEBUG getUser] Attempting to fetch user: " + username); // DEBUG
         try (Connection conn = DbConnectService.connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -101,6 +101,7 @@ public class UserService {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+                int retrievedUserId = rs.getInt("id");
                 String retrievedUsername = rs.getString("username");
                 String retrievedHashedPassword = rs.getString("password"); // Get Argon2 hash from DB
                 int retrievedChips = rs.getInt("chips");
@@ -113,6 +114,7 @@ public class UserService {
                 System.out.println("[DEBUG getUser] Hash Length from ResultSet: " + (retrievedHashedPassword != null ? retrievedHashedPassword.length() : "null"));
 
                 User user = new User(
+                        retrievedUserId,
                         retrievedUsername,
                         retrievedHashedPassword, // Pass the retrieved Argon2 hash
                         retrievedChips,
