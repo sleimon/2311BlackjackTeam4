@@ -397,6 +397,9 @@ March 30th
 Meeting March 30th
     - Arya and Sleimon discuss their changes (2 hours)
 
+March 31st
+    - Arya and Sleimon work on Multiplayer (8 hours)
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Total Iteration 3 Meeting Time: 9 hours
@@ -412,7 +415,7 @@ Sleimon's Development Tasks:
 	- Cleaning up code smells                                                 Time allocated: a week                   Time spent: a week
 	- Implementing the Main Menu                                              Time allocated: a day                    Time spent: a day
 	- Updating the GUI                                                        Time allocated: a day                    Time spent: a day
-	- Multiplayer                                                             Time allocated: two weeks                Time spent: ongoing/not done
+	- Multiplayer                                                             Time allocated: two weeks                Time spent: two weeks
 	- Creating the presentation                                               Time allocated: a day                    Time spent: a day
 	- Refactor document                                                       Time allocated: a day                    Time spent: a day
 	- Three design refactor document                                          Time allocated: a day                    Time spent: a day
@@ -424,7 +427,7 @@ Arya's Development Tasks:
 	- Refactoring everyone's code                                             Time allocated: a week                   Time spent: a week
 	- Bug fixing the project                                                  Time allocated: a week                   Time spent: a week
 	- Updating the GUI                                                        Time allocated: a day                    Time spent: a day
-	- Multiplayer                                                             Time allocated: two weeks                Time spent: ongoing/not done
+	- Multiplayer                                                             Time allocated: two weeks                Time spent: two weeks
 
 George's Development Tasks:
 	- Implementing the Main Menu                                              Time allocated: a week                   Time spent: a week
