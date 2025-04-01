@@ -296,7 +296,7 @@ public class TournamentGameLogic {
 
         // Check if player has met or exceeded the target chips
         if (player.getChips() >= currentTournament.getTargetChips()) {
-            TournamentService.updateTournamentWinner(currentTournament.getTournamentId(), currentUser.getUsername());
+            TournamentService.setTournamentWinner(currentTournament.getTournamentId(), UserService.getUser(currentUser.getUsername()).getUserId());
             TournamentService.updateTournamentStatus(currentTournament.getTournamentId(), "inactive");
             System.out.println("[Tournament] You have won the tournament. Congrats!");
         }
