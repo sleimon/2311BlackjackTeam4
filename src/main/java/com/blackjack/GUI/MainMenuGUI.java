@@ -110,6 +110,7 @@ public class MainMenuGUI {
 
         windowMainMenu.pack();
         windowMainMenu.setLocationRelativeTo(null);
+        windowMainMenu.setExtendedState(JFrame.MAXIMIZED_BOTH); // Set fullscreen here
         windowMainMenu.setVisible(true);
     }
 
@@ -175,13 +176,37 @@ public class MainMenuGUI {
 
         tournamentButton.addActionListener(e -> {
             System.out.println("Tournament button pressed by user: " + username);
-            // Create the TournamentLobbyGUI panel
-            TournamentLobbyGUI tournamentLobbyPanel = new TournamentLobbyGUI(username);
-            // Replace the current content pane with the tournament lobby panel
-            windowMainMenu.setContentPane(tournamentLobbyPanel);
-            // Revalidate and repaint the frame
-            windowMainMenu.revalidate();
-            windowMainMenu.repaint();
+
+            // 1. Create the TournamentLobbyGUI panel
+            TournamentLobbyGUI tournamentLobbyPanel = new TournamentLobbyGUI(username); // username is 'this.username'
+
+            // 2. Create a new JFrame specifically for the lobby
+            JFrame lobbyFrame = new JFrame("Tournament Lobby - " + this.username);
+            lobbyFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Or DISPOSE_ON_CLOSE if appropriate
+            lobbyFrame.setResizable(true);
+
+            // 3. Set the lobby panel as the content of the new frame
+            lobbyFrame.setContentPane(tournamentLobbyPanel);
+
+            // 4. Prepare the frame: pack, center, and set fullscreen
+            lobbyFrame.pack(); // Adjusts frame size to content preferred size
+            lobbyFrame.setLocationRelativeTo(null); // Center on screen
+            lobbyFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); // *** SET FULLSCREEN ***
+
+            // 5. Dispose of the current Main Menu window
+            // Use the instance variable 'windowMainMenu' stored in MainMenuGUI
+            if (this.windowMainMenu != null) {
+                this.windowMainMenu.dispose();
+            } else {
+                System.err.println("Warning: Could not find the MainMenu frame (windowMainMenu) to dispose.");
+                // Optionally, try getting the window ancestor as a fallback
+                // JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(this); // 'this' refers to MainMenuGUI panel
+                // if (currentFrame != null) currentFrame.dispose();
+            }
+
+
+            // 6. Make the new fullscreen lobby frame visible
+            lobbyFrame.setVisible(true);
         });
 
 

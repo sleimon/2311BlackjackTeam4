@@ -78,6 +78,7 @@ public class Main {
         });
     }
 
+
     /**
      * Called by MainMenuGUI to start the actual game.
      * @param username The username of the player.
@@ -87,43 +88,55 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             System.out.println("[Main] Starting game for user: " + username);
 
-            // Create game logic and UI
+            // Create game logic and UI (GameGUI is just the panel)
             GameLogic gameLogic = new GameLogic(username); // Uses Main.useStubDatabase internally
             GameGUI gamePanel = new GameGUI(gameLogic);
 
-            // Setup game window
+            // Setup game window (This is where the change happens)
             JFrame gameFrame = new JFrame("Blackjack - " + username);
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             gameFrame.setResizable(true);
-            gameFrame.add(gamePanel);
+            gameFrame.add(gamePanel); // Add the GameGUI panel to the frame
             gameFrame.pack();
             gameFrame.setLocationRelativeTo(null);
+            gameFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
             // Dispose old frame (Main Menu) and show game frame
             if (frameToDispose != null) {
                 frameToDispose.dispose();
             }
-            gameFrame.setVisible(true);
+            gameFrame.setVisible(true); // Make the fullscreen frame visible
         });
     }
 
     public static void startGame(String username, String tournamentName, JFrame frameToDispose) {
         SwingUtilities.invokeLater(() -> {
+            // Create tournament logic and UI (TournamentGUI is the panel)
             TournamentGameLogic tournamentGameLogic = new TournamentGameLogic(username, tournamentName);
-            Player player = new Player(1000);
-            player.setName(username);
+            // Player object seems redundant here if TournamentGameLogic manages it, but keep if needed
+            // Player player = new Player(1000);
+            // player.setName(username);
             TournamentGUI tournamentGUI = new TournamentGUI(tournamentGameLogic);
-            JFrame gameFrame = new JFrame("Blackjack - " + username);
+
+            // Setup game window (This is where the change happens)
+            JFrame gameFrame = new JFrame("Blackjack Tournament - " + username + " (" + tournamentName + ")"); // More informative title
+            gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             gameFrame.setResizable(true);
-            gameFrame.setContentPane(tournamentGUI);
-            gameFrame.revalidate();
-            gameFrame.repaint();
+            gameFrame.setContentPane(tournamentGUI); // Use setContentPane since TournamentGUI is the main panel
+            // Revalidate and repaint might not be strictly needed here, but pack is better
+            // gameFrame.revalidate();
+            // gameFrame.repaint();
+            gameFrame.pack(); // Pack the frame to fit the content
+            gameFrame.setLocationRelativeTo(null); // Center the frame
+            gameFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); // *** ADD THIS LINE *** Set fullscreen state
+
+            // Dispose old frame (Lobby) and show game frame
             if (frameToDispose != null) {
-            frameToDispose.dispose();
+                frameToDispose.dispose();
             }
-            gameFrame.setVisible(true);
-    });
-        // Dispose of the lobby frame after starting game
+            gameFrame.setVisible(true); // Make the fullscreen frame visible
+        });
+        // Dispose of the lobby frame after starting game (This seems redundant if already disposed above)
     }
 
     // Removed methods that are now in LoginService or LoginGUI:
