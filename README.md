@@ -1,3 +1,5 @@
+**ITERATION 3 WIKI**
+
 EECS 2311
 Section X
 Team 4
@@ -23,6 +25,14 @@ Team Members: Sleimon Naimi, Arya Gosavi, Roopkiran Kaur, George Yousif, Mark Fa
 - Fully functional server database to store relevant information such as account information and stats in the cloud
 - Create a user profile with a customizable username and password
 - Absolutely no bugs or code smell
+- Online Multiplayer in the form of Tournament mode
+
+**INSTRUCTIONS FOR ONLINE MULTIPLAYER**
+1) load up the game on two separate devices
+2) Click the tournament button
+3) Create a tournament by inputting a name and target amount of chips
+4) Join on the 1st device and join on the second device the same tournament
+5) Play against each other, race to the taget value of chips
 
 **ITR3 Submission Info**
 - All current Iteration 3 documents such as the planning document, refactor document, log and architecture sketch can be found in the MainITR3 branch or when you download the ITR3 tag zip file, it'll be in there
