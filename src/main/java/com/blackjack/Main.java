@@ -6,9 +6,12 @@ import com.blackjack.GUI.LoginGUI; // Import the new Login GUI
 import com.blackjack.GUI.MainMenuGUI;
 
 // Model/Logic Imports
+import com.blackjack.GUI.TournamentGUI;
+import com.blackjack.Models.Player;
 import com.blackjack.Services.GameLogic;
 // No longer need User model directly in Main usually
 // import com.blackjack.Models.User;
+import com.blackjack.Services.TournamentGameLogic;
 
 // Service Imports
 import com.blackjack.Services.LoginService; // Import the new Login Service
@@ -91,7 +94,7 @@ public class Main {
             // Setup game window
             JFrame gameFrame = new JFrame("Blackjack - " + username);
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            gameFrame.setResizable(false);
+            gameFrame.setResizable(true);
             gameFrame.add(gamePanel);
             gameFrame.pack();
             gameFrame.setLocationRelativeTo(null);
@@ -102,6 +105,24 @@ public class Main {
             }
             gameFrame.setVisible(true);
         });
+    }
+
+    public static void startGame(String username, String tournamentName, JFrame frameToDispose) {
+        SwingUtilities.invokeLater(() -> {
+            TournamentGameLogic tournamentGameLogic = new TournamentGameLogic(username, tournamentName);
+            Player player = new Player(1000);
+            player.setName(username);
+            TournamentGUI tournamentGUI = new TournamentGUI(tournamentGameLogic);
+            JFrame gameFrame = new JFrame("Blackjack - " + username);
+            gameFrame.setContentPane(tournamentGUI);
+            gameFrame.revalidate();
+            gameFrame.repaint();
+            if (frameToDispose != null) {
+            frameToDispose.dispose();
+            }
+            gameFrame.setVisible(true);
+    });
+        // Dispose of the lobby frame after starting game
     }
 
     // Removed methods that are now in LoginService or LoginGUI:

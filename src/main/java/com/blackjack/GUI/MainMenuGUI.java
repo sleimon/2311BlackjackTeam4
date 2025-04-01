@@ -9,14 +9,17 @@ import java.awt.*;
 
 // Import the TutorialGUI class
 import com.blackjack.GUI.TutorialGUI;
+// Import the TournamentLobbyGUI class
+import com.blackjack.GUI.TournamentLobbyGUI;
 
 public class MainMenuGUI {
 
     private JFrame windowMainMenu;
     private JButton playGameButton;
     private JButton leaderBoardButton;
-    private JButton tutorialButton; // <-- ADDED: Tutorial Button field
+    private JButton tutorialButton;
     private JButton quitButton;
+    private JButton tournamentButton; // <-- ADDED: Tournament Button field
     private String username;
     private JFrame loginFrameToDispose;
 
@@ -82,15 +85,18 @@ public class MainMenuGUI {
         // Create and style buttons
         playGameButton = createStyledButton("Play Game");
         leaderBoardButton = createStyledButton("Leaderboard");
-        tutorialButton = createStyledButton("Tutorial"); // <-- ADDED: Create tutorial button
+        tutorialButton = createStyledButton("Tutorial");
         quitButton = createStyledButton("Quit");
+        tournamentButton = createStyledButton("Online Multiplayer (Tournament)"); // <-- ADDED: Create tournament button
 
         // Add buttons with spacing
         contentPanel.add(playGameButton);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         contentPanel.add(leaderBoardButton);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        contentPanel.add(tutorialButton); // <-- ADDED: Add tutorial button to panel
+        contentPanel.add(tutorialButton);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        contentPanel.add(tournamentButton); // <-- ADDED: Add tournament button to panel
         contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         contentPanel.add(quitButton);
 
@@ -163,6 +169,17 @@ public class MainMenuGUI {
             // Replace the current content pane (MainMenuGUI) with the tutorial panel
             windowMainMenu.setContentPane(tutorialPanel);
             // Revalidate and repaint the frame to show the changes
+            windowMainMenu.revalidate();
+            windowMainMenu.repaint();
+        });
+
+        tournamentButton.addActionListener(e -> {
+            System.out.println("Tournament button pressed by user: " + username);
+            // Create the TournamentLobbyGUI panel
+            TournamentLobbyGUI tournamentLobbyPanel = new TournamentLobbyGUI(username);
+            // Replace the current content pane with the tournament lobby panel
+            windowMainMenu.setContentPane(tournamentLobbyPanel);
+            // Revalidate and repaint the frame
             windowMainMenu.revalidate();
             windowMainMenu.repaint();
         });
