@@ -2,6 +2,7 @@ package com.blackjack.Models;
 
 // this class is to store the user information
 public class User {
+    private int userId;
     private String username;
     private String password;
     private int chips;
@@ -10,6 +11,15 @@ public class User {
     private int pushes;
     //User class keeps track of lifetime wins and losses
 
+    public User(int userId, String username, String password, int chips, int wins, int losses, int pushes) {
+        this.userId= userId;
+        this.username = username;
+        this.password = password;
+        this.chips = chips;
+        this.wins = wins;
+        this.losses = losses;
+        this.pushes = pushes;
+    }
     public User(String username, String password, int chips, int wins, int losses, int pushes) {
         this.username = username;
         this.password = password;
@@ -18,6 +28,8 @@ public class User {
         this.losses = losses;
         this.pushes = pushes;
     }
+
+    public int getUserId() {return userId;}
     public String getUsername() {
         return username;
      }
